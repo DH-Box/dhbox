@@ -12,11 +12,14 @@ if [ -d $INSTALL_DIR ]; then
   exit
 fi;
 
+# Gotta have git
+apt-get install git
 git clone git://github.com/szweibel/dhbox.git $INSTALL_DIR
 
 for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
   if [ -e $x ]; then
     mv $x "$x"_backup
   fi;
+  echo "INSTALL_DIR=$HOME/.bash/dhbox" >> $x
   echo "source $INSTALL_DIR/dhbox.sh" >> $x
 done
