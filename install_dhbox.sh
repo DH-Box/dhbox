@@ -12,7 +12,7 @@ if [ -d $INSTALL_DIR ]; then
   exit
 fi;
 # Gotta have git, and dependencies!
-yes apt-get install libcurl4-gnutls-dev libexpat1-dev gettext \
+apt-get install -y libcurl4-gnutls-dev libexpat1-dev gettext \
   libz-dev libssl-dev git
 git clone git://github.com/szweibel/dhbox.git $INSTALL_DIR
 for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
