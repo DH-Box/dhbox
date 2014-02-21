@@ -36,4 +36,5 @@ echo "source /usr/local/bin/virtualenvwrapper.sh" >> $x
 echo ". ~/.bashrc" >> $x
 mkvirtualenv dhbox
 workon dhbox
+yes | pip install nltk ipython 
 echo 'got it!'
