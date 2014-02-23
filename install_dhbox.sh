@@ -37,7 +37,7 @@ case $OS in
   *) ;;
 esac
 echo "$OS HERE!!!!"
-if [ "$OS" == "Linux" ]
+if "$OS" == "Linux"
   then
     apt-get update
     # Gotta have git, and bash completion. Checking if it already exists.
@@ -45,7 +45,7 @@ if [ "$OS" == "Linux" ]
       then
         apt-get install -y git-core bash-completion python-zmq
     fi
-elif [ "$OS" == "Mac" ]
+elif "$OS" == "Mac"
   then
     # install Mac Homebrew for easy installation of other stuff. Check if it exists.
     if ! type "$brew" > /dev/null;
