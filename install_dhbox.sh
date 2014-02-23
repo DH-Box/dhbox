@@ -39,7 +39,7 @@ esac
 
 echo "$OS is the OS"
 
-if [ $OS in "Linux" ]; then
+if [ $OS in "Linu" ]; then
     apt-get update
     # Gotta have git, and bash completion. Checking if it already exists.
     if ! type "$git" > /dev/null;
