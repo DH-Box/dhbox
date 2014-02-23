@@ -45,6 +45,8 @@ if [OS -eq 'Linux']
       then
         apt-get install -y git-core bash-completion
     fi
+    # need this weird lib
+    apt-get install python-zmq
 elif [OS -eq 'Mac']
   then
     # install Mac Homebrew for easy installation of other stuff. Check if it exists.
