@@ -9,7 +9,7 @@ echo '#-------------------------------------------#'
 export INSTALL_DIR="$HOME/.bash/dhbox"
 
 if [ -d $INSTALL_DIR ]; then
-  echo "Looks like you have a $INSTALL_DIR directory installed.  Good job!"
+  echo "Looks like you already have DH Box installed.  Good job!"
   exit
 fi;
 
@@ -43,7 +43,7 @@ if [OS -eq 'Linux']
     # Gotta have git, and bash completion. Checking if it already exists.
     if ! type "$git" > /dev/null;
       then
-        apt-get install -y git bash-completion
+        apt-get install -y git-core bash-completion
     fi
 elif [OS -eq 'Mac']
   then
@@ -97,3 +97,4 @@ echo "source ~/.bashrc"
 
 yes | pip install nltk ipython
 echo 'got it!'
+ipython notebook $INSTALL_DIR/test.ipynb
