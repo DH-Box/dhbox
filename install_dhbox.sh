@@ -6,7 +6,7 @@ echo '#-------------------------------------------#'
 echo '#           DH BOX Install Script           #'
 echo '#-------------------------------------------#'
 
-export INSTALL_DIR="$HOME/.bash/dhbox"
+export INSTALL_DIR="$HOME/.dhbox"
 
 if [ -d $INSTALL_DIR ]; then
   echo "Looks like you already have DH Box installed.  Good job!"
@@ -73,7 +73,7 @@ if [ -e $x ]; then
   mv $x "$x"_backup
 fi;
 # Add our scripts
-echo "INSTALL_DIR=$HOME/.bash/dhbox" >> $x
+echo "INSTALL_DIR=$HOME/.dhbox" >> $x
 echo "source $INSTALL_DIR/dhbox.sh" >> $x
 
 
