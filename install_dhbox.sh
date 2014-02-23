@@ -43,10 +43,8 @@ if [OS -eq 'Linux']
     # Gotta have git, and bash completion. Checking if it already exists.
     if ! type "$git" > /dev/null;
       then
-        apt-get install -y git-core bash-completion
+        apt-get install -y git-core bash-completion python-zmq
     fi
-    # need this weird lib
-    apt-get install python-zmq
 elif [OS -eq 'Mac']
   then
     # install Mac Homebrew for easy installation of other stuff. Check if it exists.
@@ -97,6 +95,6 @@ echo "source ~/.bashrc"
 # Making the dhbox virtualenv
 # mkvirtualenv dhbox
 
-yes | pip install nltk ipython
+yes | pip install nltk ipython[all]
 echo 'got it!'
 ipython notebook $INSTALL_DIR/test.ipynb
