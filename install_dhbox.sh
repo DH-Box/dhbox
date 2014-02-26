@@ -102,7 +102,7 @@ elif [ "$OS" = "Darwin" ]; then
 fi
 
 # Install our scripts
-git clone git://github.com/szweibel/dhbox.git $INSTALL_DIR
+git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
 x=$HOME/.bashrc
 
