@@ -6,9 +6,9 @@ echo '#-------------------------------------------#'
 echo '#           DH BOX Install Script           #'
 echo '#-------------------------------------------#'
 
-export INSTALL_DIR="$HOME/.dhbox"
+export DHBOX_INSTALL_DIR="$HOME/.dhbox"
 
-if [ -d $INSTALL_DIR ]; then
+if [ -d $DHBOX_INSTALL_DIR ]; then
   echo "Looks like you already have DH Box installed.  Good job!"
   exit
 fi;
@@ -46,7 +46,7 @@ if [ "$OS" = "Linux" ]; then
       then
         apt-get install -y git-core bash-completion python-zmq
     fi
-elif [ "$OS" = "Mac" ]; then
+elif [ "$OS" = "Darwin" ]; then
     # install Mac Homebrew for easy installation of other stuff. Check if it exists.
     if ! type "$brew" > /dev/null;
       then
@@ -73,7 +73,7 @@ if [ -e $x ]; then
   mv $x "$x"_backup
 fi;
 # Add our scripts
-echo "INSTALL_DIR=$HOME/.dhbox" >> $x
+echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
 echo "source $INSTALL_DIR/dhbox.sh" >> $x
 
 
