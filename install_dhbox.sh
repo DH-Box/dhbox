@@ -61,15 +61,17 @@ if [ "$OS" = "Linux" ];
             apt-get install -y git-core bash-completion python-zmq
         fi
 
-        # install pip, the python package manager
-        wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-        python get-pip.py
-
+        if ! type "$pip" > /dev/null;
+          then
+            # install pip, the python package manager
+            wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+            python get-pip.py
+        fi
         yes | pip install nltk ipython[all]
     fi
 elif [ "$OS" = "Darwin" ]; then
-
-    # install Mac Homebrew for easy installation of other stuff. Check if it exists.
+    # For Mac
+    # install Mac Homebrew for easy installation of other stuff.
     if ! type "$brew" > /dev/null;
       then
         ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
@@ -90,6 +92,9 @@ elif [ "$OS" = "Darwin" ]; then
     fi
     sudo easy_install pyzmq
     yes | sudo pip install nltk ipython[all]
+else
+  echo "Unfortunately $OS isn't supported yet. Exiting..."
+  exit
 fi
 
 # Install our scripts
@@ -106,7 +111,7 @@ echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
 echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
 
 
-# Virtualenv not working!
+# Virtualenv not working yet!
 # if not Debian
 # pip install virtualenvwrapper
 # if Debian
