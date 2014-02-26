@@ -51,30 +51,32 @@ if [ "$OS" = "Linux" ]; then
     wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
     python get-pip.py
 
+    yes | pip install nltk ipython[all]
+
 elif [ "$OS" = "Darwin" ]; then
     # get xcode command line tools
 
-    OSX_VERS=$(sw_vers -productVersion | awk -F "." '{print $2}')
+    # OSX_VERS=$(sw_vers -productVersion | awk -F "." '{print $2}')
 
-    # Get Xcode CLI tools
-    # https://devimages.apple.com.edgekey.net/downloads/xcode/simulators/index-3905972D-B609-49CE-8D06-51ADC78E07BC.dvtdownloadableindex
-    TOOLS=clitools.dmg
-    if [ ! -f "$TOOLS" ]; then
-      if [ "$OSX_VERS" -eq 7 ]; then
-          DMGURL=http://devimages.apple.com/downloads/xcode/command_line_tools_for_xcode_os_x_lion_april_2013.dmg
-      elif [ "$OSX_VERS" -eq 8 ]; then
-          DMGURL=http://devimages.apple.com/downloads/xcode/command_line_tools_for_xcode_os_x_mountain_lion_april_2013.dmg
-      elif [ "$OSX_VERS" -eq 9 ]; then
-          DMGURL=http://adcdownload.apple.com/Developer_Tools/command_line_tools_os_x_mavericks_for_xcode__late_october_2013/command_line_tools_os_x_mavericks_for_xcode__late_october_2013.dmg
-      fi
-      curl "$DMGURL" -o "$TOOLS"
-    fi
-    TMPMOUNT=`/usr/bin/mktemp -d /tmp/clitools.XXXX`
-    hdiutil attach "$TOOLS" -mountpoint "$TMPMOUNT"
-    installer -pkg "$(find $TMPMOUNT -name '*.mpkg')" -target /
-    hdiutil detach "$TMPMOUNT"
-    rm -rf "$TMPMOUNT"
-    rm "$TOOLS"
+    # # Get Xcode CLI tools
+    # # https://devimages.apple.com.edgekey.net/downloads/xcode/simulators/index-3905972D-B609-49CE-8D06-51ADC78E07BC.dvtdownloadableindex
+    # TOOLS=clitools.dmg
+    # if [ ! -f "$TOOLS" ]; then
+    #   if [ "$OSX_VERS" -eq 7 ]; then
+    #       DMGURL=http://devimages.apple.com/downloads/xcode/command_line_tools_for_xcode_os_x_lion_april_2013.dmg
+    #   elif [ "$OSX_VERS" -eq 8 ]; then
+    #       DMGURL=http://devimages.apple.com/downloads/xcode/command_line_tools_for_xcode_os_x_mountain_lion_april_2013.dmg
+    #   elif [ "$OSX_VERS" -eq 9 ]; then
+    #       DMGURL=http://adcdownload.apple.com/Developer_Tools/command_line_tools_os_x_mavericks_for_xcode__late_october_2013/command_line_tools_os_x_mavericks_for_xcode__late_october_2013.dmg
+    #   fi
+    #   curl "$DMGURL" -o "$TOOLS"
+    # fi
+    # TMPMOUNT=`/usr/bin/mktemp -d /tmp/clitools.XXXX`
+    # hdiutil attach "$TOOLS" -mountpoint "$TMPMOUNT"
+    # installer -pkg "$(find $TMPMOUNT -name '*.mpkg')" -target /
+    # hdiutil detach "$TMPMOUNT"
+    # rm -rf "$TMPMOUNT"
+    # rm "$TOOLS"
 
     # install Mac Homebrew for easy installation of other stuff. Check if it exists.
     if ! type "$brew" > /dev/null;
@@ -95,6 +97,9 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
+    git clone https://github.com/zeromq/libzmq.git $INSTALL_DIR
+    $INSTALL_DIR/libzmq/autogen.sh;$INSTALL_DIR/libzmq/configure; $INSTALL_DIR/libzmq/make;$INSTALL_DIR/libzmq/make install
+    yes | sudo ipip install nltk ipython[all]
 fi
 
 # Install our scripts
@@ -129,6 +134,6 @@ echo "source ~/.bashrc"
 # Making the dhbox virtualenv
 # mkvirtualenv dhbox
 
-yes | pip install nltk ipython[all]
+
 echo 'got it!'
 ipython notebook $INSTALL_DIR/test.ipynb
