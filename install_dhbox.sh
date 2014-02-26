@@ -40,7 +40,7 @@ esac
 echo "$OS is the OS"
 
 if [ "$OS" = "Linux" ]; then
-    if [ type "$sudo" > /dev/null ]
+    if [ type "$sudo" > /dev/null ];
       # For Debian
       then
         apt-get update
