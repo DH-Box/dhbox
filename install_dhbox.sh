@@ -46,6 +46,11 @@ if [ "$OS" = "Linux" ]; then
       then
         apt-get install -y git-core bash-completion python-zmq
     fi
+
+    # install pip, the python package manager
+    wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+    python get-pip.py
+
 elif [ "$OS" = "Darwin" ]; then
     # get xcode command line tools
 
@@ -85,14 +90,15 @@ elif [ "$OS" = "Darwin" ]; then
       then
         brew install wget
     fi
+
+    if ! type "$pip" > /dev/null;
+      then
+        sudo easy_install pip
+    fi
 fi
 
 # Install our scripts
 git clone git://github.com/szweibel/dhbox.git $INSTALL_DIR
-
-# install pip, the python package manager
-wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-python get-pip.py
 
 x=$HOME/.bashrc
 
