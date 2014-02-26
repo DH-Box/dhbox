@@ -40,7 +40,8 @@ esac
 echo "$OS is the OS"
 
 if [ "$OS" = "Linux" ]; then
-    if [ ! type "$sudo" > /dev/null ]
+    if [ type "$sudo" > /dev/null ]
+      # For Debian
       then
         apt-get update
         # Gotta have git, and bash completion. Checking if it already exists.
@@ -55,16 +56,13 @@ if [ "$OS" = "Linux" ]; then
 
         yes | pip install nltk ipython[all]
     else
+      # For Ubuntu
       sudo apt-get update
-      # Gotta have git, and bash completion. Checking if it already exists.
+      # Gotta have git, and pip. Checking if it already exists.
       if ! type "$git" > /dev/null;
         then
-          sudo apt-get install -y git-core bash-completion python-zmq
+          sudo apt-get install -y git-core python-pip python-zmq
       fi
-
-      # install pip, the python package manager
-      sudo wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-      python get-pip.py
 
       yes | sudo pip install nltk ipython[all]
     fi
