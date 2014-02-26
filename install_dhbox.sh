@@ -39,10 +39,21 @@ esac
 
 echo "$OS is the OS"
 
-if [ "$OS" = "Linux" ]; then
-    if [ type "$sudo" > /dev/null ];
-      # For Debian
+if [ "$OS" = "Linux" ]; 
+  then
+    if ! type "$sudo" > /dev/null;
       then
+        # For Ubuntu
+        sudo apt-get update
+        # Gotta have git, and pip. Checking if it already exists.
+        if ! type "$git" > /dev/null;
+          then
+            sudo apt-get install -y git-core python-pip python-zmq
+        fi
+
+        yes | sudo pip install nltk ipython[all]
+    else
+      # For Debian
         apt-get update
         # Gotta have git, and bash completion. Checking if it already exists.
         if ! type "$git" > /dev/null;
@@ -55,16 +66,6 @@ if [ "$OS" = "Linux" ]; then
         python get-pip.py
 
         yes | pip install nltk ipython[all]
-    else
-      # For Ubuntu
-      sudo apt-get update
-      # Gotta have git, and pip. Checking if it already exists.
-      if ! type "$git" > /dev/null;
-        then
-          sudo apt-get install -y git-core python-pip python-zmq
-      fi
-
-      yes | sudo pip install nltk ipython[all]
     fi
 elif [ "$OS" = "Darwin" ]; then
 
