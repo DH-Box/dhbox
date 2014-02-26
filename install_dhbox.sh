@@ -51,7 +51,7 @@ if [ "$OS" = "Linux" ];
             sudo apt-get install -y git-core python-pip python-zmq
         fi
 
-        yes | sudo pip install nltk ipython[all]
+        yes | sudo pip install nltk ipython[all] tornado jinja2
     else
       # For Debian
         apt-get update

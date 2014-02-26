@@ -26,6 +26,12 @@ function update-apt {
     apt-get autoclean
 }
 
+# start DH Box
+function dhbox {
+    echo "Starting..."
+    ipython notebook $DHBOX_INSTALL_DIR/test.ipynb
+}
+
 # Lets you ask a command.  Returns '0' on 'yes'
 #  ask 'Do you want to rebase?' && git svn rebase || echo 'Rebase aborted'
 function ask() {
@@ -73,11 +79,11 @@ function google () {
 }
 
 
-# echo "Installing R (enough for R Studio Server)"
-# sudo aptitude -y install r-base r-base-core r-base-dev r-recommended gdebi-core libapparmor1
+echo "Installing R (enough for R Studio Server)"
+sudo aptitude -y install r-base r-base-core r-base-dev r-recommended gdebi-core libapparmor1
 
 # echo "Installing PostgreSQL 9.1"
 # sudo aptitude -y install postgresql-9.1 postgresql-client-9.1 postgresql-contrib-9.1 postgresql-doc-9.1 postgresql-server-dev-9.1
 
-# echo "Installing MySQL 5.5"
-# sudo aptitude -y install percona-toolkit mysql-client-5.5 mysql-server-5.5 mysql-server-core-5.5 mysql-source-5.5 libmysqlclient-dev
+echo "Installing MySQL 5.5"
+sudo aptitude -y install percona-toolkit mysql-client-5.5 mysql-server-5.5 mysql-server-core-5.5 mysql-source-5.5 libmysqlclient-dev
