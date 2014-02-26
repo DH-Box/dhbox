@@ -41,18 +41,19 @@ echo "$OS is the OS"
 
 if [ "$OS" = "Linux" ]; then
     if [ ! type "$sudo" > /dev/null ]
-      apt-get update
-      # Gotta have git, and bash completion. Checking if it already exists.
-      if ! type "$git" > /dev/null;
-        then
-          apt-get install -y git-core bash-completion python-zmq
-      fi
+      then
+        apt-get update
+        # Gotta have git, and bash completion. Checking if it already exists.
+        if ! type "$git" > /dev/null;
+          then
+            apt-get install -y git-core bash-completion python-zmq
+        fi
 
-      # install pip, the python package manager
-      wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-      python get-pip.py
+        # install pip, the python package manager
+        wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+        python get-pip.py
 
-      yes | pip install nltk ipython[all]
+        yes | pip install nltk ipython[all]
     else
       sudo apt-get update
       # Gotta have git, and bash completion. Checking if it already exists.
