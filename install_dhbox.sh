@@ -97,9 +97,8 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
-    git clone https://github.com/zeromq/libzmq.git $INSTALL_DIR
-    $INSTALL_DIR/libzmq/autogen.sh;$INSTALL_DIR/libzmq/configure; $INSTALL_DIR/libzmq/make;$INSTALL_DIR/libzmq/make install
-    yes | sudo ipip install nltk ipython[all]
+    sudo easy_install pyzmq
+    yes | sudo pip install nltk ipython[all]
 fi
 
 # Install our scripts
@@ -113,7 +112,7 @@ if [ -e $x ]; then
 fi;
 # Add our scripts
 echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-echo "source $INSTALL_DIR/dhbox.sh" >> $x
+echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
 
 
 # Virtualenv not working!
@@ -136,4 +135,4 @@ echo "source ~/.bashrc"
 
 
 echo 'got it!'
-ipython notebook $INSTALL_DIR/test.ipynb
+ipython notebook $DHBOX_INSTALL_DIR/test.ipynb
