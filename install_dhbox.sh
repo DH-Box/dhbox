@@ -48,7 +48,7 @@ if [ "$OS" = "Linux" ]; then
     fi
 elif [ "$OS" = "Darwin" ]; then
     # get xcode command line tools
-    curl -Ls https://devimages.apple.com.edgekey.net/downloads/xcode/simulators/index-3905972D-B609-49CE-8D06-51ADC78E07BC.dvtdownloadableindex | plutil -convert json -o - - | python -mjson.tool | less
+    sh get_osx_cli_tools.sh
     # install Mac Homebrew for easy installation of other stuff. Check if it exists.
     if ! type "$brew" > /dev/null;
       then
