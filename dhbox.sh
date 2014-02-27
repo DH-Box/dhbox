@@ -2,7 +2,7 @@
 # DH Box Main Shell Script
 
 # start DH Box
-function dhbox (){
+function dhbox {
     echo "Starting..."
     workon dhbox
     ipython notebook $DHBOX_INSTALL_DIR/test.ipynb
@@ -14,9 +14,3 @@ function update-self {
     cd $DHBOX_INSTALL_DIR
     git pull origin master
 }
-
-# Google the parameter
-function google () {
-  links http://google.com/search?q=$(echo "$@" | sed s/\ /+/g)
-}
-
