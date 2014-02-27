@@ -52,7 +52,7 @@ if [ "$OS" = "Linux" ];
         # Gotta have git, and pip. Checking if it already exists.
         if ! type "$git" > /dev/null;
           then
-            sudo apt-get install -y git-core python-pip python-zmq build-dep python-matplotlib
+            sudo apt-get install -y git-core python-pip python-zmq python-matplotlib
         fi
         source $HOME/.bash_profile
         # Installing virtualenv and virtualenvwrapper
@@ -115,9 +115,12 @@ elif [ "$OS" = "Darwin" ]; then
 
     # Installing our tools
     sudo easy_install pyzmq
-    yes | sudo pip install nltk ipython[all]
+    brew tap Homebrew/python
+    yes | pip install pyparsing python-dateutil
+    brew install freetype
+    brew install pkg-config
+    yes | pip install nltk ipython[all] matplotlib
     # Install matplotlib for charts
-    sudo pip install matplotlib
 else
   echo "Unfortunately $OS isn't supported yet. Exiting..."
   exit
