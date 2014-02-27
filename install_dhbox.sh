@@ -45,7 +45,7 @@ echo "$OS is the OS"
 
 if [ "$OS" = "Linux" ];
   then
-    if ! hash sudo 2>/dev/null;
+    if hash sudo 2>/dev/null;
       then
         # For Ubuntu
         echo "Installing for Ubuntu"
