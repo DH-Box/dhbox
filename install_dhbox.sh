@@ -6,6 +6,7 @@ echo '#-------------------------------------------#'
 echo '#           DH BOX Install Script           #'
 echo '#-------------------------------------------#'
 
+touch $HOME/.bashrc
 export DHBOX_INSTALL_DIR="$HOME/.dhbox"
 
 if [ -d $DHBOX_INSTALL_DIR ]; then
