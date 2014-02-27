@@ -119,16 +119,15 @@ fi
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
 # Make backups of bash configuration files
-x=$HOME/.bash_profile
-if [ -e $x ]; then
-  mv $x "$x"_backup
-fi;
-# Add our scripts
-
-echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
-echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-echo "source `which virtualenvwrapper.sh`" >> $x
+for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
+    if [ -e $x ]; then
+      mv $x "$x"_backup
+      # Add our scripts
+      echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
+      echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+      echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+      echo "source `which virtualenvwrapper.sh`" >> $x
+    fi;
 
 
 # if [ "$OS" = "Linux" ]; then
