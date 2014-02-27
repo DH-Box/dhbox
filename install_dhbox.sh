@@ -52,7 +52,7 @@ if [ "$OS" = "Linux" ];
         # Gotta have git, and pip. Checking if it already exists.
         if ! type "$git" > /dev/null;
           then
-            sudo apt-get install -y git-core python-pip python-zmq
+            sudo apt-get install -y git-core python-pip python-zmq build-dep python-matplotlib
         fi
         source $HOME/.bash_profile
         # Installing virtualenv and virtualenvwrapper
@@ -61,6 +61,7 @@ if [ "$OS" = "Linux" ];
         sudo pip install virtualenvwrapper
         export WORKON_HOME=$HOME/.virtualenvs
         source $HOME/.bash_profile
+        mkvirtualenv dhbox
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
@@ -69,7 +70,7 @@ if [ "$OS" = "Linux" ];
         # Gotta have git, and bash completion. Checking if it already exists.
         if ! type "$git" > /dev/null;
           then
-            apt-get install -y git-core bash-completion python-zmq
+            apt-get install -y git-core bash-completion python-zmq build-dep python-matplotlib
         fi
 
         if ! type "$pip" > /dev/null;
@@ -84,6 +85,8 @@ if [ "$OS" = "Linux" ];
     fi
 elif [ "$OS" = "Darwin" ]; then
     # For Mac
+    # Get correct permissions for Homebrew
+    sudo chown 'whoami' usr/local/lib/
     # install Mac Homebrew for easy installation of other stuff.
     if ! type "$brew" > /dev/null;
       then
@@ -113,6 +116,8 @@ elif [ "$OS" = "Darwin" ]; then
     # Installing our tools
     sudo easy_install pyzmq
     yes | sudo pip install nltk ipython[all]
+    # Install matplotlib for charts
+    sudo pip install matplotlib
 else
   echo "Unfortunately $OS isn't supported yet. Exiting..."
   exit
@@ -130,21 +135,12 @@ for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
       echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
       echo "source `which virtualenvwrapper.sh`" >> $x
+      source x
     fi;
 done
-# if [ "$OS" = "Linux" ]; then
-#   if ! type "$sudo" > /dev/null;
-#     then
-#       # For Ubuntu
-#   else
-#     # For Debian
-#   fi
-# elif  [ "$OS" = "Darwin" ]; then
-
-# fi
 
 # Reloading startup file
-echo "source $HOME/.bash_profile"
+source $HOME/.bash_profile
 # Making the dhbox virtualenv
 # mkvirtualenv dhbox
 # Delete all .pyc files?
