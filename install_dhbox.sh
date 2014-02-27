@@ -19,6 +19,27 @@ fi;
 
 # Detect the platform (similar to $OSTYPE)
 OS="`uname`"
+case $OS in
+  'Linux')
+    OS='Linux'
+    alias ls='ls --color=auto'
+    ;;
+  'FreeBSD')
+    OS='FreeBSD'
+    alias ls='ls -G'
+    ;;
+  'Windows')
+    OS='Windows'
+    ;;
+  'darwin')
+    OS='Mac'
+    ;;
+  'SunOS')
+    OS='Solaris'
+    ;;
+  'AIX') ;;
+  *) ;;
+esac
 
 echo "$OS is the OS"
 
@@ -47,6 +68,7 @@ if [ "$OS" = "Linux" ];
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
+      # DEBIAN DOES NOT HAVE VIRTUALENV YET
       # For Debian
       echo "Installing for Debian"
       DHBOX_INSTALL_DIR="/home/.dhbox"
