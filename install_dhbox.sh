@@ -50,7 +50,13 @@ if [ "$OS" = "Linux" ];
           then
             sudo apt-get install -y git-core python-pip python-zmq
         fi
-
+        # Installing virtualenv and virtualenvwrapper
+        sudo pip install virtualenv
+        mkdir ~/.virtualenvs
+        sudo pip install virtualenvwrapper
+        export WORKON_HOME=~/.virtualenvs
+        
+        # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
       # For Debian
@@ -67,6 +73,7 @@ if [ "$OS" = "Linux" ];
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
         fi
+        # Installing our tools
         yes | pip install nltk ipython[all]
     fi
 elif [ "$OS" = "Darwin" ]; then
@@ -94,6 +101,8 @@ elif [ "$OS" = "Darwin" ]; then
     pip install virtualenv virtualenvwrapper
     source /usr/local/share/python/virtualenvwrapper.sh
     mkvirtualenv dhbox
+
+    # Installing our tools
     sudo easy_install pyzmq
     yes | sudo pip install nltk ipython[all]
 else
@@ -110,28 +119,28 @@ if [ -e $x ]; then
   mv $x "$x"_backup
 fi;
 # Add our scripts
-echo "source /usr/local/share/python/virtualenvwrapper.sh" >> $x
+
 echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
 echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+echo "source `which virtualenvwrapper.sh`" >> $x
 
 
-# Virtualenv not working yet!
-# if not Debian
-# pip install virtualenvwrapper
-# if Debian
-# pip install virtualenv
-# apt-get install virtualenvwrapper
-# echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-# echo "export PROJECT_HOME=$HOME/Devel" >> $x
-# if not Debian
-# echo "source /usr/local/bin/virtualenvwrapper.sh" >> $x
-# if Debian
-# echo "source /etc/bash_completion.d/virtualenvwrapper" >> $x
+# if [ "$OS" = "Linux" ]; then
+#   if ! type "$sudo" > /dev/null;
+#     then
+#       # For Ubuntu
+#   else
+#     # For Debian
+#   fi
+# elif  [ "$OS" = "Darwin" ]; then
+
+# fi
 
 # Reloading startup file
 echo "source ~/.bashrc"
 # Making the dhbox virtualenv
-# mkvirtualenv dhbox
+mkvirtualenv dhbox
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
 
