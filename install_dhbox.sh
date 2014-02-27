@@ -48,6 +48,7 @@ if [ "$OS" = "Linux" ];
     if ! type "$sudo" > /dev/null;
       then
         # For Ubuntu
+        echo "Installing for Ubuntu"
         sudo apt-get update
         # Gotta have git, and pip. Checking if it already exists.
         if ! type "$git" > /dev/null;
@@ -66,6 +67,7 @@ if [ "$OS" = "Linux" ];
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
       # For Debian
+      echo "Installing for Debian"
         apt-get update
         # Gotta have git, and bash completion. Checking if it already exists.
         if ! type "$git" > /dev/null;
@@ -85,6 +87,7 @@ if [ "$OS" = "Linux" ];
     fi
 elif [ "$OS" = "Darwin" ]; then
     # For Mac
+    echo "Installing for Mac"
     # Get correct permissions for Homebrew
     sudo chown 'whoami' usr/local/lib/
     # install Mac Homebrew for easy installation of other stuff.
@@ -144,8 +147,7 @@ done
 
 # Reloading startup file
 source $HOME/.bash_profile
-# Making the dhbox virtualenv
-# mkvirtualenv dhbox
+
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
 
@@ -153,4 +155,4 @@ source $HOME/.bash_profile
 python -m nltk.downloader book
 
 echo 'got it!'
-ipython notebook $DHBOX_INSTALL_DIR/test.ipynb
+ipython notebook $DHBOX_INSTALL_DIR/notebooks/the-waves.ipynb
