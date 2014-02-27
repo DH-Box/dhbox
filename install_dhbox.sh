@@ -128,7 +128,8 @@ echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
 echo "source ~/.bashrc"
 # Making the dhbox virtualenv
 # mkvirtualenv dhbox
-
+# Delete all .pyc files?
+# find / -iname \*.pyc -exec rm {} \;
 
 # Install the demo texts
 python -m nltk.downloader book
