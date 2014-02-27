@@ -90,6 +90,10 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
+    # Installing virtualenv and virtualenvwrapper
+    pip install virtualenv virtualenvwrapper
+    source /usr/local/share/python/virtualenvwrapper.sh
+    mkvirtualenv dhbox
     sudo easy_install pyzmq
     yes | sudo pip install nltk ipython[all]
 else
@@ -100,13 +104,13 @@ fi
 # Install our scripts
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
-x=$HOME/.bashrc
-
 # Make backups of bash configuration files
+x=$HOME/.bashrc
 if [ -e $x ]; then
   mv $x "$x"_backup
 fi;
 # Add our scripts
+echo "source /usr/local/share/python/virtualenvwrapper.sh" >> $x
 echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
 echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
 
