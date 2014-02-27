@@ -4,6 +4,7 @@
 # start DH Box
 function dhbox (){
     echo "Starting..."
+    workon dhbox
     ipython notebook $DHBOX_INSTALL_DIR/test.ipynb
 }
 

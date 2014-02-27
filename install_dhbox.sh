@@ -6,7 +6,10 @@ echo '#-------------------------------------------#'
 echo '#           DH BOX Install Script           #'
 echo '#-------------------------------------------#'
 
+# make sure a bash profile exists, create one if it doesn't
 touch $HOME/.bash_profile
+touch $HOME/.bashrc
+
 export DHBOX_INSTALL_DIR="$HOME/.dhbox"
 
 if [ -d $DHBOX_INSTALL_DIR ]; then
@@ -128,8 +131,7 @@ for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
       echo "source `which virtualenvwrapper.sh`" >> $x
     fi;
-
-
+done
 # if [ "$OS" = "Linux" ]; then
 #   if ! type "$sudo" > /dev/null;
 #     then
