@@ -5,7 +5,7 @@
 function dhbox {
     echo "Starting..."
     workon dhbox
-    ipython notebook $DHBOX_INSTALL_DIR/test.ipynb
+    ipython notebook $DHBOX_INSTALL_DIR/notebooks/the-waves
 }
 
 # Update DH Box

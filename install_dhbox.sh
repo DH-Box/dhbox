@@ -159,4 +159,4 @@ done
 # Install the demo texts
 python -m nltk.downloader book
 echo 'got it!'
-ipython notebook $DHBOX_INSTALL_DIR/notebooks/the-waves.ipynb
+ipython notebook $HOME/.dhbox/notebooks/the-waves
