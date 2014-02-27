@@ -45,7 +45,7 @@ echo "$OS is the OS"
 
 if [ "$OS" = "Linux" ];
   then
-    if ! type "$sudo" > /dev/null;
+    if ! hash gdate 2>/dev/null;
       then
         # For Ubuntu
         echo "Installing for Ubuntu"
@@ -60,7 +60,7 @@ if [ "$OS" = "Linux" ];
         sudo pip install virtualenv
         mkdir $HOME/.virtualenvs
         sudo pip install virtualenvwrapper
-        $VIRTSPOT = which virtualenvwrapper.sh
+        VIRTSPOT=which virtualenvwrapper.sh
         source $VIRTSPOT
         export WORKON_HOME=$HOME/.virtualenvs
         . $HOME/.bash_profile
