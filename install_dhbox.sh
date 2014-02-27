@@ -139,7 +139,8 @@ fi
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
 # Make backups of bash configuration files
-for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
+for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
+do
     if [ -e $x ]; then
       mv $x "$x"_backup
       # Add our scripts
@@ -149,16 +150,12 @@ for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
       echo ". `which virtualenvwrapper.sh`" >> $x
     fi;
 done
-
 # Reloading startup file
 . $HOME/.bash_profile
 . $HOME/.bashrc
-
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
-
 # Install the demo texts
 python -m nltk.downloader book
-
 echo 'got it!'
 ipython notebook $DHBOX_INSTALL_DIR/notebooks/the-waves.ipynb
