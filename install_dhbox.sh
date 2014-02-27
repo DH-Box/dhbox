@@ -55,7 +55,7 @@ if [ "$OS" = "Linux" ];
         mkdir ~/.virtualenvs
         sudo pip install virtualenvwrapper
         export WORKON_HOME=~/.virtualenvs
-        
+
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
@@ -99,7 +99,7 @@ elif [ "$OS" = "Darwin" ]; then
     fi
     # Installing virtualenv and virtualenvwrapper
     pip install virtualenv virtualenvwrapper
-    source /usr/local/share/python/virtualenvwrapper.sh
+    source `which virtualenvwrapper.sh`
     mkvirtualenv dhbox
 
     # Installing our tools
@@ -140,7 +140,7 @@ echo "source `which virtualenvwrapper.sh`" >> $x
 # Reloading startup file
 echo "source ~/.bashrc"
 # Making the dhbox virtualenv
-mkvirtualenv dhbox
+# mkvirtualenv dhbox
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
 
