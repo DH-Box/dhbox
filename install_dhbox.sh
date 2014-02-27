@@ -71,6 +71,7 @@ if [ "$OS" = "Linux" ];
     else
       # For Debian
       echo "Installing for Debian"
+      su root
       DHBOX_INSTALL_DIR="/home/$THE_USER/.dhbox"
         apt-get update
         # Gotta have git, and bash completion. Checking if it already exists.
