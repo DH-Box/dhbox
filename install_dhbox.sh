@@ -60,6 +60,8 @@ if [ "$OS" = "Linux" ];
         sudo pip install virtualenv
         mkdir $HOME/.virtualenvs
         sudo pip install virtualenvwrapper
+        $VIRTSPOT = which virtualenvwrapper.sh
+        source $VIRTSPOT
         export WORKON_HOME=$HOME/.virtualenvs
         . $HOME/.bash_profile
         mkvirtualenv dhbox
@@ -141,7 +143,7 @@ for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
       echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
       echo ". `which virtualenvwrapper.sh`" >> $x
-      . x
+      source x
     fi;
 done
 
