@@ -147,12 +147,12 @@ for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
       echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
       echo ". `which virtualenvwrapper.sh`" >> $x
-      source x
     fi;
 done
 
 # Reloading startup file
 . $HOME/.bash_profile
+. $HOME/.bashrc
 
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
