@@ -6,7 +6,7 @@ echo '#-------------------------------------------#'
 echo '#           DH BOX Install Script           #'
 echo '#-------------------------------------------#'
 
-touch $HOME/.bashrc
+touch $HOME/.bash_profile
 export DHBOX_INSTALL_DIR="$HOME/.dhbox"
 
 if [ -d $DHBOX_INSTALL_DIR ]; then
@@ -51,13 +51,13 @@ if [ "$OS" = "Linux" ];
           then
             sudo apt-get install -y git-core python-pip python-zmq
         fi
-        source $HOME/.bashrc
+        source $HOME/.bash_profile
         # Installing virtualenv and virtualenvwrapper
         sudo pip install virtualenv
         mkdir $HOME/.virtualenvs
         sudo pip install virtualenvwrapper
         export WORKON_HOME=$HOME/.virtualenvs
-        source $HOME/.bashrc
+        source $HOME/.bash_profile
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
@@ -75,7 +75,7 @@ if [ "$OS" = "Linux" ];
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
         fi
-        source $HOME/.bashrc
+        source $HOME/.bash_profile
         # Installing our tools
         yes | pip install nltk ipython[all]
     fi
@@ -100,7 +100,7 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
-    source $HOME/.bashrc
+    source $HOME/.bash_profile
     # Installing virtualenv and virtualenvwrapper
     sudo pip install virtualenv
     sudo pip install virtualenvwrapper
@@ -119,7 +119,7 @@ fi
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
 # Make backups of bash configuration files
-x=$HOME/.bashrc
+x=$HOME/.bash_profile
 if [ -e $x ]; then
   mv $x "$x"_backup
 fi;
@@ -143,7 +143,7 @@ echo "source `which virtualenvwrapper.sh`" >> $x
 # fi
 
 # Reloading startup file
-echo "source $HOME/.bashrc"
+echo "source $HOME/.bash_profile"
 # Making the dhbox virtualenv
 # mkvirtualenv dhbox
 # Delete all .pyc files?
