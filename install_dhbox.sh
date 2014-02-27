@@ -11,7 +11,6 @@ touch $HOME/.bash_profile
 touch $HOME/.bashrc
 
 export DHBOX_INSTALL_DIR="$HOME/.dhbox"
-export THE_USER="$USER"
 
 if [ -d $DHBOX_INSTALL_DIR ]; then
   echo "Looks like you already have DH Box installed.  Good job!"
@@ -71,17 +70,18 @@ if [ "$OS" = "Linux" ];
     else
       # For Debian
       echo "Installing for Debian"
-      su root
-      DHBOX_INSTALL_DIR="/home/$THE_USER/.dhbox"
+      DHBOX_INSTALL_DIR="/home/.dhbox"
         apt-get update
         # Gotta have git, and bash completion. Checking if it already exists.
         if ! hash git 2>/dev/null;
           then
+            echo "Installing Git"
             apt-get install -y git-core bash-completion python-zmq python-matplotlib
         fi
 
         if ! hash pip 2>/dev/null;
           then
+            echo "Installing Pip"
             # install pip, the python package manager
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
@@ -90,7 +90,6 @@ if [ "$OS" = "Linux" ];
         . $HOME/.bash_profile
         # Installing our tools
         yes | pip install nltk ipython[all]
-        su $THE_USER
     fi
 elif [ "$OS" = "Darwin" ]; then
     # For Mac
