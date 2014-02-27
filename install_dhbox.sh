@@ -148,7 +148,7 @@ do
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
       echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-      echo ". `which virtualenvwrapper.sh`" >> $x
+      echo ". 'which virtualenvwrapper.sh'" >> $x
     fi;
 done
 # Reloading startup file
