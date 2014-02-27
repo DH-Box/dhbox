@@ -39,7 +39,7 @@ esac
 
 echo "$OS is the OS"
 
-if [ "$OS" = "Linux" ]; 
+if [ "$OS" = "Linux" ];
   then
     if ! type "$sudo" > /dev/null;
       then
@@ -50,12 +50,13 @@ if [ "$OS" = "Linux" ];
           then
             sudo apt-get install -y git-core python-pip python-zmq
         fi
+        source ~/.bashrc
         # Installing virtualenv and virtualenvwrapper
         sudo pip install virtualenv
         mkdir ~/.virtualenvs
         sudo pip install virtualenvwrapper
         export WORKON_HOME=~/.virtualenvs
-
+        source ~/.bashrc
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
@@ -73,6 +74,7 @@ if [ "$OS" = "Linux" ];
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
         fi
+        source ~/.bashrc
         # Installing our tools
         yes | pip install nltk ipython[all]
     fi
@@ -97,8 +99,10 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
+    source ~/.bashrc
     # Installing virtualenv and virtualenvwrapper
-    pip install virtualenv virtualenvwrapper
+    sudo pip install virtualenv
+    sudo pip install virtualenvwrapper
     source `which virtualenvwrapper.sh`
     mkvirtualenv dhbox
 
