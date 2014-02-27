@@ -60,8 +60,7 @@ if [ "$OS" = "Linux" ];
         sudo pip install virtualenv
         mkdir $HOME/.virtualenvs
         sudo pip install virtualenvwrapper
-        VIRTSPOT=which virtualenvwrapper.sh
-        source $VIRTSPOT
+        . /usr/local/bin/virtualenvwrapper.sh
         export WORKON_HOME=$HOME/.virtualenvs
         . $HOME/.bash_profile
         mkvirtualenv dhbox
@@ -135,10 +134,10 @@ else
   echo "Unfortunately $OS isn't supported yet. Exiting..."
   exit
 fi
-
 # Install our scripts
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
+VIRTLOCATION="which virtualenvwrapper.sh"
 # Make backups of bash configuration files
 for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
 do
@@ -148,7 +147,7 @@ do
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
       echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-      echo ". 'which virtualenvwrapper.sh'" >> $x
+      echo ". $VIRTLOCATION" >> $x
     fi;
 done
 # Reloading startup file
