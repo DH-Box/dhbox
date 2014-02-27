@@ -50,13 +50,13 @@ if [ "$OS" = "Linux" ];
           then
             sudo apt-get install -y git-core python-pip python-zmq
         fi
-        source ~/.bashrc
+        source $HOME/.bashrc
         # Installing virtualenv and virtualenvwrapper
         sudo pip install virtualenv
-        mkdir ~/.virtualenvs
+        mkdir $HOME/.virtualenvs
         sudo pip install virtualenvwrapper
-        export WORKON_HOME=~/.virtualenvs
-        source ~/.bashrc
+        export WORKON_HOME=$HOME/.virtualenvs
+        source $HOME/.bashrc
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
@@ -74,7 +74,7 @@ if [ "$OS" = "Linux" ];
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
         fi
-        source ~/.bashrc
+        source $HOME/.bashrc
         # Installing our tools
         yes | pip install nltk ipython[all]
     fi
@@ -99,7 +99,7 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
-    source ~/.bashrc
+    source $HOME/.bashrc
     # Installing virtualenv and virtualenvwrapper
     sudo pip install virtualenv
     sudo pip install virtualenvwrapper
@@ -142,7 +142,7 @@ echo "source `which virtualenvwrapper.sh`" >> $x
 # fi
 
 # Reloading startup file
-echo "source ~/.bashrc"
+echo "source $HOME/.bashrc"
 # Making the dhbox virtualenv
 # mkvirtualenv dhbox
 # Delete all .pyc files?
