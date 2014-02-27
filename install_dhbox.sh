@@ -55,13 +55,13 @@ if [ "$OS" = "Linux" ];
           then
             sudo apt-get install -y git-core python-pip python-zmq python-matplotlib
         fi
-        source $HOME/.bash_profile
+        . $HOME/.bash_profile
         # Installing virtualenv and virtualenvwrapper
         sudo pip install virtualenv
         mkdir $HOME/.virtualenvs
         sudo pip install virtualenvwrapper
         export WORKON_HOME=$HOME/.virtualenvs
-        source $HOME/.bash_profile
+        . $HOME/.bash_profile
         mkvirtualenv dhbox
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
@@ -81,7 +81,7 @@ if [ "$OS" = "Linux" ];
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
         fi
-        source $HOME/.bash_profile
+        . $HOME/.bash_profile
         # Installing our tools
         yes | pip install nltk ipython[all]
     fi
@@ -109,11 +109,11 @@ elif [ "$OS" = "Darwin" ]; then
       then
         sudo easy_install pip
     fi
-    source $HOME/.bash_profile
+    . $HOME/.bash_profile
     # Installing virtualenv and virtualenvwrapper
     sudo pip install virtualenv
     sudo pip install virtualenvwrapper
-    source `which virtualenvwrapper.sh`
+    . `which virtualenvwrapper.sh`
     mkvirtualenv dhbox
 
     # Installing our tools
@@ -138,15 +138,15 @@ for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ; do
       mv $x "$x"_backup
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-      echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-      echo "source `which virtualenvwrapper.sh`" >> $x
-      source x
+      echo ". `which virtualenvwrapper.sh`" >> $x
+      . x
     fi;
 done
 
 # Reloading startup file
-source $HOME/.bash_profile
+. $HOME/.bash_profile
 
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
