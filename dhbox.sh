@@ -5,12 +5,12 @@
 function dhbox {
     echo "Starting..."
     workon dhbox
-    ipython notebook $DHBOX_INSTALL_DIR/notebooks/the-waves
+    ipython notebook $HOME/.dhbox/notebooks/the-waves
 }
 
 # Update DH Box
 function update-self {
     echo "Updating DH Box..."
-    cd $DHBOX_INSTALL_DIR
+    cd $HOME/.dhbox
     git pull origin master
 }
