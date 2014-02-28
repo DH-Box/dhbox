@@ -7,7 +7,7 @@ echo '#           DH BOX Install Script           #'
 echo '#-------------------------------------------#'
 
 # make sure a bash profile exists, create one if it doesn't
-touch $HOME/.bash_profile
+touch $HOME/.profile
 touch $HOME/.bashrc
 
 export DHBOX_INSTALL_DIR="$HOME/.dhbox"
@@ -148,20 +148,22 @@ do
       mv $x "$x"_backup
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
     fi;
 done
 # Reloading startup file
 if [ "$THE_OS" = "Ubuntu" ]; then
   . $HOME/.bash_profile
   . $HOME/.bashrc
+  echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
+  echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
 else
+  echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
+  echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
   source $HOME/.bash_profile
   source $HOME/.bashrc
 fi
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
-
 # Install the demo texts
 python -m nltk.downloader book
 echo 'got it!'
