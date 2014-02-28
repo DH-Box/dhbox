@@ -155,6 +155,7 @@ done
 . $HOME/.bashrc
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
+
 # Install the demo texts
 python -m nltk.downloader book
 echo 'got it!'
