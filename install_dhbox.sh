@@ -48,6 +48,7 @@ if [ "$OS" = "Linux" ];
     if hash sudo 2>/dev/null;
       then
         # For Ubuntu
+        THE_OS="Ubuntu"
         echo "Installing for Ubuntu"
         sudo apt-get update
         # Gotta have git, and pip. Checking if it already exists.
@@ -69,6 +70,7 @@ if [ "$OS" = "Linux" ];
     else
       # DEBIAN DOES NOT HAVE VIRTUALENV YET
       # For Debian
+      THE_OS="Ubuntu"
       echo "Installing for Debian"
       DHBOX_INSTALL_DIR="/home/.dhbox"
         apt-get update
@@ -94,6 +96,7 @@ if [ "$OS" = "Linux" ];
 elif [ "$OS" = "Darwin" ]; then
     # For Mac
     echo "Installing for Mac"
+    THE_OS="Mac"
     # Get correct permissions for Homebrew
     sudo chown 'whoami' usr/local/lib/
     # install Mac Homebrew for easy installation of other stuff.
@@ -149,8 +152,13 @@ do
     fi;
 done
 # Reloading startup file
-. $HOME/.bash_profile
-. $HOME/.bashrc
+if [ "$THE_OS" = "Ubuntu" ]; then
+  . $HOME/.bash_profile
+  . $HOME/.bashrc
+else
+  source $HOME/.bash_profile
+  source $HOME/.bashrc
+fi
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
 
