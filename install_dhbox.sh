@@ -59,7 +59,7 @@ if [ "$OS" = "Linux" ];
         # Installing virtualenv and virtualenvwrapper
         sudo apt-get install virtualenv
         mkdir $HOME/.virtualenvs
-        sudo apt-get install virtualenvwrapper
+        sudo apt-get install -y virtualenvwrapper
         . /usr/local/bin/virtualenvwrapper.sh
         export WORKON_HOME=$HOME/.virtualenvs
         . $HOME/.bash_profile
