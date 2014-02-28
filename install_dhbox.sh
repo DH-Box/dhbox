@@ -56,13 +56,14 @@ if [ "$OS" = "Linux" ];
             sudo apt-get install -y git-core python-pip python-zmq python-matplotlib python-virtualenv
         fi
         . $HOME/.bash_profile
+
         # Installing virtualenv and virtualenvwrapper
-        mkdir $HOME/.virtualenvs
-        yes | sudo pip install virtualenvwrapper
-        . /usr/local/bin/virtualenvwrapper.sh
-        export WORKON_HOME=$HOME/.virtualenvs
-        . $HOME/.bash_profile
-        mkvirtualenv dhbox
+        # mkdir $HOME/.virtualenvs
+        # yes | sudo pip install virtualenvwrapper
+        # . /usr/local/bin/virtualenvwrapper.sh
+        # export WORKON_HOME=$HOME/.virtualenvs
+        # . $HOME/.bash_profile
+        # mkvirtualenv dhbox
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
     else
@@ -145,8 +146,8 @@ do
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
       echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
-      echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-      echo ". $VIRTLOCATION" >> $x
+      # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+      # echo ". $VIRTLOCATION" >> $x
     fi;
 done
 # Reloading startup file

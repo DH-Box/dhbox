@@ -4,7 +4,7 @@
 # start DH Box
 function dhbox {
     echo "Starting..."
-    workon dhbox
+    # workon dhbox
     ipython notebook $HOME/.dhbox/notebooks/the-waves
 }
 
