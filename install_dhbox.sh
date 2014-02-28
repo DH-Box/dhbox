@@ -150,7 +150,7 @@ do
     fi;
 done
 # Reloading startup file
-if [ $THE_OS = "Ubuntu" ]; then
+if [ $THE_OS = Ubuntu ]; then
   . $HOME/.profile
   . $HOME/.bashrc
   echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
