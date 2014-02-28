@@ -89,54 +89,52 @@ if [ "$OS" = "Linux" ];
         echo 'got it!'
         ipython notebook $HOME/.dhbox/notebooks/the-waves
     else
-      # DEBIAN DOES NOT HAVE VIRTUALENV YET
       # For Debian
       echo "Installing for Debian"
-      DHBOX_INSTALL_DIR="/home/.dhbox"
-        apt-get update
-        # Gotta have git, and bash completion. Checking if it already exists.
-        if ! hash git 2>/dev/null;
-          then
-            echo "Installing Git"
-            apt-get install -y git-core bash-completion python-zmq python-matplotlib
-        fi
+      apt-get update
+      # Gotta have git, and bash completion. Checking if it already exists.
+      if ! hash git 2>/dev/null;
+        then
+          echo "Installing Git"
+          apt-get install -y git-core bash-completion python-zmq python-matplotlib
+      fi
 
-        if ! hash pip 2>/dev/null;
-          then
-            echo "Installing Pip"
-            # install pip, the python package manager
-            wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-            python get-pip.py
-        fi
+      if ! hash pip 2>/dev/null;
+        then
+          echo "Installing Pip"
+          # install pip, the python package manager
+          wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+          python get-pip.py
+      fi
 
-        source $HOME/.bash_profile
-        # Installing our tools
-        yes | pip install nltk ipython[all]
+      source $HOME/.bash_profile
+      # Installing our tools
+      yes | pip install nltk ipython[all]
 
-        # Install our scripts
-        git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
+      # Install our scripts
+      git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
-        # Make backups of bash configuration files
-        for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
-        do
-            if [ -e $x ]; then
-              cp $x "$x"_backup
-              # Add our scripts
-              echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-              echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
-              # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-              # echo ". $VIRTLOCATION" >> $x
-            fi;
-        done
-        # Reloading startup file
-        # . $HOME/.bash_profile
-        # . $HOME/.bashrc
-        # Delete all .pyc files?
-        # find / -iname \*.pyc -exec rm {} \;
-        # Install the demo texts
-        python -m nltk.downloader book
-        echo 'got it!'
-        ipython notebook $HOME/.dhbox/notebooks/the-waves
+      # Make backups of bash configuration files
+      for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
+      do
+          if [ -e $x ]; then
+            cp $x "$x"_backup
+            # Add our scripts
+            echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
+            echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+            # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+            # echo ". $VIRTLOCATION" >> $x
+          fi;
+      done
+      # Reloading startup file
+      # . $HOME/.bash_profile
+      # . $HOME/.bashrc
+      # Delete all .pyc files?
+      # find / -iname \*.pyc -exec rm {} \;
+      # Install the demo texts
+      python -m nltk.downloader book
+      echo 'got it!'
+      ipython notebook $HOME/.dhbox/notebooks/the-waves
     fi
 elif [ "$OS" = "Darwin" ]; then
     # For Mac
