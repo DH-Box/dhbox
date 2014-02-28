@@ -150,8 +150,8 @@ do
     fi;
 done
 # Reloading startup file
-. $HOME/.bash_profile
-. $HOME/.bashrc
+# . $HOME/.bash_profile
+# . $HOME/.bashrc
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
 # Install the demo texts
