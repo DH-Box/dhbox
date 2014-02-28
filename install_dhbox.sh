@@ -144,17 +144,17 @@ VIRTLOCATION="which virtualenvwrapper.sh"
 for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
 do
     if [ -e $x ]; then
-      mv $x "$x"_backup
+      cp $x "$x"_backup
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
     fi;
 done
 # Reloading startup file
 # if $THE_OS = Ubuntu ; then
-. $HOME/.profile
-. $HOME/.bashrc
 echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
 echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
+. $HOME/.profile
+. $HOME/.bashrc
 # else
   # echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
   # echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
