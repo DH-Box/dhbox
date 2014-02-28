@@ -145,8 +145,8 @@ do
       mv $x "$x"_backup
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
       # echo ". $VIRTLOCATION" >> $x
     fi;
 done
