@@ -66,6 +66,28 @@ if [ "$OS" = "Linux" ];
         # mkvirtualenv dhbox
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
+
+        # Install our scripts
+        git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
+
+        # Make backups of bash configuration files
+        for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
+        do
+            if [ -e $x ]; then
+              cp $x "$x"_backup
+              # Add our scripts
+              echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
+              echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+              # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+              # echo ". $VIRTLOCATION" >> $x
+            fi;
+        done
+        # Delete all .pyc files?
+        # find / -iname \*.pyc -exec rm {} \;
+        # Install the demo texts
+        python -m nltk.downloader book
+        echo 'got it!'
+        ipython notebook $HOME/.dhbox/notebooks/the-waves
     else
       # DEBIAN DOES NOT HAVE VIRTUALENV YET
       # For Debian
@@ -87,9 +109,34 @@ if [ "$OS" = "Linux" ];
             python get-pip.py
         fi
 
-        . $HOME/.bash_profile
+        source $HOME/.bash_profile
         # Installing our tools
         yes | pip install nltk ipython[all]
+
+        # Install our scripts
+        git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
+
+        # Make backups of bash configuration files
+        for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
+        do
+            if [ -e $x ]; then
+              cp $x "$x"_backup
+              # Add our scripts
+              echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
+              echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+              # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+              # echo ". $VIRTLOCATION" >> $x
+            fi;
+        done
+        # Reloading startup file
+        # . $HOME/.bash_profile
+        # . $HOME/.bashrc
+        # Delete all .pyc files?
+        # find / -iname \*.pyc -exec rm {} \;
+        # Install the demo texts
+        python -m nltk.downloader book
+        echo 'got it!'
+        ipython notebook $HOME/.dhbox/notebooks/the-waves
     fi
 elif [ "$OS" = "Darwin" ]; then
     # For Mac
@@ -128,33 +175,35 @@ elif [ "$OS" = "Darwin" ]; then
     yes | pip install pyparsing python-dateutil
     brew install freetype
     brew install pkg-config
-    yes | pip install nltk ipython[all] matplotlib
     # Install matplotlib for charts
+    yes | pip install nltk ipython[all] matplotlib
+
+    # Install our scripts
+    git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
+
+    # Make backups of bash configuration files
+    for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
+    do
+        if [ -e $x ]; then
+          cp $x "$x"_backup
+          # Add our scripts
+          echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
+          echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+          # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
+          # echo ". $VIRTLOCATION" >> $x
+        fi;
+    done
+    # Reloading startup file
+    # . $HOME/.bash_profile
+    # . $HOME/.bashrc
+    # Delete all .pyc files?
+    # find / -iname \*.pyc -exec rm {} \;
+    # Install the demo texts
+    python -m nltk.downloader book
+    echo 'got it!'
+    ipython notebook $HOME/.dhbox/notebooks/the-waves
 else
   echo "Unfortunately $OS isn't supported yet. Exiting..."
   exit
 fi
-# Install our scripts
-git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
-
-# Make backups of bash configuration files
-for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
-do
-    if [ -e $x ]; then
-      mv $x "$x"_backup
-      # Add our scripts
-      echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
-      # echo "export WORKON_HOME=$HOME/.virtualenvs" >> $x
-      # echo ". $VIRTLOCATION" >> $x
-    fi;
-done
-# Reloading startup file
-# . $HOME/.bash_profile
-# . $HOME/.bashrc
-# Delete all .pyc files?
-# find / -iname \*.pyc -exec rm {} \;
-# Install the demo texts
-python -m nltk.downloader book
-echo 'got it!'
-ipython notebook $HOME/.dhbox/notebooks/the-waves
+exit
