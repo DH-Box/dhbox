@@ -89,7 +89,7 @@ if [ "$OS" = "Linux" ];
             python get-pip.py
         fi
 
-        . $HOME/.bash_profile
+        source $HOME/.bash_profile
         # Installing our tools
         yes | pip install nltk ipython[all]
     fi
