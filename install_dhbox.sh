@@ -147,13 +147,13 @@ do
       cp $x "$x"_backup
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
-      . $x
+      echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+      source $x
     fi;
 done
 # Reloading startup file
 # if $THE_OS = Ubuntu ; then
-echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
+echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
 . $HOME/.profile
 . $HOME/.bashrc
 # else
