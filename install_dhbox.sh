@@ -139,7 +139,6 @@ fi
 echo "Installing DH Box into $DHBOX_INSTALL_DIR"
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
-VIRTLOCATION="which virtualenvwrapper.sh"
 # Make backups of bash configuration files
 for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
 do
@@ -147,13 +146,13 @@ do
       cp $x "$x"_backup
       # Add our scripts
       echo "DHBOX_INSTALL_DIR=$HOME/.dhbox" >> $x
-      echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
-      source $x
+      echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $x
+      . $x
     fi;
 done
 # Reloading startup file
 # if $THE_OS = Ubuntu ; then
-echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
+echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
 . $HOME/.profile
 . $HOME/.bashrc
 # else
