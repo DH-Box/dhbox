@@ -53,15 +53,15 @@ if [ "$OS" = "Linux" ];
         # Gotta have git, and pip. Checking if it already exists.
         if ! type "$git" > /dev/null;
           then
-            sudo apt-get install -y git-core python-pip python-zmq python-matplotlib virtualenv
+            sudo apt-get install -y git-core python-pip python-zmq python-matplotlib python-virtualenv
         fi
-        source $HOME/.bash_profile
+        . $HOME/.bash_profile
         # Installing virtualenv and virtualenvwrapper
         mkdir $HOME/.virtualenvs
         yes | sudo pip install virtualenvwrapper
-        source /usr/local/bin/virtualenvwrapper.sh
+        . /usr/local/bin/virtualenvwrapper.sh
         export WORKON_HOME=$HOME/.virtualenvs
-        source $HOME/.bash_profile
+        . $HOME/.bash_profile
         mkvirtualenv dhbox
         # Installing our tools
         yes | sudo pip install nltk ipython[all] tornado jinja2
