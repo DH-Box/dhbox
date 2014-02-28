@@ -53,7 +53,7 @@ if [ "$OS" = "Linux" ];
         # Gotta have git, and pip. Checking if it already exists.
         if ! type "$git" > /dev/null;
           then
-            sudo apt-get install -y git-core python-pip python-zmq python-matplotlib python-virtualenv
+            sudo apt-get install -y git-core python-pip python-zmq python-matplotlib
         fi
         . $HOME/.bash_profile
 
@@ -137,7 +137,6 @@ fi
 # Install our scripts
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
-VIRTLOCATION="which virtualenvwrapper.sh"
 # Make backups of bash configuration files
 for x in $HOME/.bashrc $HOME/.profile $HOME/.bash_profile ;
 do
