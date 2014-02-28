@@ -153,8 +153,8 @@ done
 # if $THE_OS = Ubuntu ; then
 . $HOME/.profile
 . $HOME/.bashrc
-echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
-echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
+echo "'. $DHBOX_INSTALL_DIR/dhbox.sh'" >> $HOME/.bashrc
+echo "'. $DHBOX_INSTALL_DIR/dhbox.sh'" >> $HOME/.profile
 # else
   # echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
   # echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
