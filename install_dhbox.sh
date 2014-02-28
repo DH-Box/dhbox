@@ -70,9 +70,8 @@ if [ "$OS" = "Linux" ];
     else
       # DEBIAN DOES NOT HAVE VIRTUALENV YET
       # For Debian
-      THE_OS="Ubuntu"
+      THE_OS="Debian"
       echo "Installing for Debian"
-      DHBOX_INSTALL_DIR="/home/.dhbox"
         apt-get update
         # Gotta have git, and bash completion. Checking if it already exists.
         if ! hash git 2>/dev/null;
@@ -88,7 +87,6 @@ if [ "$OS" = "Linux" ];
             wget --no-check-certificate https://raw.github.com/pypa/pip/master/contrib/get-pip.py
             python get-pip.py
         fi
-
         source $HOME/.profile
         # Installing our tools
         yes | pip install nltk ipython[all]
@@ -138,6 +136,7 @@ else
   exit
 fi
 # Install our scripts
+echo "Installing DH Box into $DHBOX_INSTALL_DIR"
 git clone git://github.com/szweibel/dhbox.git $DHBOX_INSTALL_DIR
 
 VIRTLOCATION="which virtualenvwrapper.sh"
