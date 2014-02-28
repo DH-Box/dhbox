@@ -150,17 +150,17 @@ do
     fi;
 done
 # Reloading startup file
-if $THE_OS = Ubuntu ; then
-  . $HOME/.profile
-  . $HOME/.bashrc
-  echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
-  echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
-else
-  echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
-  echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
-  source $HOME/.profile
-  source $HOME/.bashrc
-fi
+# if $THE_OS = Ubuntu ; then
+. $HOME/.profile
+. $HOME/.bashrc
+echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
+echo ". $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
+# else
+  # echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.bashrc
+  # echo "source $DHBOX_INSTALL_DIR/dhbox.sh" >> $HOME/.profile
+  # source $HOME/.profile
+  # source $HOME/.bashrc
+# fi
 # Delete all .pyc files?
 # find / -iname \*.pyc -exec rm {} \;
 # Install the demo texts
