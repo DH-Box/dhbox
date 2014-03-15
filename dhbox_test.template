@@ -1,0 +1,39 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description" : "AWS CloudFormation template for DH Box.",
+    "Resources": {
+        "TheBox": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-e00df089",
+                "InstanceType": "t1.micro",
+                "KeyName": "cloudformation",
+                "UserData": {
+                    "Fn::Base64": "#!/bin/sh\n/opt/aws/bin/cfn-init -s DHBox --region us-east-1 -r TheBox\n"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Init": {
+                    "config": {
+                        "packages": {
+                            "apt": {
+                                "httpd": []
+                            }
+                        },
+                        "sources": {
+                            "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip"
+                        },
+                        "services": {
+                            "sysvinit": {
+                                "httpd": {
+                                    "enabled": "true",
+                                    "ensureRunning": "true"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
