@@ -5,7 +5,7 @@
         "NewServer": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
-                "ImageId": "ami-27363d4e",
+                "ImageId": "ami-4dcfc424",
                 "InstanceType": "t1.micro",
                 "KeyName": "stevess",
                 "UserData": {
@@ -18,11 +18,14 @@
                         "packages": {
                             "apt": {
                                 "apache2": [],
-                                "shellinabox": []
+                                "default-jdk": [],
+                                "shellinabox": [],
+                                "ant": []
                             }
                         },
                         "sources": {
-                            "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip"
+                            "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip",
+                            "/dhbox"
                         },
                         "services": {
                             "sysvinit": {
