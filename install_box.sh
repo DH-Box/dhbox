@@ -2,7 +2,7 @@
 #
 
 # Update packages
-apt-get update && apt-get dist-upgrade
+apt-get update && apt-get dist-upgrade && apt-get upgrade -y && apt-get install -y unattended-upgrades python-pip
 
 # Make a source directory for DHBox
 sudo mkdir /dhbox
@@ -20,8 +20,8 @@ sudo rm /etc/init.d/startup.sh
 sudo pip install ipython[all]
 
 # Install MALLET
-wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
-tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
-sudo ant -buildfile /dhbox/mallet/build.xml
+# wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
+# tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
+# sudo ant -buildfile /dhbox/mallet/build.xml
 
 sudo reboot
