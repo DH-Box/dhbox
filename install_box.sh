@@ -12,4 +12,4 @@ easy_install /root/aws-cfn-bootstrap-latest
 sudo cfn-init -s DHBox --region us-east-1 -r NewServer
 sudo rm /etc/init.d/startup.sh
 
-sudo service shellinabox start
+sudo reboot
