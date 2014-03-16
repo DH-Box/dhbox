@@ -2,17 +2,17 @@
 #
 
 # Update packages
-apt-get update && apt-get dist-upgrade && apt-get upgrade -y && apt-get install -y unattended-upgrades python-pip
+sudo apt-get update -y && sudo apt-get dist-upgrade -y && sudo apt-get upgrade -y && sudo apt-get install -y unattended-upgrades python-pip
 
 # Make a source directory for DHBox
 sudo mkdir /dhbox
 sudo mkdir /dhbox/mallet
 
 # Install Amazon Cloud scripts
-wget --no-check-certificate -P /root https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-mkdir -p /root/aws-cfn-bootstrap-latest
-tar xvfz /root/aws-cfn-bootstrap-latest.tar.gz --strip-components=1 -C /root/aws-cfn-bootstrap-latest
-easy_install /root/aws-cfn-bootstrap-latest
+sudo wget --no-check-certificate -P /root https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
+sudo mkdir -p /root/aws-cfn-bootstrap-latest
+sudo tar xvfz /root/aws-cfn-bootstrap-latest.tar.gz --strip-components=1 -C /root/aws-cfn-bootstrap-latest
+sudo easy_install /root/aws-cfn-bootstrap-latest
 sudo cfn-init -s DHBox --region us-east-1 -r NewServer
 # sudo rm /etc/init.d/startup.sh
 
