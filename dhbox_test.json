@@ -19,8 +19,11 @@
                 "ImageId": "ami-4dcfc424",
                 "InstanceType": "t1.micro",
                 "KeyName": "stevess",
-                "UserData": {
-                    "Fn::Base64": "#!/bin/sh\nwget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh -O - | sh\nsudo cfn-init -s DHBox --region us-east-1 -r NewServer\n"
+                "UserData" : { "Fn::Base64" : { "Fn::Join" : ["",[
+                            "#!/bin/sh\n",
+                            "wget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh -O - | sh\n",
+                                  "\"" ]]
+                    }
                 }
             },
             "Metadata": {
