@@ -1,5 +1,4 @@
 #! /bin/sh
-# /etc/init.d/startup
 #
 
 # Update packages
