@@ -9,7 +9,6 @@ f = opener.open(req)
 conn = boto.ec2.connect_to_region("us-east-1")
 
 user_data = f.read()
-print user_data
 
 conn.run_instances('ami-d3675dba', key_name='stevess', security_groups=['default'], instance_type='t1.micro', user_data=user_data)
 
