@@ -1,15 +1,15 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description" : "AWS CloudFormation template for DH Box.",
+    "Description" : "AWS CloudFormation template for DH Box",
     "Resources": {
-        "TheBox": {
+        "NewServer": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
-                "ImageId": "ami-e00df089",
+                "ImageId": "ami-27363d4e",
                 "InstanceType": "t1.micro",
-                "KeyName": "cloudformation",
+                "KeyName": "stevess",
                 "UserData": {
-                    "Fn::Base64": "#!/bin/sh\n/opt/aws/bin/cfn-init -s DHBox --region us-east-1 -r TheBox\n"
+                    "Fn::Base64": "#!/bin/sh\nsudo cfn-init -s DHBox --region us-east-1 -r NewServer\n"
                 }
             },
             "Metadata": {
@@ -17,7 +17,8 @@
                     "config": {
                         "packages": {
                             "apt": {
-                                "httpd": []
+                                "apache2": [],
+                                "shellinabox": []
                             }
                         },
                         "sources": {
@@ -25,7 +26,7 @@
                         },
                         "services": {
                             "sysvinit": {
-                                "httpd": {
+                                "apache2": {
                                     "enabled": "true",
                                     "ensureRunning": "true"
                                 }
