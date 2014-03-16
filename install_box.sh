@@ -16,6 +16,9 @@ easy_install /root/aws-cfn-bootstrap-latest
 sudo cfn-init -s DHBox --region us-east-1 -r NewServer
 sudo rm /etc/init.d/startup.sh
 
+# Install ipython
+sudo pip install ipython[all]
+
 # Install MALLET
 wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
 tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet

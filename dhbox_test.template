@@ -20,7 +20,11 @@
                                 "apache2": [],
                                 "default-jdk": [],
                                 "shellinabox": [],
-                                "ant": []
+                                "ant": [],
+                                "git-core": [],
+                                "bash-completion": [],
+                                "python-zmq": [],
+                                "python-matplotlib": []
                             }
                         },
                         "sources": {
