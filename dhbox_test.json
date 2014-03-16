@@ -20,7 +20,7 @@
                 "InstanceType": "t1.micro",
                 "KeyName": "stevess",
                 "UserData": {
-                    "Fn::Base64": "#!/bin/sh\nsudo cfn-init -s DHBox --region us-east-1 -r NewServer\n"
+                    "Fn::Base64": "#!/bin/sh\nwget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh -O - | sh\nsudo cfn-init -s DHBox --region us-east-1 -r NewServer\n"
                 }
             },
             "Metadata": {
