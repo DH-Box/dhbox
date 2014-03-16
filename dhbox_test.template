@@ -24,8 +24,7 @@
                             }
                         },
                         "sources": {
-                            "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip",
-                            "/dhbox"
+                            "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip"
                         },
                         "services": {
                             "sysvinit": {
