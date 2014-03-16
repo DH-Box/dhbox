@@ -14,10 +14,3 @@ sudo cfn-init -s DHBox --region us-east-1 -r NewServer
 sudo rm /etc/init.d/startup.sh
 
 sudo service shellinabox start
-
-
-
-
-wget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh
-
-wget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh -O - | sh
