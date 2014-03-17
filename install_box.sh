@@ -13,6 +13,7 @@ sudo mkdir -p /root/aws-cfn-bootstrap-latest
 sudo tar xvfz /root/aws-cfn-bootstrap-latest.tar.gz --strip-components=1 -C /root/aws-cfn-bootstrap-latest
 sudo easy_install /root/aws-cfn-bootstrap-latest
 sudo cfn-init -s DHBox --region us-east-1 -r NewServer -v
+sudo reboot
 
 echo "Installing ipython"
 yes | sudo pip install ipython[all]
@@ -22,4 +23,3 @@ sudo wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/malle
 sudo tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
 sudo ant -buildfile /dhbox/mallet/build.xml
 
-sudo reboot
