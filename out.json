@@ -1,0 +1,73 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "DH Box Generated Template",
+  "Resources": {
+    "MyInstance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "UserData": {
+          "Fn::Base64": "#! /bin/sh\n#\necho \"Update packages\"\nsudo apt-get update -y && sudo apt-get dist-upgrade -y && sudo apt-get upgrade -y && sudo apt-get install -y unattended-upgrades python-pip\n\necho \"Make a source directory for DHBox\"\nsudo mkdir /dhbox\nsudo mkdir /dhbox/mallet\n\necho \"Installing Amazon Cloud scripts\"\nsudo wget --no-check-certificate -P /root https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\nsudo mkdir -p /root/aws-cfn-bootstrap-latest\nsudo tar xvfz /root/aws-cfn-bootstrap-latest.tar.gz --strip-components=1 -C /root/aws-cfn-bootstrap-latest\nsudo easy_install /root/aws-cfn-bootstrap-latest\nsudo cfn-init -s DHBox --region us-east-1 -r NewServer -v\n\necho \"Installing ipython\"\nyes | sudo pip install ipython[all]\n\n# Install MALLET\nsudo wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz\nsudo tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet\nsudo ant -buildfile /dhbox/mallet/build.xml\n\nsudo reboot\n"
+        },
+        "KeyName": "stevess",
+        "InstanceType": "t1.micro",
+        "ImageId": "ami-032b416a"
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "commands": {
+              "test": {
+                "test": "test ! -e ~/test.txt",
+                "ignoreErrors": "false",
+                "command": "echo \"$CFNTEST\" > test.txt",
+                "cwd": "~",
+                "env": {
+                  "CFNTEST": "I come from config1."
+                }
+              }
+            },
+            "users": {
+              "dhbox": {
+                "uid": "50",
+                "groups": [
+                  "groupOne",
+                  "groupTwo"
+                ],
+                "homeDir": "/tmp"
+              }
+            },
+            "sources": {
+              "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip"
+            },
+            "groups": {
+              "groupTwo": {
+                "gid": "45"
+              },
+              "groupOne": {}
+            },
+            "services": {
+              "sysvinit": {
+                "apache2": {
+                  "ensureRunning": "true",
+                  "enabled": "true"
+                }
+              }
+            },
+            "packages": {
+              "apt": {
+                "ant": [],
+                "python-matplotlib": [],
+                "shellinabox": [],
+                "bash-completion": [],
+                "python-zmq": [],
+                "git-core": [],
+                "default-jdk": [],
+                "apache2": []
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
