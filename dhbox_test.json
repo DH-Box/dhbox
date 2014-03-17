@@ -20,9 +20,9 @@
                 "InstanceType": "t1.micro",
                 "KeyName": "stevess",
                 "UserData" : { "Fn::Base64" : { "Fn::Join" : ["",[
-                            "#!/bin/sh\n",
-                            "wget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh -O - | sh\n",
-                                  "sudo reboot" ]]
+                            "#! /bin/sh\n",
+                            "wget --no-check-certificate https://raw.github.com/DH-Box/dhbox/master/install_box.sh -O - | sh \n"
+                                   ]]
                     }
                 }
             },
