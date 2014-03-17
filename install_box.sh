@@ -12,7 +12,7 @@ sudo wget --no-check-certificate -P /root https://s3.amazonaws.com/cloudformatio
 sudo mkdir -p /root/aws-cfn-bootstrap-latest
 sudo tar xvfz /root/aws-cfn-bootstrap-latest.tar.gz --strip-components=1 -C /root/aws-cfn-bootstrap-latest
 sudo easy_install /root/aws-cfn-bootstrap-latest
-sudo cfn-init -s DHBox --region us-east-1 -r NewServer
+sudo cfn-init -s DHBox --region us-east-1 -r NewServer -v
 
 echo "Installing ipython"
 yes | sudo pip install ipython[all]
