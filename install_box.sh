@@ -19,8 +19,8 @@ sudo cfn-init -s DHBox --region us-east-1 -r NewServer
 yes | sudo pip install nltk ipython[all]
 
 # Install MALLET
-sudo wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
-sudo tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
-sudo ant -buildfile /dhbox/mallet/build.xml
+# sudo wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
+# sudo tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
+# sudo ant -buildfile /dhbox/mallet/build.xml
 
 sudo reboot
