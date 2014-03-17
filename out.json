@@ -1,8 +1,18 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "DH Box Generated Template",
+  "Parameters": {
+    "KeyName": {
+      "AllowedPattern": "[\\x20-\\x7E]*",
+      "ConstraintDescription": "can contain only ASCII characters.",
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+      "MaxLength": "255",
+      "MinLength": "1",
+      "Type": "String"
+    }
+  },
   "Resources": {
-    "MyInstance": {
+    "NewServer": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
         "UserData": {

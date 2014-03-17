@@ -11,8 +11,20 @@ properties = {
     'ImageId': 'ami-032b416a',
     'InstanceType': 't1.micro',
     'UserData': base64(user_data_script),
-    "KeyName": "stevess"
-}
+    "KeyName": "stevess",
+    }
+
+cft.parameters.add(Parameter('KeyName', 'String',
+    {
+      "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "255",
+      "AllowedPattern" : "[\\x20-\\x7E]*",
+      "ConstraintDescription" : "can contain only ASCII characters."
+    })
+)
+
 attributes = [
     Metadata(
         {
@@ -69,4 +81,4 @@ attributes = [
         }
     ),
 ]
-cft.resources.add(Resource('MyInstance', 'AWS::EC2::Instance', properties, attributes))
+cft.resources.add(Resource('NewServer', 'AWS::EC2::Instance', properties, attributes))
