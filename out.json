@@ -15,7 +15,6 @@
     "MyEIP": {
       "Type": "AWS::EC2::EIP",
       "Properties": {
-        "Type": "AWS::EC2::EIP",
         "Properties": {
           "InstanceId": {
             "Ref": "NewServer"
