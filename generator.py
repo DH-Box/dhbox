@@ -28,10 +28,8 @@ cft.parameters.add(Parameter('KeyName', 'String',
 
 cft.resources.add(Resource('MyEIP', 'AWS::EC2::EIP',
     {
-     "Properties" : {
-         "InstanceId" : { "Ref" : "NewServer" }
-     }
-    })
+     "InstanceId" : { "Ref" : "NewServer" }
+     })
 )
 
 cft.outputs.add(Output('DnsName',
