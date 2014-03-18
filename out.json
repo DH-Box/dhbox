@@ -46,21 +46,18 @@
             },
             "users": {
               "dhbox": {
-                "uid": "50",
+                "homeDir": "/tmp",
                 "groups": [
                   "groupOne",
                   "groupTwo"
-                ],
-                "homeDir": "/tmp"
+                ]
               }
             },
             "sources": {
               "/var/www/html": "https://s3.amazonaws.com/engelke/public/webcontent.zip"
             },
             "groups": {
-              "groupTwo": {
-                "gid": "45"
-              },
+              "groupTwo": {},
               "groupOne": {}
             },
             "services": {
