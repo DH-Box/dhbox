@@ -12,6 +12,17 @@
     }
   },
   "Resources": {
+    "MyEIP": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Type": "AWS::EC2::EIP",
+        "Properties": {
+          "InstanceId": {
+            "Ref": "NewServer"
+          }
+        }
+      }
+    },
     "NewServer": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
@@ -77,6 +88,17 @@
             }
           }
         }
+      }
+    }
+  },
+  "Outputs": {
+    "DnsName": {
+      "Description": "The public DNS Name for DH Box",
+      "Value": {
+        "Fn::GetAtt": [
+          "NewServer",
+          "PublicDnsName"
+        ]
       }
     }
   }

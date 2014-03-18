@@ -1,3 +1,4 @@
+# to run: cfn_py_generate generator.py out.json
 import urllib2
 
 req = urllib2.Request("https://raw.github.com/DH-Box/dhbox/master/install_box.sh")
@@ -23,6 +24,20 @@ cft.parameters.add(Parameter('KeyName', 'String',
       "AllowedPattern" : "[\\x20-\\x7E]*",
       "ConstraintDescription" : "can contain only ASCII characters."
     })
+)
+
+cft.resources.add(Resource('MyEIP', 'AWS::EC2::EIP',
+    {
+     "Type" : "AWS::EC2::EIP",
+     "Properties" : {
+         "InstanceId" : { "Ref" : "NewServer" }
+     }
+    })
+)
+
+cft.outputs.add(Output('DnsName',
+    get_att('NewServer', 'PublicDnsName'),
+    'The public DNS Name for DH Box')
 )
 
 attributes = [
