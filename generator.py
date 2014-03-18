@@ -77,7 +77,6 @@ attributes = [
                     "users": {
                         "dhbox": {
                             "groups": ["groupOne", "groupTwo"],
-                            "uid": "50",
                             "homeDir": "/tmp"
                         }
                     },
@@ -85,7 +84,6 @@ attributes = [
                         "groupOne": {
                         },
                         "groupTwo": {
-                            "gid": "45"
                         }
                     }
                 }
