@@ -28,7 +28,6 @@ cft.parameters.add(Parameter('KeyName', 'String',
 
 cft.resources.add(Resource('MyEIP', 'AWS::EC2::EIP',
     {
-     "Type" : "AWS::EC2::EIP",
      "Properties" : {
          "InstanceId" : { "Ref" : "NewServer" }
      }
