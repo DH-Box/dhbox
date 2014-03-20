@@ -3,8 +3,7 @@
 echo "Update packages"
 sudo apt-get update -y && sudo apt-get dist-upgrade -y && sudo apt-get upgrade -y && sudo apt-get install -y unattended-upgrades python-pip
 echo "Make a source directory for DHBox"
-sudo mkdir /dhbox
-sudo mkdir /dhbox/mallet
+sudo mkdir -p /dhbox/mallet
 echo "Installing Amazon Cloud scripts"
 sudo wget --no-check-certificate -P /root https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
 sudo mkdir -p /root/aws-cfn-bootstrap-latest
