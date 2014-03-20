@@ -16,4 +16,4 @@ yes | sudo pip install ipython[all]
 sudo wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
 sudo tar xvfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
 sudo ant -buildfile /dhbox/mallet/build.xml
-
+sudo useradd -m dhbox
