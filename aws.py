@@ -3,13 +3,13 @@ from ConfigParser import SafeConfigParser
 from properties import loadcredentials
 import sys, os, time
 
-USERNAME = 'ec2-user'
-AMI_ID = 'ami-6b73562e'
+USERNAME = 'admin'
+AMI_ID = 'ami-032b416a'
 INSTANCE_TYPE = 'm1.small'
 
-EC2_REGION = 'us-west-1'
-EC2_SSH_KEY_NAME = 'us-west'
-EC2_SSH_KEY_PATH = os.path.join(os.path.dirname(__file__), 'venv', 'us-west.pem')
+EC2_REGION = 'us-east-1'
+EC2_SSH_KEY_NAME = 'stevess'
+EC2_SSH_KEY_PATH = os.path.join(os.path.dirname(__file__), 'venv', 'stevess.pem')
 
 class Node:
     def __init__(self, instance):

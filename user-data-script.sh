@@ -4,6 +4,9 @@ set -e -x
 apt-get --yes --quiet update
 apt-get --yes --quiet install git puppet-common
 
+# Make a source directory for DHBox (and MALLET)
+sudo mkdir -p /dhbox/mallet
+
 #
 # Fetch puppet configuration from public git repository.
 #
