@@ -4,7 +4,7 @@ from string import Template
 
 import boto.ec2
 
-PUPPET_SOURCE = 'https://bitbucket.org/rimey/hello-ec2-puppetboot.git'
+PUPPET_SOURCE = 'https://github.com/szweibel/puppetboot.git'
 info = {}
 def get_script(filename='user-data-script.sh'):
     template = open(filename).read()
@@ -22,7 +22,6 @@ def launch():
         user_data=get_script(),
     )
     info['Instance'] = i.instances[0].id
-    print info
     return info
 
 if __name__ == '__main__':
