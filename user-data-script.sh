@@ -2,10 +2,8 @@
 set -e -x
 
 sudo apt-get --yes --quiet update
-sudo apt-get --yes --quiet install git puppet-common
+sudo apt-get --yes --quiet install git puppet-common default-jdk ant
 sudo mv /etc/puppet /etc/puppet.orig
-
-sudo apt-get --yes --quiet install git default-jdk
 
 # Make a source directory for DHBox (and MALLET)
 sudo mkdir -p /dhbox/mallet
@@ -14,8 +12,6 @@ sudo mkdir -p /dhbox/mallet
 #
 
 sudo git clone $puppet_source /etc/puppet
-sudo puppet module install maestrodev-ant --force
-sudo puppet module install maestrodev-wget --force
 #
 # Run puppet.
 #
