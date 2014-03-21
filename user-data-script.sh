@@ -9,7 +9,7 @@ dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
 
 echo "deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/" >> /etc/apt/sources.list
 apt-get --yes --quiet update
-apt-get --yes --quiet install git puppet-common shellinabox default-jdk r-base gdebi-core
+apt-get --yes --quiet install git puppet-common shellinabox default-jdk r-base gdebi-core ant
 
 # Install R Studio
 wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb
