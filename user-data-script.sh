@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e -x
 
-apt-get --yes --quiet update
-apt-get --yes --quiet install git puppet-common
+sudo apt-get --yes --quiet update
+sudo apt-get --yes --quiet install git puppet-common
 
 # Make a source directory for DHBox (and MALLET)
 sudo mkdir -p /dhbox/mallet
@@ -13,13 +13,13 @@ sudo puppet module install maestrodev-wget
 # Fetch puppet configuration from public git repository.
 #
 
-mv /etc/puppet /etc/puppet.orig
-git clone $puppet_source /etc/puppet
+sudo mv /etc/puppet /etc/puppet.orig
+sudo git clone $puppet_source /etc/puppet
 
 #
 # Run puppet.
 #
-puppet apply /etc/puppet/manifests/init.pp
+sudo puppet apply /etc/puppet/manifests/init.pp
 #
 # Change permissions so Omeka can run
 #
