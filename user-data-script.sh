@@ -16,7 +16,6 @@ sudo mkdir -p /dhbox/mallet
 sudo git clone $puppet_source /etc/puppet
 sudo puppet module install maestrodev-ant --force
 sudo puppet module install maestrodev-wget --force
-
 #
 # Run puppet.
 #
