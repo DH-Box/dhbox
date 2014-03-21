@@ -1,22 +1,24 @@
 #!/bin/sh
 set -e -x
-
+#
+#Get a better repository for R
+#
+echo "deb http://http://cran.rstudio.com/bin/linux/debian wheezy-cran3/" >> /etc/apt/sources.list
 apt-get --yes --quiet update
 apt-get --yes --quiet install git puppet-common shellinabox default-jdk
 
 #
 # Fetch puppet configuration from public git repository.
 #
-
 mv /etc/puppet /etc/puppet.orig
 git clone $puppet_source /etc/puppet
-
 #
 # Run puppet.
 #
-
 puppet apply /etc/puppet/manifests/init.pp
-
+#
+#Configure user permissions
+#
 chmod -R 777 /usr/local/projects/Omeka/
 
 #
