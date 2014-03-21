@@ -7,6 +7,8 @@ apt-get --yes --quiet install git puppet-common
 # Make a source directory for DHBox (and MALLET)
 sudo mkdir -p /dhbox/mallet
 
+sudo puppet module install maestrodev-ant
+sudo puppet module install maestrodev-wget
 #
 # Fetch puppet configuration from public git repository.
 #
