@@ -5,10 +5,7 @@ sudo apt-get --yes --quiet update
 sudo apt-get --yes --quiet install git puppet-common
 sudo mv /etc/puppet /etc/puppet.orig
 
-
 sudo apt-get --yes --quiet install git default-jdk
-
-
 
 # Make a source directory for DHBox (and MALLET)
 sudo mkdir -p /dhbox/mallet
