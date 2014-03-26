@@ -12,3 +12,6 @@ def set_users():
     for user in user_list:
         adduser(user['name'], user['pass'])
     del os.environ['users']
+
+if __name__ == '__main__':
+    set_users()
