@@ -1,5 +1,11 @@
 #!/bin/sh
 set -e -x
+
+#
+# Adding Users
+#
+export users="$dhbox_users"
+echo $users
 #
 #Get a better repository for R
 #
