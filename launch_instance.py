@@ -6,7 +6,7 @@ import sys, os, time
 PUPPET_SOURCE = 'https://github.com/szweibel/puppetboot.git'
 info = {}
 
-def get_script(filename='user-data-script.sh', users=[{'name':'dhbox', 'pass':'test'}]):
+def get_script(filename='user-data-script.sh', users=[{'name':'prof', 'pass':'test'}]):
     template = open(filename).read()
     return Template(template).substitute(puppet_source=PUPPET_SOURCE, dhbox_users=str(users))
 

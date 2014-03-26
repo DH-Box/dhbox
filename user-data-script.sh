@@ -1,11 +1,5 @@
 #!/bin/sh
 set -e -x
-
-#
-# Adding Users
-#
-export users="$dhbox_users"
-echo $users
 #
 #Get a better repository for R
 #
@@ -15,7 +9,33 @@ dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
 
 echo "deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/" >> /etc/apt/sources.list
 apt-get --yes --quiet update
-apt-get --yes --force-yes --quiet install git puppet-common shellinabox default-jdk r-base gdebi-core ant
+apt-get --yes --force-yes --quiet install git puppet-common shellinabox default-jdk r-base gdebi-core ant build-essential libsqlite3-dev zlib1g-dev libncurses5-dev libgdbm-dev libbz2-dev libreadline5-dev libssl-dev libdb-dev
+
+#
+# Install Python
+#
+wget http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tgz
+tar -xzf Python-2.7.3.tgz
+cd Python-2.7.3
+ 
+./configure --prefix=/usr --enable-shared
+make
+make install
+cd ..
+ 
+update-alternatives --install /usr/bin/python python /usr/bin/python2.6 20
+update-alternatives --install /usr/bin/python python /usr/bin/python2.7 10
+update-alternatives --set python /usr/bin/python2.6
+ 
+wget http://peak.telecommunity.com/dist/ez_setup.py
+python2.7 ez_setup.py
+
+#
+# Adding Users
+#
+export users="$dhbox_users"
+wget --no-check-certificate -P /dhbox https://raw.githubusercontent.com/DH-Box/dhbox/master/users.py
+python /dhbox/users.py
 
 # Install R Studio
 wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb
