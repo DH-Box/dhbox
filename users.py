@@ -8,7 +8,7 @@ def adduser(user, password):
 
 
 def set_users():
-    user_list = ast.literal_eval(os.environ.get('users'))
+    user_list = ast.literal_eval(str(os.environ.get('users')))
     for user in user_list:
         adduser(user['name'], user['pass'])
     del os.environ['users']
