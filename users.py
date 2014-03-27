@@ -1,10 +1,11 @@
 #!/usr/bin/python
 import os
 import ast
+import crypt
 
 def adduser(user, password):
-    os.system("useradd -m "+user)
-    os.system("echo -e '"+password+"\n"+password+"\n' | passwd "+ user)
+    encPass = crypt.crypt(password,"22")
+    os.system("useradd -m -p "+ encPass +" "+ user)
 
 
 def set_users():
