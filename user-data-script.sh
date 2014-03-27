@@ -44,3 +44,7 @@ mkdir -p /dhbox/mallet
 wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
 tar xfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
 ant -buildfile /dhbox/mallet/build.xml
+#
+# Install some Python stuff
+#
+pip install ipython[all]
