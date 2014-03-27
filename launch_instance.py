@@ -17,7 +17,7 @@ def launch(name='dhbox', users=[]):
         instance_type = 't1.micro',
         key_name = 'stevess',
         security_groups = ['default'],
-        user_data=get_script(),
+        user_data=get_script(users=users),
     )
     instance = i.instances[0]
     info['Instance'] = instance.id
@@ -26,7 +26,6 @@ def launch(name='dhbox', users=[]):
     wait_while(instance, 'pending')
 
     instance.add_tag('Name', name)
-    instance.add_tag('Users', users)
     print "Instance", name, instance.id, "is running"
     return info
 
