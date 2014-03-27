@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, flash, make_response, jsonify, send_file, current_app
-import launch_instance
+import launch_instance, users
 from datetime import timedelta
 from functools import update_wrapper
 
@@ -57,13 +57,21 @@ def crossdomain(origin=None, methods=None, headers=None,
 @app.route('/dhbox', methods=['POST'])
 @crossdomain(origin='*')
 def dhbox():
+    all_users = []
     admin = request.form['admin']
     users = request.form.getlist('users')  # Get every form item with name='users' and create a list
-    print admin
-    # print request.data
+    all_users.append(admin)
+    for user in users:
+        all_users.append(user)
+
+    users_and_passes = []
+    for user in all_users:
+        users_and_passes.append({'name': user, 'pass': 'test'})
+    print users_and_passes
+    launch_instance.launch(name=admin, users=users_and_passes)
+
+
     return str(request.data)
-    # output = render_template('knowledge_base.html', entries=entries)
-    # return output
 
 if __name__ == '__main__':
     app.debug = True
