@@ -1,0 +1,13 @@
+---
+- hosts: servers
+  vars:
+      omekadir: /home/admin/omeka
+  tasks:
+    - include: setup.yml
+    - name: sync
+      synchronize: src=~/Downloads/omeka-2.1.4/ dest=/home/admin/omeka/ mode=0644
+    - include: omeka/playbook.yml
+  handlers:
+   - name: restart apache2
+     service: name=apache2 state=restarted
+     sudo: true

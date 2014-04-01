@@ -12,7 +12,7 @@ echo "deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/" >> /etc/ap
 # Installing apt packages
 #
 apt-get --yes --quiet update
-apt-get --yes --force-yes --quiet install git puppet-common shellinabox default-jdk r-base gdebi-core ant python python-pip
+apt-get --yes --force-yes --quiet install git puppet-common shellinabox default-jdk r-base gdebi-core ant python python-pip ipython-notebook
 #
 # Install R Studio
 #
@@ -45,6 +45,6 @@ wget --no-check-certificate -P /dhbox http://mallet.cs.umass.edu/dist/mallet-2.0
 tar xfz /dhbox/mallet-2.0.7.tar.gz --strip-components=1 -C /dhbox/mallet
 ant -buildfile /dhbox/mallet/build.xml
 #
-# Install some Python stuff
+# Install some Python stuff?
 #
-pip install ipython[all]
+

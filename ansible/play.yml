@@ -1,0 +1,5 @@
+--- 
+- hosts: tag_group_dhbox 
+  tasks: 
+  - name: Do stuff 
+    action: ping 
