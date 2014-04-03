@@ -6,7 +6,7 @@
   get_url: dest=/tmp/omeka.zip  url=http://omeka.org/files/omeka-2.1.4.zip
 - name: Unpack Omeka
   command: unzip -qo /tmp/omeka.zip -d {{ omekadir }}
-- name: Move Omeka files ...sigh...
+- name: Move Omeka files
   raw: cp -r {{ omekadir }}/omeka-2.1.4/* {{ omekadir }}
 - name: Move .htaccess
   raw: cp -r {{ omekadir }}/omeka-2.1.4/.htaccess {{ omekadir }}

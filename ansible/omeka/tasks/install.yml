@@ -1,5 +1,5 @@
 ---
-- name: install apt packages
+- name: install Omeka apt packages
   apt: pkg={{ item }} state=latest
   sudo: true
   with_items:

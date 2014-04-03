@@ -62,13 +62,25 @@
   user: admin
   sudo: true
 
+
 # Install stuff
 
   tasks:
+    # - name: install mail
+    #   apt: pkg=sendmail state=latest update_cache=yes
+    # - name: email?
+    #   command: echo "Body" | mailx -r "hello@dhbox.org" -s "SUBJECT" "srzweibel@gmail.com"
     - include: setup.yml
-    # - include: omeka.yml
-    #   vars:
-    #     omekadir: /home/admin/omeka
+    - name: set users!
+      user: name={{ item.name }} state=present password={{ item.password }}
+      with_items: users
+    - include: mallet.yml
+      vars:
+        malletdir: /dhbox/mallet
+    - include: rstudio.yml
+    - include: omeka.yml
+      vars:
+        omekadir: /home/admin/omeka
   handlers:
    - name: restart apache2
      service: name=apache2 state=restarted

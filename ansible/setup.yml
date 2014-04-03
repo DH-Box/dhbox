@@ -1,28 +1,13 @@
 ---
-    - name: Get openSSL
-      command: wget http://ftp.us.debian.org/debian/pool/main/o/openssl/libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
-    - name: Dpkg openssl
-      command: dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
-    - name: Add openssl to sources
-      command: echo "deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/" >> /etc/apt/sources.list
     - name: Update apt cache
       apt: update_cache=yes
-      sudo: true
-    - name: install apt packages
+    - name: install base apt packages
       apt: pkg={{ item }} state=latest
       with_items:
         - git
         - unzip
         - shellinabox
-        - default-jdk
-        - r-base
-        - gdebi-core
-        # - ant
-        # - ipython-notebook
-    - name: Get R Studio
-      command: wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb
-    - name: Install R Studio
-      shell: yes | gdebi rstudio-server-0.98.501-amd64.deb
+        - ipython-notebook
     - name: change shellinabox config
       lineinfile: dest=/etc/default/shellinabox regexp=SHELLINABOX_ARGS line='SHELLINABOX_ARGS="--no-beep --disable-ssl"'
       sudo: true
