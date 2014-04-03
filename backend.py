@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, flash, make_response, jsonify, send_file, current_app
-import launch_instance, users
+import ansible_call
 from datetime import timedelta
 from functools import update_wrapper
+
 
 # create application
 app = Flask('dhbox')
@@ -68,9 +69,7 @@ def dhbox():
     for user in all_users:
         users_and_passes.append({'name': user, 'pass': 'test'})
     print users_and_passes
-    launch_instance.launch(name=admin, users=users_and_passes)
-
-
+    ansible_call.call_ansible(ansible_call.user_set_passes(users_and_passes))
     return str(request.data)
 
 if __name__ == '__main__':

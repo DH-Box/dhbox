@@ -22,7 +22,7 @@ def call_ansible(users):
 
 sample_users = [{'name': 'jimmy', 'password': 'test'}, {'name': 'timmy', 'password': 'fest'}]
 users = user_set_passes(sample_users)
-call_ansible(users)
+# call_ansible(users)
 
 if __name__ == '__main__':
     pass
