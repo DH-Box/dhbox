@@ -6,7 +6,8 @@ def make_user_pass(user, password='test'):
     return {'name': user, 'password': encPass}
 
 
-def user_set_passes(user_list, finished_user_list = []):
+def user_set_passes(user_list):
+    finished_user_list = []
     # expects a list like: [{'name': 'jimmy', 'password': 'test'}, {'name': 'timmy', 'password': 'fest'}]
     for user in user_list:
         user = make_user_pass(str(user['name']), str(user['password']))
