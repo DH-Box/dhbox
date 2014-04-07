@@ -5,15 +5,15 @@
     command: dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
   - name: Add openssl to sources
     command: echo "deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/" >> /etc/apt/sources.list
-  # - name: Add openssl to sources
-  #   apt_repository: repo='deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/' state=present
-  - name: Update apt cache
-    apt: update_cache=yes
+  # - name: Update apt cache
+  #   apt: update_cache=yes
   - name: install rstudio apt packages
-    apt: pkg={{ item }} state=latest
+    apt: pkg={{ item }} state=latest update_cache=yes
     with_items:
       - r-base
+      - r-base-dev
       - gdebi-core
+      - libatlas3-base
   - name: Get R Studio
     command: wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb
   - name: Install R Studio

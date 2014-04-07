@@ -73,13 +73,15 @@
       with_items: users
     - name: set admin!
       user: name={{ admin.name }} state=present password={{ admin.password }}
-    - include: mallet.yml
-      vars:
-        malletdir: /dhbox/mallet
-    - include: rstudio.yml
-    - include: omeka.yml
-      vars:
-        omekadir: /home/admin/omeka
+    - name: Add admin user to sudoers
+      action: 'lineinfile dest=/etc/sudoers regexp="^{{ admin.name }} ALL" line="{{ admin.name }} ALL=(ALL) NOPASSWD: ALL" state=present'
+    # - include: mallet.yml
+    #   vars:
+    #     malletdir: /dhbox/mallet
+    # - include: rstudio.yml
+    # - include: omeka.yml
+    #   vars:
+    #     omekadir: /home/admin/omeka
   handlers:
    - name: restart apache2
      service: name=apache2 state=restarted
