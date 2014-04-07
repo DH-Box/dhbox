@@ -59,17 +59,24 @@ def crossdomain(origin=None, methods=None, headers=None,
 @crossdomain(origin='*')
 def dhbox():
     all_users = []
+    admins = []
     admin = request.form['admin']
     users = request.form.getlist('users')  # Get every form item with name='users' and create a list
-    all_users.append(admin)
+    admins.append(admin)
     for user in users:
         all_users.append(user)
 
     users_and_passes = []
+    admins_and_passes = []
     for user in all_users:
         users_and_passes.append({'name': user, 'password': 'test'})
+    for admin in admins:
+        admins_and_passes.append({'name': admin, 'password': 'test'})
     print users_and_passes
-    ansible_call.call_ansible(ansible_call.user_set_passes(users_and_passes))
+    print admins_and_passes
+    users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
+    admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
+    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes)
     return str(request.data)
 
 if __name__ == '__main__':

@@ -20,7 +20,7 @@
       security_group: default
       image: ami-d3675dba
       region: us-east-1
-      instance_tags: {"group":"dhbox", "Name":"{{admin}}"}
+      instance_tags: {"group":"dhbox", "Name":"{{admin[name]}}"}
 
   # Launch 1 instance with the following parameters.  Register the output.
 
@@ -71,6 +71,8 @@
     - name: set users!
       user: name={{ item.name }} state=present password={{ item.password }}
       with_items: users
+    - name: set admin!
+      user: name={{ admin }} state=present password={{ item.password }}
     - include: mallet.yml
       vars:
         malletdir: /dhbox/mallet
