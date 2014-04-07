@@ -18,12 +18,13 @@
   # user: root
 
   vars:
+      admin: "steve"
       keypair: stevess
       instance_type: t1.micro
       security_group: default
       image: ami-d3675dba
       region: us-east-1
-      instance_tags: {"group":"dhbox"}
+      instance_tags: {"group":"dhbox", "name":admin}
 
   # Launch 1 instance with the following parameters.  Register the output.
 
