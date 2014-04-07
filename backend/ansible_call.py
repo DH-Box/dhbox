@@ -9,7 +9,7 @@ def make_user_pass(user, password='test'):
 def user_set_passes(user_list, finished_user_list = []):
     # expects a list like: [{'name': 'jimmy', 'password': 'test'}, {'name': 'timmy', 'password': 'fest'}]
     for user in user_list:
-        user = make_user_pass(user['name'], user['password'])
+        user = make_user_pass(str(user['name'])), user['password'])
         finished_user_list.append(user)
     return finished_user_list
 
