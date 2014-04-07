@@ -67,7 +67,7 @@ def dhbox():
 
     users_and_passes = []
     for user in all_users:
-        users_and_passes.append({'name': user, 'pass': 'test'})
+        users_and_passes.append({'name': user, 'password': 'test'})
     print users_and_passes
     ansible_call.call_ansible(ansible_call.user_set_passes(users_and_passes))
     return str(request.data)
