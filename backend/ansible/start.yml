@@ -6,7 +6,7 @@
 # 
 # ansible-playbook start.yml -v --private-key=/path/to/ec2/pri/key
 #
-
+# requires outside variables "users" and "admin"
 # The play operates on the local (Ansible control) machine.
 - name: Stage instance(s)
   hosts: local
@@ -15,7 +15,6 @@
   # user: root
 
   vars:
-      admin: "steve"
       keypair: stevess
       instance_type: t1.micro
       security_group: default
