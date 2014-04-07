@@ -72,11 +72,11 @@ def dhbox():
         users_and_passes.append({'name': user, 'password': 'test'})
     for admin in admins:
         admins_and_passes.append({'name': admin, 'password': 'test'})
-    print users_and_passes
-    print admins_and_passes
     users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
     admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
-    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes)
+    print users_hashed_passes
+    print admins_hashed_passes
+    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
     return str(request.data)
 
 if __name__ == '__main__':
