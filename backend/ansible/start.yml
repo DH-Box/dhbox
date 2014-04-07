@@ -20,7 +20,7 @@
       security_group: default
       image: ami-d3675dba
       region: us-east-1
-      instance_tags: {"group":"dhbox", "Name":"{{admin[name]}}"}
+      instance_tags: {"group":"dhbox", "Name":"{{admin['name']}}"}
 
   # Launch 1 instance with the following parameters.  Register the output.
 
