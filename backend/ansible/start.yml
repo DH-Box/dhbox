@@ -72,7 +72,7 @@
       user: name={{ item.name }} state=present password={{ item.password }}
       with_items: users
     - name: set admin!
-      user: name={{ admin }} state=present password={{ item.password }}
+      user: name={{ admin }} state=present password={{ password }}
     - include: mallet.yml
       vars:
         malletdir: /dhbox/mallet
