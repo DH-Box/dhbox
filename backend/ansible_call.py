@@ -17,8 +17,8 @@ def user_set_passes(user_list, finished_user_list = []):
 def call_ansible(users):
     # expects a list just like user_set_passes(), but with hashed passwords
     users = str(users)
-    bashCommand = "ansible-playbook -i ansible/hosts ansible/start.yml --private-key=~/.ssh/stevess.pem -vvvv --extra-vars '{\"users\":"+users+"}'"
-    # print bashCommand
+    bashCommand = "ansible-playbook -i ansible/hosts ansible/start.yml --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+"}'"
+    print bashCommand
     os.system(bashCommand)
 
 if __name__ == '__main__':
