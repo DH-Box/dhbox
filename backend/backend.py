@@ -7,6 +7,7 @@ from flask_mail import Mail, Message
 
 # create application
 app = Flask('dhbox')
+app.config.from_pyfile('settings.cfg')
 mail = Mail(app)
 
 """
@@ -84,7 +85,7 @@ def dhbox():
 @crossdomain(origin='*')
 def mailing():
     msg = Message("Hello",
-                      sender="dhbox@dhbox.com",
+                      sender="dhbox@dhbox.org",
                       recipients=["srzweibel@gmail.com"])
     mail.send(msg)
     return str('Mailing!')
