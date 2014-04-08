@@ -3,10 +3,11 @@ from flask import Flask, request, redirect, url_for, render_template, flash, mak
 import ansible_call
 from datetime import timedelta
 from functools import update_wrapper
-
+from flask_mail import Mail, Message
 
 # create application
 app = Flask('dhbox')
+mail = Mail(app)
 
 """
 URLS/VIEWS
@@ -78,6 +79,15 @@ def dhbox():
     print admins_hashed_passes
     ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
     return str(request.data)
+
+@app.route('/mailing', methods=['GET', 'POST'])
+@crossdomain(origin='*')
+def mailing():
+    msg = Message("Hello",
+                      sender="dhbox@dhbox.com",
+                      recipients=["srzweibel@gmail.com"])
+    mail.send(msg)
+    return str('Mailing!')
 
 if __name__ == '__main__':
     app.debug = True

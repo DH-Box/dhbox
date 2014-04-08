@@ -78,7 +78,7 @@
     # - include: mallet.yml
     #   vars:
     #     malletdir: /dhbox/mallet
-    # - include: rstudio.yml
+    - include: rstudio.yml
     # - include: omeka.yml
     #   vars:
     #     omekadir: /home/admin/omeka

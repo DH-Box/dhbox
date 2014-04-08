@@ -15,13 +15,18 @@ def user_set_passes(user_list):
     return finished_user_list
 
 
-def call_ansible(users, admin):
+def call_ansible(users, admin, verbose=False):
     # expects a list just like user_set_passes(), but with hashed passwords
     users = str(users)
     admin = str(admin)
-    bashCommand = "ansible-playbook -i ansible/hosts ansible/start.yml --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+"}'"
+    if verbose is True:
+        bashCommand = "ansible-playbook -i ansible/hosts ansible/start.yml -vvvv --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+"}'"
+    else:
+        bashCommand = "ansible-playbook -i ansible/hosts ansible/start.yml --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+"}'"
     print bashCommand
     os.system(bashCommand)
 
 if __name__ == '__main__':
-    pass
+    test_users = user_set_passes([{'name': 'jimmy', 'password': 'test'}, {'name': 'timmy', 'password': 'fest'}])
+    test_admin = user_set_passes([{'name': 'steve', 'password':'test'}])
+    call_ansible(test_users, test_admin[0], verbose=True)
