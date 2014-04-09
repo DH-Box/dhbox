@@ -4,13 +4,12 @@
     - name: install base apt packages
       apt: pkg={{ item }} state=latest
       with_items:
+        - curl
         - git
         - unzip
         - shellinabox
         - ipython-notebook
     - name: change shellinabox config
       lineinfile: dest=/etc/default/shellinabox regexp=SHELLINABOX_ARGS line='SHELLINABOX_ARGS="--no-beep --disable-ssl"'
-      sudo: true
     - name: restart shellinabox
       service: name=shellinabox state=restarted
-      sudo: true

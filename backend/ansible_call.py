@@ -27,6 +27,6 @@ def call_ansible(users, admin, verbose=False):
     os.system(bashCommand)
 
 if __name__ == '__main__':
-    test_users = user_set_passes([{'name': 'jimmy', 'password': 'test'}, {'name': 'timmy', 'password': 'fest'}])
-    test_admin = user_set_passes([{'name': 'steve', 'password':'test'}])
-    call_ansible(test_users, test_admin[0], verbose=True)
+    test_users = user_set_passes([{'name': 'jimmy', 'password': 'test123'}, {'name': 'timmy', 'password': 'fest123'}])
+    test_admin = user_set_passes([{'name': 'steve', 'password':'test123'}])
+    call_ansible(test_users, test_admin[0], verbose=False)

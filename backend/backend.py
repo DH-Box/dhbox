@@ -1,9 +1,10 @@
 import os
-from flask import Flask, request, redirect, url_for, render_template, flash, make_response, jsonify, send_file, current_app
+from flask import Flask, request, redirect, url_for, render_template, make_response, jsonify, send_file, current_app
 import ansible_call
 from datetime import timedelta
 from functools import update_wrapper
 from flask_mail import Mail, Message
+
 
 # create application
 app = Flask('dhbox')
@@ -81,6 +82,7 @@ def dhbox():
     ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
     return str(request.data)
 
+
 @app.route('/mailing', methods=['GET', 'POST'])
 @crossdomain(origin='*')
 def mailing():
@@ -89,6 +91,23 @@ def mailing():
                       recipients=["srzweibel@gmail.com"])
     mail.send(msg)
     return str('Mailing!')
+
+@app.route('/test', methods=['POST'])
+@crossdomain(origin='*')
+def testing():
+    # admin = request.form['admin']
+    # users = request.form.getlist('users')  # Get every form item with name='users' and create a list
+    # print users
+    form  = request.form
+    print form
+    # data = dict((key, request.form.getlist(key)[0]) for key in request.form.keys())
+    # print data
+    # all_users = []
+    # for key, value in data.iteritems():
+    #     print key, value
+    #     # allusers.append({key: value})
+    return str(form)
+
 
 if __name__ == '__main__':
     app.debug = True
