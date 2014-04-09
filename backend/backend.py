@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, make_response, jsonify, send_file, current_app
 import ansible_call
+import ast
 from datetime import timedelta
 from functools import update_wrapper
 from flask_mail import Mail, Message
@@ -58,30 +59,6 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 
 # API
-@app.route('/dhbox', methods=['POST'])
-@crossdomain(origin='*')
-def dhbox():
-    all_users = []
-    admins = []
-    admin = request.form['admin']
-    users = request.form.getlist('users')  # Get every form item with name='users' and create a list
-    admins.append(admin)
-    for user in users:
-        all_users.append(user)
-
-    users_and_passes = []
-    admins_and_passes = []
-    for user in all_users:
-        users_and_passes.append({'name': user, 'password': 'test'})
-    for admin in admins:
-        admins_and_passes.append({'name': admin, 'password': 'test'})
-    users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
-    admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
-    print users_hashed_passes
-    print admins_hashed_passes
-    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
-    return str(request.data)
-
 
 @app.route('/mailing', methods=['GET', 'POST'])
 @crossdomain(origin='*')
@@ -92,26 +69,57 @@ def mailing():
     mail.send(msg)
     return str('Mailing!')
 
+@app.route('/dhbox', methods=['POST'])
+@crossdomain(origin='*')
+def dhbox():
+    users_and_passes = []
+    admins_and_passes = []
+    form  = request.form
+    data = {key: request.form.getlist(key)[0] for key in request.form.keys()}
+    for key in data:
+        users_dict = key
+    users_dict = ast.literal_eval(users_dict)
+    users = users_dict['users']
+    for user in users:
+        if 'isAdmin' in user:
+            admins_and_passes.append({'name': user['name'], 'password': user['pass']})
+        else:
+            users_and_passes.append({'name': user['name'], 'password': user['pass']})
+    users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
+    admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
+    print users_hashed_passes
+    print admins_hashed_passes
+    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
+    return str(form)
+
+
 @app.route('/test', methods=['POST'])
 @crossdomain(origin='*')
-def testing():
-    # admin = request.form['admin']
-    # users = request.form.getlist('users')  # Get every form item with name='users' and create a list
-    # print users
+def test():
+    users_and_passes = []
+    admins_and_passes = []
     form  = request.form
-    print form
-    # data = dict((key, request.form.getlist(key)[0]) for key in request.form.keys())
-    # print data
-    # all_users = []
-    # for key, value in data.iteritems():
-    #     print key, value
-    #     # allusers.append({key: value})
+    data = {key: request.form.getlist(key)[0] for key in request.form.keys()}
+    for key in data:
+        users_dict = key
+    users_dict = ast.literal_eval(users_dict)
+    users = users_dict['users']
+    for user in users:
+        if 'isAdmin' in user:
+            admins_and_passes.append({'name': user['name'], 'password': user['pass']})
+        else:
+            users_and_passes.append({'name': user['name'], 'password': user['pass']})
+    users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
+    admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
+    print users_hashed_passes
+    print admins_hashed_passes
+    # ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
     return str(form)
 
 
 if __name__ == '__main__':
     app.debug = True
-    # Bind to PORT if defined, otherwise default to 3000.
+    # Bind to PORT if defined, otherwise default to 8080.
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
     # app.run()
