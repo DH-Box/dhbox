@@ -1,0 +1,1 @@
+Welcome to DH Box! You can find your new DH Box at http://$ip_address.
