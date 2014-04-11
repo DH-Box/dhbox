@@ -83,13 +83,15 @@ def dhbox():
     for user in users:
         if 'isAdmin' in user:
             admins_and_passes.append({'name': user['name'], 'password': user['pass']})
+            adminEmail = user['isAdmin']
         else:
-            users_and_passes.append({'name': user['name'], 'password': user['pass']})
+            if 'name' in user:
+                users_and_passes.append({'name': user['name'], 'password': user['pass']})
     users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
     admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
     print users_hashed_passes
     print admins_hashed_passes
-    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0])
+    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0], adminEmail)
     return str(form)
 
 
@@ -121,5 +123,5 @@ if __name__ == '__main__':
     app.debug = True
     # Bind to PORT if defined, otherwise default to 8080.
     port = int(os.environ.get('PORT', 8080))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, threaded=True)
     # app.run()
