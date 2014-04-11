@@ -19,7 +19,6 @@
       security_group: default
       image: ami-d3675dba
       region: us-east-1
-      instance_tags: {"group":"dhbox", "Name":"{{admin['name']}}", "Email":"{{email}}"}
 
   # Launch 1 instance with the following parameters.  Register the output.
 
@@ -27,7 +26,7 @@
     - name: Launch instance 
       ec2: keypair={{keypair}} group={{security_group}}
            instance_type={{instance_type}} image={{image}}
-           wait=true count=1 region={{region}} instance_tags="{{instance_tags}}"
+           wait=true count=1 region={{region}}
       register: ec2
 
     # Use with_items to add each instances public IP to a new hostgroup for use in the next play.
@@ -39,10 +38,6 @@
 
     - name: Add new instances to host group
       add_host: hostname={{item.public_ip}} groupname=new_dhbox
-      with_items: ec2.instances
-
-    - name: Run python script to email
-      raw: python ../emailing.py {{email}} {{item.public_ip}}
       with_items: ec2.instances
 
     - name: Wait for the instances to boot by checking the ssh port
@@ -68,15 +63,14 @@
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
     - include: setup.yml
-    - include: users.yml
     - include: NLTK.yml
-    # - include: mallet.yml
-    #   vars:
-    #     malletdir: /dhbox/mallet
-    # - include: rstudio.yml
-    # - include: omeka.yml
-    #   vars:
-    #     omekadir: /home/admin/omeka
+    - include: mallet.yml
+      vars:
+        malletdir: /dhbox/mallet
+    - include: rstudio.yml
+    - include: omeka.yml
+      vars:
+        omekadir: /home/admin/omeka
   handlers:
    - name: restart apache2
      service: name=apache2 state=restarted

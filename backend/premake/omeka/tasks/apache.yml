@@ -1,0 +1,21 @@
+---
+- name: omeka config
+  template: dest=/etc/apache2/sites-available/000-omeka.conf
+            src=omeka.conf.j2
+  sudo: true
+- name: disable default site
+  command: a2dissite default
+  sudo: true
+  notify:
+    - restart apache2
+- name: a2ensite omeka
+  command: a2ensite 000-omeka.conf
+  sudo: true
+  notify:
+    - restart apache2
+- name: a2enmod rewrite
+  command: a2enmod rewrite
+  sudo: true
+  notify:
+    - restart apache2
+- service: name=apache2 state=started

@@ -91,7 +91,7 @@ def dhbox():
     admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
     print users_hashed_passes
     print admins_hashed_passes
-    ansible_call.call_ansible(users_hashed_passes, admins_hashed_passes[0], adminEmail)
+    ansible_call.create_dhbox_from_seed(users_hashed_passes, admins_hashed_passes[0], adminEmail)
     return str(form)
 
 

@@ -1,0 +1,11 @@
+---
+    - name: install base pip packages
+      apt: pkg={{ item }} state=latest
+      with_items:
+        - python-numpy
+        - python-scipy
+        - python-matplotlib
+    - name: Install NLTK
+      pip: name=NLTK
+    - name: install NLTK corpora
+      raw: python -m nltk.downloader all
