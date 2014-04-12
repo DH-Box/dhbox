@@ -4,9 +4,9 @@ from string import Template
 
 def make_an_email(who, ip_address, filename='../email.txt'):
     to = who
-    gmail_user = 'srzweibel@gmail.com'
-    gmail_pwd = 'tryharder'
-    smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+    gmail_user = 'do-not-reply@dhbox.org'
+    gmail_pwd = 'GCProfGold4'
+    smtpserver = smtplib.SMTP("smtp.live.com",587)
     smtpserver.ehlo()
     smtpserver.starttls()
     smtpserver.ehlo
@@ -15,7 +15,6 @@ def make_an_email(who, ip_address, filename='../email.txt'):
     print header
     template = open(filename).read()
     msg = Template(template).substitute(ip_address=ip_address)
-    # msg = "Welcome to DH Box! You can find your new DH Box at http://"+ ip_address +"."
     msg = header + '\n '+msg+' \n\n'
     smtpserver.sendmail(gmail_user, to, msg)
     print 'done!'

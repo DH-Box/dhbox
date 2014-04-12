@@ -59,7 +59,6 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 
 # API
-
 @app.route('/mailing', methods=['GET', 'POST'])
 @crossdomain(origin='*')
 def mailing():
