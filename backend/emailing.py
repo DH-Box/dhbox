@@ -15,7 +15,7 @@ def make_an_email(who, ip_address, filename='../email.txt'):
     smtpserver.ehlo
     smtpserver.login(gmail_user, gmail_pwd)
     to = who 
-    header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:testing \n'
+    header = 'To:' + to + '\n' + 'From: ' + 'do-not-reply@dhbox.org' + '\n' + 'Subject:testing \n'
     print header
     template = open(filename).read()
     msg = Template(template).substitute(ip_address=ip_address)
