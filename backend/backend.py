@@ -4,13 +4,9 @@ import ansible_call
 import ast
 from datetime import timedelta
 from functools import update_wrapper
-from flask_mail import Mail, Message
-
 
 # create application
 app = Flask('dhbox')
-app.config.from_pyfile('settings.cfg')
-mail = Mail(app)
 
 """
 URLS/VIEWS
@@ -56,17 +52,6 @@ def crossdomain(origin=None, methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
-
-
-# API
-@app.route('/mailing', methods=['GET', 'POST'])
-@crossdomain(origin='*')
-def mailing():
-    msg = Message("Hello",
-                      sender="dhbox@dhbox.org",
-                      recipients=["srzweibel@gmail.com"])
-    mail.send(msg)
-    return str('Mailing!')
 
 @app.route('/dhbox', methods=['POST'])
 @crossdomain(origin='*')
