@@ -16,9 +16,17 @@ def make_an_email(who, ip_address, filename='../email.txt'):
     template = open(filename).read()
     msg = Template(template).substitute(ip_address=ip_address)
     msg = header + '\n '+msg+' \n\n'
-    smtpserver.sendmail(gmail_user, to, msg)
-    print 'done!'
-    smtpserver.close()
+    smtpserver.set_debuglevel(1)
+    try:
+        smtpserver.starttls() 
+        smtpserver.login(login, password) 
+        smtpserver.sendmail(gmail_user, to, msg)
+    finally:
+        smtpserver.quit()
+
+    # smtpserver.sendmail(gmail_user, to, msg)
+    # print 'done!'
+    # smtpserver.close()
 
 
 if __name__ == '__main__':
