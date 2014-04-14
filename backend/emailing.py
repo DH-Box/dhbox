@@ -1,4 +1,6 @@
 import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import sys
 from string import Template
 import ConfigParser
@@ -15,20 +17,22 @@ def make_an_email(who, ip_address, filename='../email.txt'):
     smtpserver.ehlo
     smtpserver.login(gmail_user, gmail_pwd)
     to = who 
-    header = 'To:' + to + '\n' + 'From: ' + 'do-not-reply@dhbox.org' + '\n' + 'Subject:testing \n'
-    print header
-    template = open(filename).read()
-    msg = Template(template).substitute(ip_address=ip_address)
-    msg = header + '\n '+msg+' \n\n'
-    smtpserver.set_debuglevel(1)
-    # try:
-    #     smtpserver.starttls() 
-    #     smtpserver.login(login, password) 
-    #     smtpserver.sendmail(gmail_user, to, msg)
-    # finally:
-    #     smtpserver.quit()
+    # header = 'To:' + to + '\n' + 'From: ' + 'do-not-reply@dhbox.org' + '\n' + 'Subject:testing \n'
+    # print header
 
-    smtpserver.sendmail(gmail_user, to, msg)
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Your New DH Box"
+    msg['From'] = 'do-not-reply@dhbox.org'
+    msg['To'] = to
+    
+    html = open(filename).read()
+    body = Template(html).substitute(ip_address=ip_address)
+    # body = header + '\n '+body+' \n\n'
+    text = MIMEText(body, 'html')
+    
+    smtpserver.set_debuglevel(1)
+    msg.attach(text)
+    smtpserver.sendmail(gmail_user, to, msg.as_string())
     print 'done!'
     smtpserver.close()
 
