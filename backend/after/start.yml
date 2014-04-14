@@ -69,3 +69,6 @@
     - debug: 'msg="System {{ inventory_hostname }}"'
     - include: users.yml
     - include: omeka.yml
+    - name: Add home site
+      template: dest=/var/www/index.html
+                src=templates/index.html.j2

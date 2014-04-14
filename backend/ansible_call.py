@@ -15,7 +15,7 @@ def user_set_passes(user_list):
     return finished_user_list
 
 
-def create_dhbox(users, admin, email, verbose=False):
+def create_whole_dhbox(users, admin, email, verbose=False):
     # expects a list just like user_set_passes(), but with hashed passwords
     users = str(users)
     admin = str(admin)
