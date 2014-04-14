@@ -34,14 +34,15 @@ def seed_new(verbose=False):
     print bashCommand
     os.system(bashCommand)
 
-def create_dhbox_from_seed(users, admin, email, verbose=False):
+def create_dhbox_from_seed(users, administrator, email, unhashed_admin_pass, verbose=False):
     # expects a list just like user_set_passes(), but with hashed passwords
     users = str(users)
-    admin = str(admin)
+    admin = str(administrator)
+    unhashed_admin_pass = str(unhashed_admin_pass)
     if verbose is True:
-        bashCommand = "ansible-playbook -i ansible/hosts after/start.yml -vvvv --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+"}'"
+        bashCommand = "ansible-playbook -i ansible/hosts after/start.yml -vvvv --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+", \"unhashed_pass\":"+ unhashed_admin_pass+"}'"
     else:
-        bashCommand = "ansible-playbook -i ansible/hosts after/start.yml --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+", \"email\":"+email+"}'"
+        bashCommand = "ansible-playbook -i ansible/hosts after/start.yml --private-key=~/.ssh/stevess.pem --extra-vars '{\"users\":"+users+", \"admin\":"+admin+", \"email\":"+email+", \"unhashed_pass\":"+unhashed_admin_pass+"}'"
     print bashCommand
     os.system(bashCommand)
 
@@ -49,4 +50,4 @@ def create_dhbox_from_seed(users, admin, email, verbose=False):
 if __name__ == '__main__':
     test_users = user_set_passes([{'name': 'jimmy', 'password': 'test123'}, {'name': 'timmy', 'password': 'fest123'}])
     test_admin = user_set_passes([{'name': 'steve', 'password':'test123'}])
-    create_dhbox_from_seed(test_users, test_admin[0], 'oneperstephen@gmail.com', verbose=False)
+    create_dhbox_from_seed(test_users, test_admin[0], 'oneperstephen@gmail.com', 'test123', verbose=False)
