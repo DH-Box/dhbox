@@ -5,7 +5,7 @@ import sys
 from string import Template
 import ConfigParser
 
-def make_an_email(who, ip_address, filename='../email.txt'):
+def make_an_email(who, ip_address, subject, text='../email.txt', is_file=True):
     
     config = ConfigParser.ConfigParser()
     config.read("../settings.cfg")
@@ -21,13 +21,14 @@ def make_an_email(who, ip_address, filename='../email.txt'):
     # print header
 
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = "Your New DH Box"
+    msg['Subject'] = subject
     msg['From'] = 'do-not-reply@dhbox.org'
     msg['To'] = to
-    
-    html = open(filename).read()
-    body = Template(html).substitute(ip_address=ip_address)
-    # body = header + '\n '+body+' \n\n'
+    if is_file:
+        html = open(text).read()
+        body = Template(html).substitute(ip_address=ip_address)
+    else:
+        html = text
     text = MIMEText(body, 'html')
     
     smtpserver.set_debuglevel(1)
@@ -38,4 +39,4 @@ def make_an_email(who, ip_address, filename='../email.txt'):
 
 
 if __name__ == '__main__':
-    make_an_email(sys.argv[1], sys.argv[2])
+    make_an_email(sys.argv[1], sys.argv[2], "Your New DH Box")

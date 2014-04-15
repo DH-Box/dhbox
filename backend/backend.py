@@ -4,9 +4,18 @@ import ansible_call
 import ast
 from datetime import timedelta
 from functools import update_wrapper
+from flask.ext.sqlalchemy import SQLAlchemy
+from database import db_session
+from models import User
+import emailing
 
 # create application
 app = Flask('dhbox')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dhbox.db'
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 """
 URLS/VIEWS
@@ -65,17 +74,20 @@ def dhbox():
     users_dict = ast.literal_eval(users_dict)
     users = users_dict['users']
     for user in users:
-        if 'isAdmin' in user:
-            admins_and_passes.append({'name': user['name'], 'password': user['pass']})
-            adminEmail = user['isAdmin']
-            adminPass = user['pass']
-        else:
-            if 'name' in user:
+        if 'name' in user:
+            if 'email' in user: # Checks if Admin
+                # already_has_dhbox_check = User.query.filter(User.email == user['email']).first()
+                # if already_has_dhbox_check:
+                #     print previous_user_check
+                #     return str(form)
+                # else:
+                admins_and_passes.append({'name': user['name'], 'password': user['pass']})
+                adminEmail = user['email']
+                adminPass = user['pass']
+            else:
                 users_and_passes.append({'name': user['name'], 'password': user['pass']})
     users_hashed_passes = ansible_call.user_set_passes(users_and_passes)
     admins_hashed_passes = ansible_call.user_set_passes(admins_and_passes)
-    print users_hashed_passes
-    print admins_hashed_passes
     ansible_call.create_dhbox_from_seed(users_hashed_passes, admins_hashed_passes[0], adminEmail, adminPass)
     return str(form)
 
@@ -92,7 +104,7 @@ def test():
     users_dict = ast.literal_eval(users_dict)
     users = users_dict['users']
     for user in users:
-        if 'isAdmin' in user:
+        if 'email' in user:
             admins_and_passes.append({'name': user['name'], 'password': user['pass']})
         else:
             users_and_passes.append({'name': user['name'], 'password': user['pass']})
