@@ -50,7 +50,7 @@
 
                                                   Once it's ready, you should be able to see a welcome page at your very own web address:
 <br>
-<div style="text-align:center; display:block; text-transform: uppercase"><a href="http://$ip_address" class="btn btn-success btn-xlarge">http://$ip_address</a></div>
+<div style="text-align:center; display:block;"><a href="http://$ip_address" class="btn btn-success btn-xlarge">http://$ip_address</a></div>
                                                 </p>
 <!-- Callout Panel -->
 <p class="callout">
