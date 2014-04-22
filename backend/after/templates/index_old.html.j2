@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="full" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="DH Box">
+
+    <title>Welcome to Your New DH Box</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style type="text/css" media="all">
+      .full { background-image: url('http://dhbox.org/images/background.png') repeat; background-color: #FFFFFF; background-position: top; height: auto; display: block; width: 100%; }
+      .jumbotron { text-align: center; }
+      .headline > .description { font-size: 30px; }
+      .welcomepage > .container > .heading { font-size: 40px; color: #3C0987; }
+      .welcomepage > .container > hr { border: 0; border-bottom: 3px dashed #333; background: #999; }
+    </style>
+
+    <!-- JavaScript -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="welcomepage">
+
+    <div class="jumbotron">
+      <h1>Welcome to Your New DH Box</h1>
+    </div>
+
+    <div class="container">
+
+      <div class="headline">
+
+        <div class="description">
+          <p>You will find instructions below for how to access your DH Box via your browser and what tools are available for use.</p>
+
+          <p>Refer to the DH Box Documentation for more information: <a href="https://github.com/DH-Box/dhbox/wiki" target="_blank">https://github.com/DH-Box/dhbox/wiki</a></p>
+
+        </div>
+      </div>
+
+      <br>
+
+      <hr>
+
+      <br>
+
+      <div class="heading"><span class="glyphicon glyphicon-gift"></span> How to Access Your DH Box</div>
+
+      <br>
+    
+      <p>Your DH Box can be accessed by opening a web browser and heading to <a class="btn btn-success">your DH Box's IP Address: {{ inventory_hostname }}</a></p>
+
+        <p>Idea! Bookmark this page and refer back to it until <a class="btn btn-danger">your DH Box expires: [EXPIRATION DATE]</a></p>
+
+      <br><br>
+
+      <div class="heading"><span class="glyphicon glyphicon-cog"></span> DH Box Tools Available</div>
+
+      <p>&nbsp;</p>
+
+      <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Tool</th>  
+            <th>Port Number</th>  
+            <th>Web Address</th>  
+            <th>Documentation</th>
+          </tr>  
+        </thead>  
+        <tbody>  
+          <tr>  
+            <td><a class="btn btn-info btn-block">Bash Shell</a></td>  
+            <td>4200</td>  
+            <td><a href="http://{{ inventory_hostname }}:4200">http://{{ inventory_hostname }}:4200</a></td> 
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/Bash-shell</a></td>
+          </tr>
+          <tr>
+            <td><a class="btn btn-info btn-block">IPython</a></td>
+            <td>N/A (Accessed via Bash shell)</td>
+            <td>N/A (Accessed via Bash shell)</td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/IPython</a></td>
+          </tr> 
+          <tr>
+            <td><a class="btn btn-info btn-block">MALLET</a></td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/MALLET</a></td>
+          </tr> 
+          <tr>
+            <td><a class="btn btn-info btn-block">NLTK</a></td>
+            <td>N/A (Accessed via Bash shell)</td>
+            <td>N/A (Accessed via Bash shell))</td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/NLTK</a></td>
+          </tr>
+          <tr>  
+            <td><a class="btn btn-info btn-block">Omeka</a></td>
+            <td>8080</td>  
+            <td><a href="http://{{ inventory_hostname }}:8080">http://{{ inventory_hostname }}:8080</a></td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/Omeka" target="_blank">https://github.com/DH-Box/dhbox/wiki/Omeka</a></td>
+          </tr>  
+          <tr>  
+            <td><a class="btn btn-info btn-block">R Studio</a></td>
+            <td>8787</td>  
+            <td><a href="http://{{ inventory_hostname }}:8787">http://{{ inventory_hostname }}:8787</a></td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/R-Studio" target="_blank">https://github.com/DH-Box/dhbox/wiki/R-Studio</a></td>  
+          </tr>  
+        </tbody>  
+      </table> 
+
+      <br><br>
+
+      <hr>
+
+
+      <p>
+
+        <a href="http://dhbox.org/terms" target="_blank">Terms of Service</a>
+
+        Visit <a href="http://dhbox.org/" target="_blank">dhbox.org</a> for more info.
+
+      </p>
+
+      <br><br>
+
+    </div> <!-- End container -->
+  </div>  <!-- End welcomepage -->
+
+</body>
+
+</html>

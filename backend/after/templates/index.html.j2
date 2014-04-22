@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html class="full" lang="en">
-
-<head>
+<!-- saved from url=(0033)http://dhbox.org/your-new-dh-box/ -->
+<html class="full" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -14,16 +13,19 @@
 
     <!-- Custom CSS -->
     <style type="text/css" media="all">
+      body { font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif; font-size: 20px; }
       .full { background-image: url('http://dhbox.org/images/background.png') repeat; background-color: #FFFFFF; background-position: top; height: auto; display: block; width: 100%; }
       .jumbotron { text-align: center; }
+      .btn-custom { padding: 14px 22px; font-size: 17px; line-height: normal; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; }
       .headline > .description { font-size: 30px; }
       .welcomepage > .container > .heading { font-size: 40px; color: #3C0987; }
       .welcomepage > .container > hr { border: 0; border-bottom: 3px dashed #333; background: #999; }
+      .highlight { background: rgba(255, 230, 0, 0.5); padding: 3px 5px; margin: -3px -5px; line-height: 1.7; border-radius: 3px; display:inline-block; }
     </style>
 
     <!-- JavaScript -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="./Welcome to Your New DH Box_files/jquery.min.js"></script><style type="text/css"></style>
+    <script src="./Welcome to Your New DH Box_files/bootstrap.min.js"></script>
 
 </head>
 
@@ -32,7 +34,15 @@
   <div class="welcomepage">
 
     <div class="jumbotron">
-      <h1>Welcome to Your New DH Box</h1>
+      <img src="./Welcome to Your New DH Box_files/logo.png" alt="DH Box logo" height="100px" width="auto">
+      <br>
+      <h1>
+        Welcome to Your New DH Box
+        <br>
+        <span class="glyphicon glyphicon-gift"></span>
+      </h1> 
+      <br>
+      <h4 class="highlight">This DH Box Expires on: [expiration date]</h4>
     </div>
 
     <div class="container">
@@ -40,9 +50,7 @@
       <div class="headline">
 
         <div class="description">
-          <p>You will find instructions below for how to access your DH Box via your browser and what tools are available for use.</p>
-
-          <p>Refer to the DH Box Documentation for more information: <a href="https://github.com/DH-Box/dhbox/wiki" target="_blank">https://github.com/DH-Box/dhbox/wiki</a></p>
+          <p>If you're ready to start using DH tools, you're in the right place.</p>
 
         </div>
       </div>
@@ -53,64 +61,59 @@
 
       <br>
 
-      <div class="heading"><span class="glyphicon glyphicon-gift"></span> How to Access Your DH Box</div>
+      <div class="heading"><span class="glyphicon glyphicon-bookmark"></span> Bookmark This Page</div>
 
       <br>
     
-      <p>Your DH Box can be accessed by opening a web browser and heading to <a class="btn btn-success">your DH Box's IP Address: {{ inventory_hostname }}</a></p>
-
-        <p>Idea! Bookmark this page and refer back to it until <a class="btn btn-danger">your DH Box expires: [EXPIRATION DATE]</a></p>
+      <p>This is your DH Box's homepage.</p>
 
       <br><br>
 
-      <div class="heading"><span class="glyphicon glyphicon-cog"></span> DH Box Tools Available</div>
+      <div class="heading"><span class="glyphicon glyphicon-cog"></span> Use Your Tools</div>
 
-      <p>&nbsp;</p>
+      <br>
+
+      <p>Don't forget to read the documentation.</p>
+
+      <br>
 
       <table class="table table-striped">  
         <thead>  
           <tr>  
             <th>Tool</th>  
-            <th>Port Number</th>  
             <th>Web Address</th>  
             <th>Documentation</th>
           </tr>  
         </thead>  
         <tbody>  
           <tr>  
-            <td><a class="btn btn-info btn-block">Bash Shell</a></td>  
-            <td>4200</td>  
-            <td><a href="http://{{ inventory_hostname }}:4200">http://{{ inventory_hostname }}:4200</a></td> 
+            <td><a href="http://{{inventory_hostname}}:4200/" class="btn btn-info btn-block btn-custom">Bash Shell</a></td>  
+            <td><a href="http://{{inventory_hostname}}:4200/">http://{{ inventory_hostname }}:4200</a></td> 
             <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/Bash-shell</a></td>
           </tr>
           <tr>
-            <td><a class="btn btn-info btn-block">IPython</a></td>
+            <td><a class="btn btn-default btn-block btn-custom">IPython</a></td>
             <td>N/A (Accessed via Bash shell)</td>
-            <td>N/A (Accessed via Bash shell)</td>
-            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/IPython</a></td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/IPython" target="_blank">https://github.com/DH-Box/dhbox/wiki/IPython</a></td>
           </tr> 
           <tr>
-            <td><a class="btn btn-info btn-block">MALLET</a></td>
+            <td><a class="btn btn-default btn-block btn-custom">MALLET</a></td>
             <td>TBD</td>
-            <td>TBD</td>
-            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/MALLET</a></td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/MALLET" target="_blank">https://github.com/DH-Box/dhbox/wiki/MALLET</a></td>
           </tr> 
           <tr>
-            <td><a class="btn btn-info btn-block">NLTK</a></td>
+            <td><a class="btn btn-default btn-block btn-custom">NLTK</a></td>
             <td>N/A (Accessed via Bash shell)</td>
-            <td>N/A (Accessed via Bash shell))</td>
-            <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/NLTK</a></td>
+            <td><a href="https://github.com/DH-Box/dhbox/wiki/NLTK" target="_blank">https://github.com/DH-Box/dhbox/wiki/NLTK</a></td>
           </tr>
           <tr>  
-            <td><a class="btn btn-info btn-block">Omeka</a></td>
-            <td>8080</td>  
-            <td><a href="http://{{ inventory_hostname }}:8080">http://{{ inventory_hostname }}:8080</a></td>
+            <td><a href="http://{{inventory_hostname}}:8080/admin" class="btn btn-info btn-block btn-custom">Omeka</a></td>
+            <td><a href="http://{{inventory_hostname}}:8080/admin">http://{{ inventory_hostname }}:8080/admin</a></td>
             <td><a href="https://github.com/DH-Box/dhbox/wiki/Omeka" target="_blank">https://github.com/DH-Box/dhbox/wiki/Omeka</a></td>
           </tr>  
           <tr>  
-            <td><a class="btn btn-info btn-block">R Studio</a></td>
-            <td>8787</td>  
-            <td><a href="http://{{ inventory_hostname }}:8787">http://{{ inventory_hostname }}:8787</a></td>
+            <td><a href="http://{{inventory_hostname}}:8787/" class="btn btn-info btn-block btn-custom">R Studio</a></td>
+            <td><a href="http://{{inventory_hostname}}:8787/">http://{{ inventory_hostname }}:8787</a></td>
             <td><a href="https://github.com/DH-Box/dhbox/wiki/R-Studio" target="_blank">https://github.com/DH-Box/dhbox/wiki/R-Studio</a></td>  
           </tr>  
         </tbody>  
@@ -118,12 +121,25 @@
 
       <br><br>
 
-      <hr>
+      <div class="heading"><span class="glyphicon glyphicon-time"></span> Enjoy It While It Lasts</div>
 
+      <br>
+
+      <p></p><div class="highlight">Your DH Box expires on [expiration date].</div><p></p>
+
+      <br>
+
+      <p>Make sure to export any work you've done before then!</p>
+
+      <br><br>
+
+      <hr>
 
       <p>
 
         <a href="http://dhbox.org/terms" target="_blank">Terms of Service</a>
+
+        <br><br>
 
         Visit <a href="http://dhbox.org/" target="_blank">dhbox.org</a> for more info.
 
@@ -134,6 +150,7 @@
     </div> <!-- End container -->
   </div>  <!-- End welcomepage -->
 
-</body>
 
-</html>
+
+
+<div id="directions_extension" style="display: none;"></div></body></html>
