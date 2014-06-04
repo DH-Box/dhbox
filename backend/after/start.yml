@@ -69,6 +69,10 @@
     - debug: 'msg="System {{ inventory_hostname }}"'
     - include: users.yml
     - include: omeka.yml
+    - name: change SSH config
+      lineinfile: dest=/etc/ssh/sshd_config regexp=PasswordAuthentication line='PasswordAuthentication yes'
+    - name: restart ssh
+      service: name=ssh state=restarted
     - name: Add home site
       template: dest=/var/www/index.html
                 src=templates/index.html.j2
