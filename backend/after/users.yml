@@ -1,4 +1,6 @@
 ---
+    - name: Create dhbox group
+      group: name=dhbox state=present
     - name: set users!
       user: name={{ item.name }} state=present password={{ item.password }} groups=dhbox
       with_items: users
