@@ -70,7 +70,7 @@
     - include: users.yml
     - include: omeka.yml
     - name: change SSH config
-      lineinfile: dest=/etc/ssh/sshd_config regexp=PasswordAuthentication line='PasswordAuthentication yes'
+      lineinfile: dest=/etc/ssh/sshd_config regexp='PasswordAuthentication no' line='PasswordAuthentication yes'
     - name: restart ssh
       service: name=ssh state=restarted
     - name: Add home site
