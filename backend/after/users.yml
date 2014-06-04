@@ -9,4 +9,4 @@
     - name: Add admin user to sudoers
       action: 'lineinfile dest=/etc/sudoers regexp="^{{ admin.name }} ALL" line="{{ admin.name }} ALL=(ALL) NOPASSWD: ALL" state=present'
     - name: set permissions?
-      file: path=/home/admin/ recurse=yes mode=0775
+      file: path=/home/admin/ recurse=yes group=admin mode=0775
