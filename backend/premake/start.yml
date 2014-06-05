@@ -62,8 +62,8 @@
 
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
-    - name: set permissions?
-      file: path=/home/admin/ recurse=yes group=admin mode=0776
+    # - name: set permissions?
+    #   file: path=/home/admin/ recurse=yes group=admin mode=0776
     - include: setup.yml
     - include: NLTK.yml
     - include: mallet.yml
