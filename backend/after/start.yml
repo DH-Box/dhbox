@@ -17,7 +17,7 @@
       keypair: stevess
       instance_type: t1.micro
       security_group: default
-      image: ami-971e01fe
+      image: ami-a41cedcc
       region: us-east-1
       instance_tags: {"group":"dhbox", "Name":"{{admin['name']}}", "Email":"{{email}}"}
 

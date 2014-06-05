@@ -17,7 +17,7 @@
       keypair: stevess
       instance_type: t1.micro
       security_group: default
-      image: ami-d3675dba
+      image: ami-2c886c44
       region: us-east-1
 
   # Launch 1 instance with the following parameters.  Register the output.
@@ -62,6 +62,8 @@
 
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
+    - name: set permissions?
+      file: path=/home/admin/ recurse=yes group=admin mode=0775
     - include: setup.yml
     - include: NLTK.yml
     - include: mallet.yml
