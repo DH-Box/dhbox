@@ -73,6 +73,8 @@
       lineinfile: dest=/etc/ssh/sshd_config regexp='PasswordAuthentication no' line='PasswordAuthentication yes'
     - name: restart ssh
       service: name=ssh state=restarted
+    - name: set permissions?
+      file: path=/home/admin/ recurse=yes group=admin mode=0777
     - name: Add home site
       template: dest=/var/www/index.html
                 src=templates/index.html.j2
