@@ -7,11 +7,11 @@
 - name: Unpack Omeka
   command: unzip -qo /tmp/omeka.zip -d {{ omekadir }}
 - name: Move Omeka files
-  raw: cp -r {{ omekadir }}/omeka-2.1.4/* {{ omekadir }}
+  raw: cp -r {{ omekadir }}/omeka-2.2.2/* {{ omekadir }}
 - name: Move .htaccess
-  raw: cp -r {{ omekadir }}/omeka-2.1.4/.htaccess {{ omekadir }}
+  raw: cp -r {{ omekadir }}/omeka-2.2.2/.htaccess {{ omekadir }}
 - name: delete old Omeka directory
-  raw: rm -rf {{ omekadir }}/omeka-2.1.4/
+  raw: rm -rf {{ omekadir }}/omeka-2.2.2/
 - include: omeka/playbook.yml
 - name: Wait for Omeka
   wait_for: timeout=4

@@ -17,7 +17,7 @@
       keypair: stevess
       instance_type: t1.micro
       security_group: default
-      image: ami-d0a959b8
+      image: ami-c2b419aa
       region: us-east-1
       instance_tags: {"group":"dhbox", "Name":"{{admin['name']}}", "Email":"{{email}}"}
 
@@ -67,8 +67,6 @@
 
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
-    # - name: install sendmail
-    #   apt: pkg=sendmail state=latest
     - include: users.yml
     - include: omeka.yml
     - name: change SSH config
