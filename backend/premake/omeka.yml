@@ -3,7 +3,7 @@
   sudo: true
   action: file path={{ omekadir }} state=directory
 - name: Get Omeka
-  get_url: dest=/tmp/omeka.zip  url=http://omeka.org/files/omeka-2.1.4.zip
+  get_url: dest=/tmp/omeka.zip  url=http://omeka.org/files/omeka-2.2.2.zip
 - name: Unpack Omeka
   command: unzip -qo /tmp/omeka.zip -d {{ omekadir }}
 - name: Move Omeka files

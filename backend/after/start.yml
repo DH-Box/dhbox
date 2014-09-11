@@ -67,8 +67,8 @@
 
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
-    - name: install sendmail
-      apt: pkg=sendmail state=latest
+    # - name: install sendmail
+    #   apt: pkg=sendmail state=latest
     - include: users.yml
     - include: omeka.yml
     - name: change SSH config
