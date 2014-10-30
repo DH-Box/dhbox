@@ -15,7 +15,7 @@
 
   vars:
       keypair: stevess
-      instance_type: t1.micro
+      instance_type: m1.small
       security_group: default
       image: ami-c2b419aa
       region: us-east-1
