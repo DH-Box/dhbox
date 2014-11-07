@@ -1,0 +1,26 @@
+---
+  - name: Get openSSL
+    command: wget http://ftp.us.debian.org/debian/pool/main/o/openssl/libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
+  - name: Dpkg openssl
+    command: dpkg -i libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
+  # - name: Add R to sources
+  #   raw: echo "deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/" | sudo tee -a /etc/apt/sources.list
+  - name: Add R to sources
+    apt_repository: repo='deb http://ftp.ussg.iu.edu/CRAN/bin/linux/debian wheezy-cran3/'
+  - name: install rstudio apt packages
+    apt: pkg={{ item }} state=latest update_cache=yes force=yes
+    with_items:
+      - r-base
+      - r-base-dev
+      - gdebi-core
+      - libatlas3-base
+  - name: Get R Studio
+    command: wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb -O rstudio.deb
+  - name: Install R Studio
+    shell: yes | gdebi rstudio.deb
+  - name: Create R directory
+    file: path=/etc/rstudio state=directory
+  - name: configure R
+    raw: echo "r-libs-user=~/R/library" | tee -a /etc/rstudio/rsession.conf
+  - name: Restart R Studio
+    service: name=rstudio-server state=restarted
