@@ -1,0 +1,21 @@
+---
+# The play operates on the local (Ansible control) machine.
+- name: Stage instance(s)
+  hosts: local
+  connection: local
+  sudo: True
+  gather_facts: false
+
+  tasks:
+    - debug: 'msg="System {{ inventory_hostname }}"'
+    # - name: Restart MySQL
+    #   action: service name=mysql state=restarted
+    - name: Configure Apparmor
+      shell: ln -s /etc/apparmor.d/rstudio-server /etc/apparmor.d/disable/
+    - include: omeka.yml
+      vars:
+        omekadir: /var/www/omeka/
+  handlers:
+   - name: restart apache2
+     sudo: True
+     service: name=apache2 state=restarted

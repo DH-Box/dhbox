@@ -1,0 +1,5 @@
+---
+- name: 10-fix_pathinfo.ini
+  sudo: true
+  copy: dest=/etc/php5/apache2/conf.d/10-fix_pathinfo.ini
+        content='cgi.fix_pathinfo=0'

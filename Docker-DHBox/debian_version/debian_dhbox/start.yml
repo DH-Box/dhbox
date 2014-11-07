@@ -1,0 +1,24 @@
+---
+# The play operates on the local (Ansible control) machine.
+- name: Stage instance(s)
+  hosts: local
+  connection: local
+  sudo: True
+  gather_facts: false
+
+  tasks:
+    - debug: 'msg="System {{ inventory_hostname }}"'
+    # - include: setup.yml
+    # - include: users.yml
+    # - include: NLTK.yml
+    # - include: mallet.yml
+    #   vars:
+    #     malletdir: /dhbox/mallet
+    # - include: rstudio.yml
+    - include: omeka.yml
+      vars:
+        omekadir: /home/admin/omeka
+  handlers:
+   - name: restart apache2
+     sudo: True
+     service: name=apache2 state=restarted
