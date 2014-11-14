@@ -1,8 +1,3 @@
-*.pyc
-*.db
-hosts
-settings.cfg
-
 *.py[cod]
 
 # C extensions
@@ -47,6 +42,3 @@ include
 
 # Mac OS X custom attribute files
 .DS_Store
-
-
-dhbox/tmp/
