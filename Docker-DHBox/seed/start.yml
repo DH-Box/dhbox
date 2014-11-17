@@ -9,7 +9,6 @@
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
     - include: setup.yml
-    # - include: users.yml
     - include: NLTK.yml
     - include: mallet.yml
       vars:

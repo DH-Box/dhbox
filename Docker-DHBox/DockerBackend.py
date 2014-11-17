@@ -110,7 +110,7 @@ def delete_untagged():
             print "Deleting untagged image\nhash=", image_id
             try:
                 c.remove_image(image["Id"])
-            except DockerAPIError as error:
+            except docker.errors.DockerAPIError as error:
                 print "Failed to delete image\nhash={}\terror={}", image_id, error
 
     if not found:

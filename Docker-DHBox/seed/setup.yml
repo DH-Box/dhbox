@@ -1,6 +1,6 @@
 ---
-    - name: Update apt cache
-      apt: update_cache=yes
+    # - name: Update apt cache
+    #   apt: update_cache=yes
     - name: install apt-utils
       apt: pkg=apt-utils state=latest
     - name: install base apt packages
