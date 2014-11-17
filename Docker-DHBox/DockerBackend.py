@@ -4,8 +4,8 @@ from docker.utils import kwargs_from_env
 import os
 
 def attach_to_docker_client():
-	docker_host = os.environ['DOCKER_HOST']
-	if docker_host and docker_host == 'tcp://192.168.59.103:2376':
+	# docker_host = os.environ['DOCKER_HOST']
+	if os.environ['DOCKER_HOST'] and os.environ['DOCKER_HOST'] == 'tcp://192.168.59.103:2376':
 		c = Client(**kwargs_from_env(assert_hostname=False))
 	else:
 		c = Client()
