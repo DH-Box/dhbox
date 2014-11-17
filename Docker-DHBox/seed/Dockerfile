@@ -28,7 +28,7 @@ ADD hosts /etc/ansible/hosts
 #RUN chmod +x /etc/service/apache2/run
 
 WORKDIR /src
-RUN ansible-playbook start.yml -c local
+RUN ansible-playbook start.yml -c local -i 'localhost,'
 
 EXPOSE 22 8787 80 4200
 
