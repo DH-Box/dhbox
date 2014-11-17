@@ -15,11 +15,11 @@ def build_dhbox(seed=True, username='test'):
 	if seed:
 		print "Building Seed"
 		os.chdir('seed/')
-		response = [line for line in c.build(rm=True, tag='dhbox/seed')]
+		response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed')]
 	else:
 		print "Building User DH Box"
 		os.chdir('dhbox/')
-		response = [line for line in c.build(rm=True, tag='dhbox/'+username)]
+		response = [line for line in c.build(path='.', rm=True, tag='dhbox/'+username)]
 	return response
 
 def get_container_info(which_container):
