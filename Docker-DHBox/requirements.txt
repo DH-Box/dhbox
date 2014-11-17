@@ -4,8 +4,6 @@ MarkupSafe==0.23
 Werkzeug==0.9.6
 backports.ssl-match-hostname==3.4.0.2
 docker-py==0.6.0
-gnureadline==6.3.3
-ipython==2.3.0
 itsdangerous==0.24
 manage.py==0.2.6
 requests==2.4.3

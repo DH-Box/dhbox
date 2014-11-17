@@ -5,7 +5,7 @@ import os
 
 def attach_to_docker_client():
 	docker_host = os.environ['DOCKER_HOST']
-	if docker_host == 'tcp://192.168.59.103:2376':
+	if docker_host and if docker_host == 'tcp://192.168.59.103:2376':
 		c = Client(**kwargs_from_env(assert_hostname=False))
 	else:
 		c = Client()
