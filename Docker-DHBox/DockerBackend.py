@@ -14,10 +14,12 @@ def attach_to_docker_client():
 def build_dhbox(seed=True, username='test'):
 	if seed:
 		print "Building Seed"
-		response = [line for line in c.build(path='seed/', rm=True, tag='dhbox/seed')]
+		os.chdir('seed/')
+		response = [line for line in c.build(rm=True, tag='dhbox/seed')]
 	else:
 		print "Building User DH Box"
-		response = [line for line in c.build(path='dhbox/', rm=True, tag='dhbox/'+username)]
+		os.chdir('dhbox/')
+		response = [line for line in c.build(rm=True, tag='dhbox/'+username)]
 	return response
 
 def get_container_info(which_container):
