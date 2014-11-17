@@ -12,7 +12,7 @@ ADD . /src
 
 # Install ansible
 RUN pip install ansible==1.7
-ADD hosts /etc/ansible/hosts
+#ADD hosts /etc/ansible/hosts
 
 #Adding Deamons to containers
 #RUN mkdir -p /etc/service/rserver
