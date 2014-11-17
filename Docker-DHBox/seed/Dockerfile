@@ -14,9 +14,8 @@ ADD . /src
 RUN pip install ansible==1.7
 
 RUN mkdir -p /etc/ansible/
-RUN echo "[local]
-localhost ansible_connection=local
-" > /etc/ansible/hosts
+RUN echo "[local]" > /etc/ansible/hosts
+RUN echo "localhost ansible_connection=local" >> /etc/ansible/hosts
 WORKDIR /src
 RUN ansible-playbook start.yml -c local
 
