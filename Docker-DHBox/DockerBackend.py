@@ -1,30 +1,24 @@
+import docker
 from docker import Client
 from docker.utils import kwargs_from_env
 import os
 
-# c = Client()
-c = Client(**kwargs_from_env(assert_hostname=False))
-
-def attach_to_docker_client(development=False):
-	if development:
+def attach_to_docker_client():
+	docker_host = os.environ['DOCKER_HOST']
+	if docker_host == 'tcp://192.168.59.103:2376':
 		c = Client(**kwargs_from_env(assert_hostname=False))
 	else:
 		c = Client()
 	return c
 
-def build_dhbox(seed=True):
+def build_dhbox(seed=True, username='test'):
 	if seed:
+		print "Building Seed"
 		response = [line for line in c.build(path='seed/', rm=True, tag='dhbox/seed')]
 	else:
-		response = [line for line in c.build(path='dhbox/', rm=True, tag='dhbox/user')]
+		print "Building User DH Box"
+		response = [line for line in c.build(path='dhbox/', rm=True, tag='dhbox/'+username)]
 	return response
-
-def create_new_container(name, user_container='dhbox/user'):
-	container = c.create_container(image=user_container, name=name,
-		ports=[(80, 'tcp'), (4200, 'tcp'), (8080, 'tcp'), (8787, 'tcp')], tty=True, stdin_open=True)
-	c.start(container, publish_all_ports=True)
-	info = c.inspect_container(container)
-	return info
 
 def get_container_info(which_container):
 	containers = c.containers()
@@ -38,6 +32,7 @@ def get_container_port(container_name, app_port):
 	return public_port
 
 def build_startup_file(user, the_pass, email):
+	"""Create a startup file with a user's custom info"""
 	temp_filename = 'dhbox/tmp/startup.sh'
 	temp = open(temp_filename, 'w+b')
 	special_string = '  wget -O /tmp/install.html --post-data "username={0}&password={1}&password_confirm={1}&super_email={2}&administrator_email={2}&site_title=DHBox&description=DHBox&copyright=2014&author=DHBOX&tag_delimiter=,&fullsize_constraint=800&thumbnail_constraint=200&square_thumbnail_constraint=200&per_page_admin=10&per_page_public=10&show_empty_elements=0&path_to_convert=/usr/bin&install_submit=Install" localhost:8080/install/install.php'.format(user, the_pass, email)
@@ -64,23 +59,61 @@ else
 		return temp
 		##make sure to close and remove the file!!
 
-def setup_new_dhbox(user, password, email):
-	startup_file = build_startup_file(user, password, email)
-	build_dhbox(seed=False)
-	info = create_new_container('test')
+def setup_new_dhbox(username, password, email):
+	"""Create a new DH Box with a startup file. Make a new container and start it."""
+	startup_file = build_startup_file(username, password, email)
+	build_dhbox(seed=False, username=username)
+	try:
+		print "Creating Container"
+		container = c.create_container(image='dhbox/'+username, name=username,
+			ports=[(80, 'tcp'), (4200, 'tcp'), (8080, 'tcp'), (8787, 'tcp')], tty=True, stdin_open=True)
+	except docker.errors.APIError, e:
+		raise e
+	else:
+		print "Starting Container"
+		c.start(container, publish_all_ports=True)
+		info = c.inspect_container(container)
+    ## Clean up the temporary file
 	startup_file.close()
-    # Clean up the temporary file
 	os.remove(startup_file.name)
 	return info
 
-def kill_delete_dhbox(ctr_name, username):
+def kill_dhbox(ctr_name, delete_image=False):
+	"""Kill a running DH Box container, and optionally remove it"""
 	try:
+		print "Killing container."
 		c.kill(ctr_name)
 		c.remove_container(ctr_name)
-		c.remove_image(username)
 	except Exception, e:
-		print e
-	
+		if delete_image:
+			print "No container to delete. Removing image."
+			c.remove_image('dhbox/'+ctr_name)
+		raise e
+	else:
+		if delete_image:
+			print "Removing image."
+			c.remove_image('dhbox/'+ctr_name)
+
+
+def delete_untagged():
+    """Find the untagged images and remove them"""
+    images = c.images()
+    found = False
+    for image in images:
+        if image["RepoTags"] == ["<none>:<none>"]:
+            found = True
+            image_id = image["Id"]
+            print "Deleting untagged image\nhash=", image_id
+            try:
+                c.remove_image(image["Id"])
+            except DockerAPIError as error:
+                print "Failed to delete image\nhash={}\terror={}", image_id, error
+
+    if not found:
+        print "Didn't find any untagged images to delete!"
+
+c = attach_to_docker_client()
+
 if __name__ == '__main__':
-	c = Client(**kwargs_from_env(assert_hostname=False))
+	c = DockerBackend.attach_to_docker_client()
 	setup_new_dhbox('steve', 'password', 'oneperstephen@gmail.com')
