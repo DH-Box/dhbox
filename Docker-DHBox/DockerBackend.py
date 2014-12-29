@@ -1,10 +1,11 @@
 import docker
 from docker import Client
 from docker.utils import kwargs_from_env
+import json
+from urllib2 import urlopen
 import os
 
 def attach_to_docker_client():
-	# docker_host = os.environ['DOCKER_HOST']
 	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
 		c = Client(**kwargs_from_env(assert_hostname=False))
 	else:
@@ -25,19 +26,38 @@ def build_dhbox(seed=True, username='test'):
 	return response
 
 def get_container_info(which_container):
-	containers = c.containers()
-	for container_info in containers:
-		if which_container in container_info['Names'][0]:
-			return container_info
+	info = c.inspect_container(which_container)
+	return info
 
 def get_container_port(container_name, app_port):
 	container = get_container_info(container_name)
-	public_port = [item for item in container['Ports'] if item['PrivatePort'] == app_port][0]['PublicPort']
+	public_port = container['NetworkSettings']['Ports'][app_port+'/tcp'][0]['HostPort']
 	return public_port
+
+def get_all_exposed_ports(container_name):
+	container = get_container_info(container_name)
+	public_ports = container['NetworkSettings']['Ports']
+	public_ports_cleaned = {}
+	for inside_port, outside_port in public_ports.iteritems():
+		inside_port = inside_port [:-4]
+		outside_port = outside_port[0]['HostPort']
+		public_ports_cleaned[inside_port] = outside_port
+	return public_ports_cleaned
+
+def get_hostname():
+	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
+		hostname = 'dockerhost'
+	else:
+		hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
+	return hostname
 
 def build_startup_file(user, the_pass, email):
 	"""Create a startup file with a user's custom info"""
 	temp_filename = 'dhbox/tmp/startup.sh'
+	try:
+		os.remove(temp_filename)
+	except OSError:
+		pass
 	temp = open(temp_filename, 'w+b')
 	special_string = '  wget -O /tmp/install.html --post-data "username={0}&password={1}&password_confirm={1}&super_email={2}&administrator_email={2}&site_title=DHBox&description=DHBox&copyright=2014&author=DHBOX&tag_delimiter=,&fullsize_constraint=800&thumbnail_constraint=200&square_thumbnail_constraint=200&per_page_admin=10&per_page_public=10&show_empty_elements=0&path_to_convert=/usr/bin&install_submit=Install" localhost:8080/install/install.php'.format(user, the_pass, email)
 	try:

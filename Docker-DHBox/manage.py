@@ -10,7 +10,7 @@ manager = Manager()
 
 @manager.command
 def new_seed():
-    """Build new seed DH Box"""
+    """Build new seed for DH Box"""
     response = DockerBackend.build_dhbox(seed=True)
     return response
 
@@ -23,7 +23,7 @@ def test():
 
 @manager.command
 def start_over():
-    """delete and make a new test DH Box"""
+    """Delete and make a new test DH Box"""
     cleanup()
     response = DockerBackend.kill_dhbox('test', delete_image=True)
     DockerBackend.setup_new_dhbox('test', 'password', 'oneperstephen@gmail.com')
@@ -31,14 +31,14 @@ def start_over():
 
 @manager.command
 def killctr(ctr_name):
-    """delete a container"""
+    """Delete a container"""
     print "killing container " + ctr_name
     response = DockerBackend.kill_dhbox(ctr_name)
     return response
 
 @manager.command
 def cleanup():
-    """delete unnamed images"""
+    """Delete unnamed images"""
     print "Deleting Images"
     DockerBackend.delete_untagged()
 
