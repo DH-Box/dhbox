@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+<meta name="description" content="Reference Desk Statistics">
+<meta name="author" content="SZ">
+<link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+<title>Dh Box</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"> -->
+
+<script type="text/javascript" src="{{url_for('static', filename='javascript/jquery.validate.min.js')}}"></script>
+
+<body>
+<div class="navbar container">
+    <div class='navbar-inner'>
+            <h1>
+                <a class='brand' title="Home">DH Box</a>
+            </h1>
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <div class='nav-collapse'>
+                <ul class='nav'>
+                    <li>
+                        <strong>Your DH Box</strong>
+                        </a>
+                    </li>
+                    <li>
+                            <strong>Statistics</strong>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success container row">
+<div>
+  <button type="button" href="#" class="close" data-dismiss="alert">×</button>
+  {{message}}
+</div>
+</div>
+{% endfor %}
+<div id='the_alert' style='display:none;' class='alert alert-success container row'>New Item Posted!</div>
+<br />
+<p></p>
+<div class="container">{% block body %}{% endblock %}</div>
+</body>
+</html>
