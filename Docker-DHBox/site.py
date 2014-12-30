@@ -1,6 +1,6 @@
 import os
 import os.path
-from flask import Flask, request, redirect, url_for, render_template, make_response, jsonify, send_file, current_app
+from flask import Flask, request, redirect, url_for, render_template, make_response, jsonify, send_file, current_app, url_for
 import ast
 from flask.ext.sqlalchemy import SQLAlchemy
 from database.database import db_session, init_db
@@ -43,7 +43,7 @@ def rstudio_box(the_user):
     port_info = DockerBackend.get_container_port(dhbox_username, '8787')
     hostname = DockerBackend.get_hostname()
     location = hostname+":"+port_info
-    return redirect(location)
+    return redirect('http://'+location)
 
 
 
