@@ -1,15 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
 <!DOCTYPE html>
 <html class="full" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="DH Box">
-
     <title>Welcome to Your New DH Box</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <style type="text/css" media="all">
       body { font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif; font-size: 20px; }
@@ -21,17 +18,8 @@
       .welcomepage > .container > hr { border: 0; border-bottom: 3px dashed #333; background: #999; }
       .highlight { background: rgba(255, 230, 0, 0.5); padding: 3px 5px; margin: -3px -5px; line-height: 1.7; border-radius: 3px; display:inline-block; }
     </style>
-
-    <!-- JavaScript -->
-    <script src="./Welcome to Your New DH Box_files/jquery.min.js"></script><style type="text/css"></style>
-    <script src="./Welcome to Your New DH Box_files/bootstrap.min.js"></script>
-
 </head>
-
-<body>
-
   <div class="welcomepage">
-
     <div class="jumbotron">
       <img src="http://dhbox.org/images/logo.png" alt="DH Box logo" height="100px" width="auto">
       <br>
@@ -43,39 +31,23 @@
       <br>
       <h4 class="highlight">This DH Box Expires on: [expiration date]</h4>
     </div>
-
     <div class="container">
-
       <div class="headline">
-
         <div class="description">
           <p>If you're ready to start using DH tools, you're in the right place.</p>
-
         </div>
       </div>
-
       <br>
-
       <hr>
-
       <br>
-
       <div class="heading"><span class="glyphicon glyphicon-bookmark"></span> Bookmark This Page</div>
-
       <br>
-    
       <p>This is your DH Box's homepage.</p>
-
       <br><br>
-
       <div class="heading"><span class="glyphicon glyphicon-cog"></span> Use Your Tools</div>
-
       <br>
-
       <p>Don't forget to read the documentation.</p>
-
       <br>
-
       <table class="table table-striped">  
         <thead>  
           <tr>  
@@ -86,8 +58,8 @@
         </thead>  
         <tbody>  
           <tr>  
-            <td><a href="http://{{docker_hostname}}:{{bash_port}}/" class="btn btn-info btn-block btn-custom">Bash Shell</a></td>  
-            <td><a href="http://{{docker_hostname}}:{{bash_port}}/">http://{{ docker_hostname }}:{{bash_port}}</a></td> 
+            <td><a href="{{url_for('app_box', the_user=user, app_name='bash')}}" class="btn btn-info btn-block btn-custom">Bash Shell</a></td>  
+            <td><a href="{{url_for('app_box', the_user=user, app_name='bash')}}">Bash Shell</a></td> 
             <td><a href="https://github.com/DH-Box/dhbox/wiki/Bash-shell" target="_blank">https://github.com/DH-Box/dhbox/wiki/Bash-shell</a></td>
           </tr>
           <tr>
@@ -106,50 +78,36 @@
             <td><a href="https://github.com/DH-Box/dhbox/wiki/NLTK" target="_blank">https://github.com/DH-Box/dhbox/wiki/NLTK</a></td>
           </tr>
           <tr>  
-            <td><a href="http://{{docker_hostname}}:{{omeka_port}}/admin" class="btn btn-info btn-block btn-custom">Omeka</a></td>
-            <td><a href="http://{{docker_hostname}}:{{omeka_port}}/admin">http://{{ docker_hostname }}:{{omeka_port}}/admin</a></td>
+            <td><a href="{{url_for('app_box', the_user=user, app_name='omeka')}}" class="btn btn-info btn-block btn-custom">Omeka</a></td>
+            <td><a href="{{url_for('app_box', the_user=user, app_name='omeka')}}">Omeka</a></td>
             <td><a href="https://github.com/DH-Box/dhbox/wiki/Omeka" target="_blank">https://github.com/DH-Box/dhbox/wiki/Omeka</a></td>
           </tr>  
           <tr>  
-            <td><a href="http://{{docker_hostname}}:{{rstudio_port}}/" class="btn btn-info btn-block btn-custom">R Studio</a></td>
-            <td><a href="http://{{docker_hostname}}:{{rstudio_port}}/">http://{{ docker_hostname }}:{{rstudio_port}}</a></td>
+            <td><a href="{{url_for('app_box', the_user=user, app_name='rstudio')}}" class="btn btn-info btn-block btn-custom">R Studio</a></td>
+            <td><a href="{{url_for('app_box', the_user=user, app_name='rstudio')}}">R Studio</a></td>
             <td><a href="https://github.com/DH-Box/dhbox/wiki/R-Studio" target="_blank">https://github.com/DH-Box/dhbox/wiki/R-Studio</a></td>  
           </tr>  
         </tbody>  
       </table> 
-
       <br><br>
-
       <div class="heading"><span class="glyphicon glyphicon-time"></span> Enjoy It While It Lasts</div>
-
       <br>
-
       <p></p><div class="highlight">Your DH Box expires on [expiration date].</div><p></p>
-
       <br>
-
       <p>Make sure to export any work you've done before then!</p>
-
       <br><br>
-
       <hr>
-
       <p>
-
         <a href="http://dhbox.org/terms" target="_blank">Terms of Service</a>
-
         <br><br>
-
         Visit <a href="http://dhbox.org/" target="_blank">dhbox.org</a> for more info.
-
       </p>
-
       <br><br>
-
+<form action="{{url_for('kill_dhbox')}}" id="end_dhbox" method="post">
+            <input type="hidden" name="user" value="{{user}}">
+            <input type="submit" value="Destroy DH Box">
+            </div>
+            </form>
     </div> <!-- End container -->
   </div>  <!-- End welcomepage -->
-
-
-
-
-<div id="directions_extension" style="display: none;"></div></body></html>
+{% endblock %}

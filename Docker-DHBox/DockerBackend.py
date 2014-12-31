@@ -140,4 +140,4 @@ c = attach_to_docker_client()
 
 if __name__ == '__main__':
 	c = DockerBackend.attach_to_docker_client()
-	setup_new_dhbox('steve', 'password', 'oneperstephen@gmail.com')
+	# setup_new_dhbox('steve', 'password', 'oneperstephen@gmail.com')
