@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="header-image">
+        <div class="headline">
+            <div>
+                <h1 class="dhbox">DH Box</h1>
+                <h2 class="dhbox">A Digital Humanities Laboratory  <br> in the cloud</h2>
+                  <h3 class="dhbox">  Connect
+            //   
+            <a href="mailto:hello@dhbox.org" target="_blank">
+              <i class="icon icon-email"></i>
+              <span>Email</span>
+            </a>
+            //
+            <a href="http://twitter.com/DH_Box" target="_blank">
+              <i class="icon icon-twitter"></i>
+              <span>Twitter</span>
+            </a>
+            //
+            <a href="http://github.com/DH-Box" target="_blank">
+              <i class="icon icon-github"></i>
+              <span>GitHub</span>
+            </a>
+            //
+            <a href="http://feeds.feedburner.com/DHBoxBlog" target="_blank">
+              <i class="icon icon-rss"></i>
+              <span>RSS</span>
+            </a>
+            //
+            <a href="http://dhbox.commons.gc.cuny.edu/" target="_blank">
+              <i class="icon icon-blog"></i>
+              <span>Blog</span>
+            </a>   
+</h3>
+            </div>
+        </div>
+    </div>
+    <div>
+            <div class="featurette" id="welcome">
+
+	        <br>	
+
+                <img class="featurette-image img-responsive pull-right" src="{{url_for('static', filename='images/dhbox_shell.png')}}">
+                <h2 class="featurette-heading dhbox">Ready to stop installing &amp; start exploring?
+                  <span class="text-muted dhbox">Welcome to DH Box.</span>
+                </h2>
+                <p class="lead">Setting up an environment for digital humanities computational work can be time-consuming and difficult. DH Box addresses this problem by streamlining installation processes and providing a DH laboratory in the cloud through simple sign-in via a web browser. The DH Box platform comes pre-equipped with essential DH tools such as IPython, RStudio, Omeka, and NLTK.</p>
+                <br><br>
+              </div>
+        <!-- END THE FEATURETTES -->
+      </div>
+{% endblock %}
