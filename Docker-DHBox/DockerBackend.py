@@ -25,6 +25,10 @@ def build_dhbox(seed=True, username='test'):
 		os.chdir('../')
 	return response
 
+def all_containers():
+	info = c.containers()
+	return info
+
 def get_container_info(which_container):
 	info = c.inspect_container(which_container)
 	return info

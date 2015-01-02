@@ -38,6 +38,7 @@
             <li><a href="{{url_for('our_team')}}">Our Team</a></li>
             <li><a href="{{url_for('contact')}}">Contact</a></li>
             <li><a href="{{url_for('get_started')}}">Get Started</a></li>
+            <li><a href="{{url_for('signup')}}">Sign Up</a></li>
           </ul>
           {% if current_user.is_authenticated() %}
           <ul class="nav navbar-nav navbar-right">
@@ -45,6 +46,9 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{current_user.name}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="{{url_for('user_box', the_user=current_user.name)}}">Apps</a></li>
+                  {% if current_user.has_role('admin') %}
+                  <li><a href="/admin">Admin</a></li>
+                  {% endif %}
                   <li><a href="/logout">Logout</a></li>
                 </ul>
               </li>
@@ -60,7 +64,23 @@
 <br />
 <br />
 
-<div class="container">{% block body %}{% endblock %}</div>
+<div class="container">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class=flashes>
+  {% for message in messages %}
+  <div class="alert {{ category }} row">
+    <div>
+      <button type="button" href="#" class="close" data-dismiss="alert">×</button>
+        {{message}}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+{% block body %}{% endblock %}</div>
 <div class="footer">
    <hr>
      <div class="menu">

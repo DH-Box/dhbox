@@ -1,11 +1,12 @@
 import os
+import sys
 import os.path
 from flask import Flask, flash, request, redirect, url_for, render_template, \
     make_response, jsonify, send_file, current_app, g, abort
 import ast
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.security import Security, SQLAlchemyUserDatastore, \
-    UserMixin, RoleMixin, login_required, registerable, current_user, LoginForm
+from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
+    UserMixin, RoleMixin, login_required, roles_required, registerable, current_user, LoginForm
 from wtforms.validators import DataRequired
 from wtforms import TextField, Form
 from werkzeug import generate_password_hash, check_password_hash
@@ -13,6 +14,27 @@ import DockerBackend
 
 # create application
 app = Flask('dhbox')
+
+def install_secret_key(app, filename='secret_key'):
+    """Configure the SECRET_KEY from a file
+    in the instance directory.
+
+    If the file does not exist, print instructions
+    to create it from a shell with a random key,
+    then exit.
+
+    """
+    filename = os.path.join(app.instance_path, filename)
+    try:
+        app.config['SECRET_KEY'] = open(filename, 'rb').read()
+    except IOError:
+        print 'Error: No secret key. Create it with:'
+        if not os.path.isdir(os.path.dirname(filename)):
+            print 'mkdir -p', os.path.dirname(filename)
+        print 'head -c 24 /dev/urandom >', filename
+        sys.exit(1)
+
+install_secret_key(app)
 app.config.from_pyfile('config.cfg')
 
 # Create database connection object
@@ -84,20 +106,22 @@ if not os.path.exists('dhbox-docker.db'):
     db.create_all()
 
 # Create a user to test with
-def create_user():
+def create_user_and_role():
     first_user = User.query.filter(User.name == str('steve')).first()
     if not first_user:
         user_email = 'oneperstephen@gmail.com'
         username = 'steve'
         user_pass = 'password'
-        user_datastore.create_user(email=user_email, name=username, password=user_pass)
+        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass)
+        the_role = user_datastore.create_role(name='admin', description='The administrator')
+        user_datastore.add_role_to_user(the_user, the_role)
         db.session.commit()
         try:
             is_container = DockerBackend.get_container_info(username)
         except Exception, e:
             the_new_dhbox = DockerBackend.setup_new_dhbox(username, user_pass, user_email)
 
-create_user()
+create_user_and_role()
 
 """
 URLS/VIEWS
@@ -110,10 +134,6 @@ def index():
 @app.route("/signup")
 def signup():
     return render_template('signup.html')
-
-@app.route("/forgot")
-def forgot():
-    return render_template('security/forgot_password.html')
 
 @app.route('/about')
 def about():
@@ -133,13 +153,23 @@ def get_started():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        # login and validate the user...
-        login_user(user)
-        flash("Logged in successfully.")
-        return redirect(request.args.get("next") or url_for("index"))
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     print 'asdasd'
+    #     # login and validate the user...
+    #     login_user(user)
+    #     flash("Logged in successfully.", 'alert-success')
+    #     return redirect(url_for("user_box", the_user=user.name) or url_for("index"))
     return render_template("login.html", form=form)
+
+
+@app.route('/admin')
+@login_required
+@roles_required('admin')
+def admin():
+    containers = DockerBackend.all_containers()
+    print containers[0]['Status']
+    return render_template('admin.html', containers=containers)
 
 @app.route("/dhbox/<the_user>")
 @login_required
@@ -181,28 +211,30 @@ def new_dhbox():
             if 'email' in user: # Then is DH Box admin
                 already_has_dhbox_check = User.query.filter(User.name == user['name']).first()
                 if already_has_dhbox_check:
-                    print already_has_dhbox_check
                     print "Username taken. Already has a DH Box."
-                    return str(form)
-                else:
-                    admin_user = user['name']
-                    admin_email = user['email']
-                    admin_pass = user['pass']
-                    user_datastore.create_user(email=admin_email, name=admin_user, password=admin_pass)
-                    db.session.commit()
+                    flash('Username taken. Already has a DH Box.', 'alert-error')
+                    return render_template('signup.html')
+                admin_user = user['name']
+                admin_email = user['email']
+                admin_pass = user['pass']
+                admin_user_object = user_datastore.create_user(email=admin_email, name=admin_user, password=admin_pass)
+                db.session.commit()
             else:
                 pass
             the_new_dhbox = DockerBackend.setup_new_dhbox(admin_user, admin_pass, admin_email)
-    return str(form)
+    login_user(admin_user_object)
+    return redirect(url_for('index'))
 
 @app.route('/kill_dhbox', methods=['POST'])
 def kill_dhbox():
+    next = request.form['next'] 
     user = request.form['user']
     user = User.query.filter(User.name == user).first()
     DockerBackend.kill_dhbox(user.name, delete_image=True)
     db.session.delete(user)
     db.session.commit()
-    return str('DH Box and username deleted.')
+    flash('DH Box and username deleted.', 'alert-success')
+    return redirect(url_for(next) or url_for("index"))
 
 if __name__ == '__main__':
 	app.debug = True
