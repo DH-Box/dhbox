@@ -69,10 +69,10 @@
 {% if messages %}
 <div class=flashes>
   {% for message in messages %}
-  <div class="alert {{ category }} row">
+  <div class="alert {{category}} row">
     <div>
       <button type="button" href="#" class="close" data-dismiss="alert">×</button>
-        {{message}}
+        {{message}} {{message.category}}
     </div>
   </div>
   {% endfor %}

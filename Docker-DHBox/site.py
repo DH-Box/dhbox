@@ -126,6 +126,11 @@ create_user_and_role()
 """
 URLS/VIEWS
 """
+
+@app.route('/test')
+def test():
+    from time import sleep
+    return render_template('test.html')
             
 @app.route("/")
 def index():
@@ -212,18 +217,15 @@ def new_dhbox():
                 already_has_dhbox_check = User.query.filter(User.name == user['name']).first()
                 if already_has_dhbox_check:
                     print "Username taken. Already has a DH Box."
-                    flash('Username taken. Already has a DH Box.', 'alert-error')
-                    return render_template('signup.html')
+                    return str('failure')
                 admin_user = user['name']
                 admin_email = user['email']
                 admin_pass = user['pass']
                 admin_user_object = user_datastore.create_user(email=admin_email, name=admin_user, password=admin_pass)
                 db.session.commit()
-            else:
-                pass
-            the_new_dhbox = DockerBackend.setup_new_dhbox(admin_user, admin_pass, admin_email)
-    login_user(admin_user_object)
-    return redirect(url_for('index'))
+                login_user(admin_user_object)
+                the_new_dhbox = DockerBackend.setup_new_dhbox(admin_user, admin_pass, admin_email)
+    return str('Successfully created a new DH Box.')
 
 @app.route('/kill_dhbox', methods=['POST'])
 def kill_dhbox():
@@ -233,12 +235,12 @@ def kill_dhbox():
     DockerBackend.kill_dhbox(user.name, delete_image=True)
     db.session.delete(user)
     db.session.commit()
-    flash('DH Box and username deleted.', 'alert-success')
+    flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(next) or url_for("index"))
 
 if __name__ == '__main__':
 	app.debug = True
 	# Bind to PORT if defined, otherwise default to 5000.
 	port = int(os.environ.get('PORT', 5000))
-	app.run(host='0.0.0.0', port=port)
+	app.run(host='0.0.0.0', port=port, threaded=True)
 	# app.run()
