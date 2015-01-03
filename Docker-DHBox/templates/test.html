@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript">
+$( document ).ready(function() {
+    $.validator.setDefaults({
+      debug: false,
+      success: "has-success"
+    });
+    var form = $( "form" );
+    form.validate({
+        success: function(label, element) {
+            label.addClass("bg-success").text("Looks good!")
+          }
+    });
+    $( "#dhbox_form_submit" ).click(function(e) {
+        e.preventDefault();
+        if (form.valid()){
+            var x;
+            var r=confirm("All settings correct?");
+            if (r==true)
+              {
+                var allUsers = { users: [] };
+                $('.userwrapper').each(function () { 
+                    allUsers.users.push({ 
+                    name: $(this).find('[what=users]').val(), 
+                    pass: $(this).find('[what=passes]').val(), 
+                    email: $(this).find('[what=email]').val() 
+                    }) 
+                });
+                allUsers.users = allUsers.users.filter(function(n){ return n != undefined });
+                allUsers = JSON.stringify(allUsers);
+                console.log(allUsers);
+                $.post('{{ url_for('new_dhbox')}}', allUsers);
+                setTimeout(function(){window.location.replace("/");},1000);
+
+              }
+            else
+              {
+              x="!";
+              console.log('didnt go through with it');
+              }
+        }
+    });
+
+    $(document).on('click', '#add', function(e) {
+            var intId = $("#the_form div").length + 1;
+            var userWrapper = $("<div class=\"form-group userwrapper\" id=\"field" + intId + "\"/>");
+            var userDiv = $("<div class=\"col-lg-4\">");
+            var newUserLabel = $("<label class=\" control-label\" for=\"user" + intId + "\">User:</label>");
+            var newUser = $("<input type=\"text\" minlength=\"1\" what=\"users\" class=\"form-control users\" name=\"user" + intId + "\" id=\"user" + intId + "\" /></div>");
+            var passDiv = $("<div class=\"col-lg-4\">");
+            var newPassLabel = $("<label class=\"control-label\" for=\"passUser" + intId + "\">Password:</label>");
+            var newPass = $("<input minlength=\"6\" type=\"password\" what=\"passes\" class=\"form-control passes\" name=\"pass" + intId + "\" id=\"passUser" + intId + "\" />");
+            var removeButton = $("<input type=\"button\" class=\"remove btn btn-danger\" aria-hidden=\"true\" value=\"&times;\"/>");
+
+            removeButton.click(function() {
+                $(this).parent().prev().remove();
+                $(this).parent().remove();
+            });
+            userDiv.append(newUserLabel);
+            userDiv.append(newUser);
+            passDiv.append(newPassLabel);
+            passDiv.append(newPass);
+            passDiv.append(removeButton);
+            userWrapper.append(userDiv);
+            userWrapper.append(passDiv);
+            $("#the_form").append(userWrapper);
+        });
+
+    });
+</script>
+
+<div style="margin-left:50px">
+
+<h1 class="dhbox">Launch a New DH Box</h1>
+
+<br>
+
+<h3>You're about to become the owner of a brand new DH Box.</h3>
+
+<br>
+
+Just fill out the information below then click <strong>Launch</strong>.
+
+<br><br>
+
+</div>
+
+<div class="container">
+
+<div class="col-lg-10">
+    <form class="form-horizontal" role="form" id="the_form" method="post" action="/new_dhbox">
+        <div class='form-group userwrapper' id='field1'>
+            <div class="col-lg-4">
+                <label for='admin' class="control-label">Your Username:</label>
+                <input type'text' what="users" minlength="1" class='users form-control' id='admin' name='admin' required/>
+                <span class="help-block">This is the user with complete control over a new DH Box.</span>
+            </div>
+            <div class="col-lg-4">
+                <label for='adminPass' class="control-label">Password:</label>
+                <input type'text' type="password" minlength="6" what="passes" id='adminPass' class='passes form-control' name='adminPass' required/>
+                <span class="help-block">Passwords apply for access to: DH Box, Omeka, RStudio.</span>
+            </div>
+            <div class="col-lg-4">
+                <label for='adminEmail' class="control-label">Email Address:</label>
+                  <input type'text' type="text" what="email" id='adminEmail' class='email form-control' name='adminEmail' required/>
+            </div>
+        </div>
+    </form>
+        <div>
+
+            Should anyone else - such as students - be able to access this DH Box?
+            
+            <br>
+           
+           <button type="submit" class="add btn btn-info" id="add"><span class="glyphicon glyphicon-user"></span> Add a user</button>
+        </div>
+        <br />
+        <div>
+            <input name="save" id='dhbox_form_submit' type="submit" value="Launch" class="btn btn-success btn-lg" />
+        </div>
+</div>
+
+</div>
+{% endblock %}
