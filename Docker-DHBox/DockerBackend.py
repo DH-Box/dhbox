@@ -77,10 +77,11 @@ else
   #needed to fix problems with ubuntu and cron
   update-locale
   date > /etc/configured
-  # start apache and give Omeka our user's info
+  # start Apache and give Omeka our user's info
   sudo service mysql start
   sudo service apache2 restart
 """)	
+		temp.writelines(['adduser --disabled-password --gecos "" '+user+'\n', 'echo '+user+':'+the_pass+' | chpasswd\n', 'usermod -a -G sudo '+user+'\n'])
 		temp.writelines([special_string+'\n', '  sudo service apache2 stop\n', 'sudo service mysql stop\n','fi'])
 		temp.seek(0)
 	finally:

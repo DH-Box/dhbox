@@ -173,7 +173,6 @@ def login():
 @roles_required('admin')
 def admin():
     containers = DockerBackend.all_containers()
-    print containers[0]['Status']
     return render_template('admin.html', containers=containers)
 
 @app.route("/dhbox/<the_user>")

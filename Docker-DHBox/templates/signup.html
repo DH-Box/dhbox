@@ -57,8 +57,10 @@ $( document ).ready(function() {
                     }) 
                 });
                 allUsers.users = allUsers.users.filter(function(n){ return n != undefined });
+                mainUser = allUsers.users[0].name
                 allUsers = JSON.stringify(allUsers);
                 console.log(allUsers);
+                console.log(mainUser)
                 $.post('{{ url_for('new_dhbox')}}', allUsers, function(data){ 
                 if (data == 'failure'){
                     // BootstrapDialog.show({
@@ -74,6 +76,7 @@ $( document ).ready(function() {
                 {
                     // $('inside-modal').replaceWith('<div>DH Box successfully created.</div>');
                     alert(data)
+                    window.location = '/dhbox/'+mainUser;
                 }
 
                 });

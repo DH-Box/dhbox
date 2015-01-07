@@ -15,8 +15,8 @@
     command: wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb -O rstudio.deb
   - name: Install R Studio
     shell: yes | gdebi rstudio.deb
-  - name: configure R
-    raw: echo "r-libs-user=~/R/library" | tee -a /etc/rstudio/rsession.conf
+  # - name: configure R
+  #   raw: echo "r-libs-user=~/R/library" | tee -a /etc/rstudio/rsession.conf
   - name: Configure Apparmor
     shell: ln -s /etc/apparmor.d/rstudio-server /etc/apparmor.d/disable/
   - name: Restart R Studio

@@ -4,6 +4,7 @@
 <table class="table table-striped">
 <th>Owner</th>
 <th>Status</th>
+{% if containers %}
 {%for container in containers%}
   <tr>
   	<td>{{container.Names[0][1:]}}</td>
@@ -17,6 +18,9 @@
     <a class='btn' href=""></a></td>
   </tr>
 {%endfor%}
+{%else%}
+No containers
+{% endif %}
 </table>
 {{containers}}
 {% endblock %}
