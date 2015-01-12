@@ -47,7 +47,6 @@ $( document ).ready(function() {
             var r=confirm("All settings correct?");
             if (r==true)
               {
-                $('#modal-content').modal({show: true});
                 var allUsers = { users: [] };
                 $('.userwrapper').each(function () { 
                     allUsers.users.push({ 
@@ -63,26 +62,17 @@ $( document ).ready(function() {
                 console.log(mainUser)
                 $.post('{{ url_for('new_dhbox')}}', allUsers, function(data){ 
                 if (data == 'failure'){
-                    // BootstrapDialog.show({
-                    //     type: BootstrapDialog.TYPE_DANGER,
-                    //     title: 'Username taken',
-                    //     message: 'Choose a different username.',}
-                    // );
-                    $('#modal-content').modal({show: false});
-                    $('#modal-content').hide();
                     $('#failure-modal').modal({show: true});
-                    // $('#modal-content').hide();
                 }else
                 {
+                    $('#modal-content').modal('show');
                     // $('inside-modal').replaceWith('<div>DH Box successfully created.</div>');
-                    alert(data)
-                    window.location = '/dhbox/'+mainUser;
+                    setTimeout(function () {
+                        alert(data)
+                        window.location = '/dhbox/'+mainUser;
+                        }, 5000);
                 }
-
                 });
-
-                
-
               }
             else
               {
