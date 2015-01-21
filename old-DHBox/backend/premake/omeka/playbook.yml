@@ -1,6 +1,0 @@
----
-    - include: tasks/install.yml
-    - include: tasks/config.yml
-    - include: tasks/db.yml
-    - include: tasks/apache.yml
-    - include: tasks/omeka.yml
