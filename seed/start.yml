@@ -17,12 +17,6 @@
     - include: omeka.yml
       vars:
         omekadir: /var/www/omeka
-    - name: create root user
-      user: name=dhbox
-          state=present
-          groups="sudo"
-          password={{ password }}
-          comment="DH Box sudo account"
   handlers:
    - name: restart apache2
      sudo: True

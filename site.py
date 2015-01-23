@@ -101,9 +101,6 @@ class ExtendedLoginForm(LoginForm):
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
-# Make database if it doesn't exist
-if not os.path.exists('dhbox-docker.db'):
-    db.create_all()
 
 # Create a user to test with
 def create_user_and_role():
@@ -121,7 +118,10 @@ def create_user_and_role():
         except Exception, e:
             the_new_dhbox = DockerBackend.setup_new_dhbox(username, user_pass, user_email)
 
-create_user_and_role()
+# Make database if it doesn't exist
+if not os.path.exists('dhbox-docker.db'):
+    db.create_all()
+    create_user_and_role()
 
 """
 URLS/VIEWS

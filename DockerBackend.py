@@ -16,7 +16,7 @@ def build_dhbox(seed=True, username='test'):
 	if seed:
 		print "Building Seed"
 		os.chdir('seed/')
-		response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed_test')]
+		response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed')]
 		os.chdir('../')
 	else:
 		print "Building User DH Box"
@@ -59,14 +59,14 @@ def setup_new_dhbox(username, password, email):
 	"""Create a new DH Box container, customize it with 'exec'."""
 	try:
 		print "Creating Container"
-		container = c.create_container(image='dhbox/seed_test', name=username,
+		container = c.create_container(image='dhbox/seed', name=username,
 			ports=[(80, 'tcp'), (4200, 'tcp'), (8080, 'tcp'), (8787, 'tcp')], tty=True, stdin_open=True)
 	except docker.errors.APIError, e:
 		raise e
 	else:
 		print "Starting Container"
 		c.start(container, publish_all_ports=True)
-		print configure_dhbox(username, password, email)
+		configure_dhbox(username, password, email)
 		info = c.inspect_container(container)
 		return info
 
@@ -80,9 +80,9 @@ def configure_dhbox(user, the_pass, email):
 	user_add_strings = ['adduser --disabled-password --gecos "" '+user, 'usermod -a -G sudo '+user]
 	config = execute(user, user_add_strings)
 	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
-		subprocess.call('echo '+user+':'+the_pass+' | docker exec -i test chpasswd', shell=True)
+		subprocess.call('echo '+user+':'+the_pass+' | docker exec -i '+user+' chpasswd', shell=True)
 	else:
-		subprocess.call('echo '+user+':'+the_pass+' | sudo docker exec -i test chpasswd', shell=True)
+		subprocess.call('echo '+user+':'+the_pass+' | sudo docker exec -i '+user+' chpasswd', shell=True)
 	omeka_string = 'wget -O /tmp/install.html --post-data "username={0}&password={1}&password_confirm={1}&super_email={2}&administrator_email={2}&site_title=DHBox&description=DHBox&copyright=2014&author=DHBOX&tag_delimiter=,&fullsize_constraint=800&thumbnail_constraint=200&square_thumbnail_constraint=200&per_page_admin=10&per_page_public=10&show_empty_elements=0&path_to_convert=/usr/bin&install_submit=Install" localhost:8080/install/install.php'.format(user, the_pass, email)
 	time.sleep(1)
 	execute(user, [omeka_string])

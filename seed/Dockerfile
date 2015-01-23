@@ -17,7 +17,7 @@ RUN mkdir -p /etc/ansible/
 RUN echo "[local]" > /etc/ansible/hosts
 RUN echo "localhost ansible_connection=local" >> /etc/ansible/hosts
 WORKDIR /src
-RUN ansible-playbook start.yml -c local --extra-vars "password=thepass"
+RUN ansible-playbook start.yml -c local
 
 #Adding Deamons to containers
 RUN mkdir -p /etc/service/rserver
