@@ -10,10 +10,12 @@ from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
 from wtforms.validators import DataRequired
 from wtforms import TextField, Form
 from werkzeug import generate_password_hash, check_password_hash
+from werkzeug.contrib.fixers import ProxyFix
 import DockerBackend
 
 # create application
 app = Flask('dhbox')
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # def install_secret_key(app, filename='secret_key'):
 #     """Configure the SECRET_KEY from a file
