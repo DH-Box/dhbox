@@ -16,5 +16,5 @@ A toolbox for Digital Humanities.
 7. Start docker: `sudo systemctl start docker`
 8. Run `sudo docker build -t dhbox/seed .` (takes 15 minutes or more)
 9. Navigate to `dhbox/`
-10. Run `python site.py`
+10. Run `python dhbox.py`
 11. Navigate to site on `http://localhost:5000`
