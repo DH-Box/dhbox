@@ -214,7 +214,7 @@ def kill_dhbox():
     next = request.form['next'] 
     user = request.form['user']
     user = User.query.filter(User.name == user).first()
-    DockerBackend.kill_dhbox(user.name, delete_image=True)
+    DockerBackend.kill_dhbox(user.name, delete_image=False)
     db.session.delete(user)
     db.session.commit()
     flash(message='DH Box and username deleted.', category='alert-success')
