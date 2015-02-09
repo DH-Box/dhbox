@@ -12,7 +12,7 @@ A toolbox for Digital Humanities.
 3. Clone git repo (`git clone https://github.com/DH-Box/dhbox.git`)
 4. Navigate to `dhbox/` 
 5. Run `sudo pip install -r requirements.txt` (preferably in a virtualenv)
-6. Navigate to dhbox/Docker-DHBox/seed
+6. Navigate to `dhbox/seed` 
 7. Start docker: `sudo systemctl start docker`
 8. Run `sudo docker build -t dhbox/seed .` (takes 15 minutes or more)
 9. Navigate to `dhbox/`
