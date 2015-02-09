@@ -220,9 +220,9 @@ def kill_dhbox():
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(next) or url_for("index"))
 
-# if __name__ == '__main__':
-# 	app.debug = True
-# 	# Bind to PORT if defined, otherwise default to 5000.
-# 	port = int(os.environ.get('PORT', 5000))
-# 	app.run(host='0.0.0.0', port=port, threaded=True)
-# 	# app.run()
+if __name__ == '__main__':
+	app.debug = True
+	# Bind to PORT if defined, otherwise default to 5000.
+	port = int(os.environ.get('PORT', 5000))
+	app.run(host='0.0.0.0', port=port, threaded=True)
+	# app.run()
