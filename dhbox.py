@@ -98,6 +98,7 @@ def create_user_and_role():
         db.session.commit()
         try:
             is_container = DockerBackend.get_container_info(username)
+            print 'already have a container'
         except Exception, e:
             the_new_dhbox = DockerBackend.setup_new_dhbox(username, user_pass, user_email)
 

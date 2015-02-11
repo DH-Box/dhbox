@@ -36,7 +36,11 @@ RUN mkdir -p /etc/service/shellinabox
 RUN mv /src/runit_scripts/shellinabox.sh /etc/service/shellinabox/run
 RUN chmod +x /etc/service/shellinabox/run
 
+RUN mkdir -p /etc/service/smtpd
+RUN mv /src/runit_scripts/smtpd.sh /etc/service/smtpd/run
+RUN chmod +x /etc/service/smtpd/run
+
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
-EXPOSE 22 8787 80 4200
+EXPOSE 22 25 8787 80 4200

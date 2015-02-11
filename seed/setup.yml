@@ -13,6 +13,7 @@
         - unzip
         - shellinabox
         - python-pip
+        - opensmtpd
         - ipython-notebook
     - name: change shellinabox config
       lineinfile: dest=/etc/default/shellinabox regexp=SHELLINABOX_ARGS line='SHELLINABOX_ARGS="--no-beep --disable-ssl"'

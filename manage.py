@@ -6,8 +6,6 @@ import os
 
 manager = Manager()
 
-
-
 @manager.command
 def new_seed():
     """Build new seed for DH Box"""
@@ -24,6 +22,14 @@ def test():
 @manager.command
 def start_over():
     """Delete and make a new test DH Box"""
+    cleanup()
+    response = DockerBackend.kill_dhbox('test', delete_image=False)
+    DockerBackend.setup_new_dhbox('test', 'password', 'oneperstephen@gmail.com')
+    return response
+
+@manager.command
+def clean_slate():
+    """Delete all DH Boxes"""
     cleanup()
     response = DockerBackend.kill_dhbox('test', delete_image=False)
     DockerBackend.setup_new_dhbox('test', 'password', 'oneperstephen@gmail.com')

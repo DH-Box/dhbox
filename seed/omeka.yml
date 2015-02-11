@@ -3,15 +3,15 @@
   sudo: true
   action: file path={{ omekadir }} state=directory
 - name: Get Omeka
-  get_url: dest=/tmp/omeka.zip  url=http://omeka.org/files/omeka-2.2.zip
+  get_url: dest=/tmp/omeka.zip  url=http://omeka.org/files/omeka-2.2.2.zip
 - name: Unpack Omeka
   command: unzip -qo /tmp/omeka.zip -d {{ omekadir }}
 - name: Move Omeka files
-  raw: cp -r {{ omekadir }}/omeka-2.2/* {{ omekadir }}
+  raw: cp -r {{ omekadir }}/omeka-2.2.2/* {{ omekadir }}
 - name: Move .htaccess
-  raw: cp -r {{ omekadir }}/omeka-2.2/.htaccess {{ omekadir }}
+  raw: cp -r {{ omekadir }}/omeka-2.2.2/.htaccess {{ omekadir }}
 - name: delete old Omeka directory
-  raw: rm -rf {{ omekadir }}/omeka-2.2/
+  raw: rm -rf {{ omekadir }}/omeka-2.2.2/
 - name: Set correct ownership of /var/www/
   raw: chown -R www-data /var/www
 - name: Set correct group for /var/www/
