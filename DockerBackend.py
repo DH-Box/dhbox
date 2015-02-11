@@ -16,7 +16,7 @@ def build_dhbox(seed=True, username='test'):
 	if seed:
 		print "Building Seed"
 		os.chdir('seed/')
-		response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed')]
+		response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed:0.11')]
 		os.chdir('../')
 	else:
 		print "Building User DH Box"
@@ -59,7 +59,7 @@ def setup_new_dhbox(username, password, email):
 	"""Create a new DH Box container, customize it with 'exec'."""
 	try:
 		print "Creating Container"
-		container = c.create_container(image='dhbox/seed', name=username,
+		container = c.create_container(image='dhbox/seed:latest', name=username,
 			ports=[(25, 'tcp'),(80, 'tcp'), (4200, 'tcp'), (8080, 'tcp'), (8787, 'tcp')], tty=True, stdin_open=True)
 	except docker.errors.APIError, e:
 		raise e
