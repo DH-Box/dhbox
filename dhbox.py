@@ -212,14 +212,14 @@ def new_dhbox():
 
 @app.route('/kill_dhbox', methods=['POST'])
 def kill_dhbox():
-    next = request.form['next'] 
+    the_next = request.form['next']
     user = request.form['user']
     user = User.query.filter(User.name == user).first()
-    DockerBackend.kill_dhbox(user.name, delete_image=False)
+    DockerBackend.kill_dhbox(user.name)
     db.session.delete(user)
     db.session.commit()
     flash(message='DH Box and username deleted.', category='alert-success')
-    return redirect(url_for(next) or url_for("index"))
+    return redirect(url_for(the_next) or url_for("index"))
 
 if __name__ == '__main__':
 	app.debug = True

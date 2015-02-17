@@ -12,21 +12,21 @@ def attach_to_docker_client():
 		c = Client()
 	return c
 
-def build_dhbox(seed=True, username='test'):
-	if seed:
-		print "Building Seed"
-		os.chdir('seed/')
-		response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed:0.11')]
-		os.chdir('../')
-	else:
-		print "Building User DH Box"
-		os.chdir('dhbox/')
-		response = [line for line in c.build(path='.', rm=True, tag='dhbox/'+username)]
-		os.chdir('../')
+def build_dhbox(username='test'):
+	"""Builds a new Dh Box seed, renaming the old one if it exists"""
+	print "Building Seed"
+	images = c.images()
+	for image in images:
+		if image["RepoTags"] == ["dhbox/seed:latest"]:
+			image_id = image["Id"]
+			c.tag(image=image_id, tag='dhbox/seed:older', force=True)
+	os.chdir('seed/')
+	response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed:latest')]
+	os.chdir('../')
 	return response
 
 def all_containers():
-	info = c.containers()
+	info = c.containers(all=True)
 	return info
 
 def get_container_info(which_container):
@@ -65,7 +65,8 @@ def setup_new_dhbox(username, password, email):
 		raise e
 	else:
 		print "Starting Container"
-		c.start(container, publish_all_ports=True)
+		restart_policy = { "MaximumRetryCount": 10, "Name": "always"}
+		c.start(container, publish_all_ports=True, restart_policy=restart_policy)
 		configure_dhbox(username, password, email)
 		info = c.inspect_container(container)
 		return info
@@ -86,27 +87,18 @@ def configure_dhbox(user, the_pass, email):
 	else:
 		subprocess.call('echo '+user+':'+the_pass+' | sudo docker exec -i '+user+' chpasswd', shell=True)
 	omeka_string = 'wget -O /tmp/install.html --post-data "username={0}&password={1}&password_confirm={1}&super_email={2}&administrator_email={2}&site_title=DHBox&description=DHBox&copyright=2014&author=DHBOX&tag_delimiter=,&fullsize_constraint=800&thumbnail_constraint=200&square_thumbnail_constraint=200&per_page_admin=10&per_page_public=10&show_empty_elements=0&path_to_convert=/usr/bin&install_submit=Install" localhost:8080/install/install.php'.format(user, the_pass, email)
-	# mail_string = 'smtpd'
 	time.sleep(1)
 	execute(user, [omeka_string])
 
-def kill_dhbox(ctr_name, delete_image=False):
-	"""Kill a running DH Box container, and optionally remove it"""
+def kill_dhbox(ctr_name):
+	"""Kill a running DH Box container"""
 	try:
 		print "Killing container."
 		c.kill(ctr_name)
 		c.remove_container(ctr_name)
 	except Exception, e:
-		if delete_image:
-			print "No container to delete. Removing image."
-			c.remove_image('dhbox/'+ctr_name)
 		raise e
-	else:
-		if delete_image:
-			print "Removing image."
-			c.remove_image('dhbox/'+ctr_name)
-
-
+	
 def delete_untagged():
     """Find the untagged images and remove them"""
     images = c.images()
@@ -128,4 +120,4 @@ c = attach_to_docker_client()
 
 if __name__ == '__main__':
 	c = DockerBackend.attach_to_docker_client()
-	# setup_new_dhbox('steve', 'password', 'oneperstephen@gmail.com')
+	# setup_new_dhbox('test', 'password', 'test@gmail.com')

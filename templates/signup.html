@@ -55,17 +55,18 @@ $( document ).ready(function() {
                     email: $(this).find('[what=email]').val() 
                     }) 
                 });
+                $('#modal-content').modal('show');
                 allUsers.users = allUsers.users.filter(function(n){ return n != undefined });
                 mainUser = allUsers.users[0].name
                 allUsers = JSON.stringify(allUsers);
-                console.log(allUsers);
-                console.log(mainUser)
+                // console.log(allUsers);
+                // console.log(mainUser)
                 $.post('{{ url_for('new_dhbox')}}', allUsers, function(data){ 
                 if (data == 'failure'){
+                    $('#modal-content').modal('hide');
                     $('#failure-modal').modal({show: true});
                 }else
                 {
-                    $('#modal-content').modal('show');
                     // $('inside-modal').replaceWith('<div>DH Box successfully created.</div>');
                     setTimeout(function () {
                         alert(data)
@@ -82,30 +83,30 @@ $( document ).ready(function() {
         }
     });
 
-    $(document).on('click', '#add', function(e) {
-            var intId = $("#the_form div").length + 1;
-            var userWrapper = $("<div class=\"form-group userwrapper\" id=\"field" + intId + "\"/>");
-            var userDiv = $("<div class=\"col-lg-4\">");
-            var newUserLabel = $("<label class=\" control-label\" for=\"user" + intId + "\">User:</label>");
-            var newUser = $("<input type=\"text\" minlength=\"1\" what=\"users\" class=\"form-control users\" name=\"user" + intId + "\" id=\"user" + intId + "\" /></div>");
-            var passDiv = $("<div class=\"col-lg-4\">");
-            var newPassLabel = $("<label class=\"control-label\" for=\"passUser" + intId + "\">Password:</label>");
-            var newPass = $("<input minlength=\"6\" type=\"password\" what=\"passes\" class=\"form-control passes\" name=\"pass" + intId + "\" id=\"passUser" + intId + "\" />");
-            var removeButton = $("<input type=\"button\" class=\"remove btn btn-danger\" aria-hidden=\"true\" value=\"&times;\"/>");
+    // $(document).on('click', '#add', function(e) {
+    //         var intId = $("#the_form div").length + 1;
+    //         var userWrapper = $("<div class=\"form-group userwrapper\" id=\"field" + intId + "\"/>");
+    //         var userDiv = $("<div class=\"col-lg-4\">");
+    //         var newUserLabel = $("<label class=\" control-label\" for=\"user" + intId + "\">User:</label>");
+    //         var newUser = $("<input type=\"text\" minlength=\"1\" what=\"users\" class=\"form-control users\" name=\"user" + intId + "\" id=\"user" + intId + "\" /></div>");
+    //         var passDiv = $("<div class=\"col-lg-4\">");
+    //         var newPassLabel = $("<label class=\"control-label\" for=\"passUser" + intId + "\">Password:</label>");
+    //         var newPass = $("<input minlength=\"6\" type=\"password\" what=\"passes\" class=\"form-control passes\" name=\"pass" + intId + "\" id=\"passUser" + intId + "\" />");
+    //         var removeButton = $("<input type=\"button\" class=\"remove btn btn-danger\" aria-hidden=\"true\" value=\"&times;\"/>");
 
-            removeButton.click(function() {
-                $(this).parent().prev().remove();
-                $(this).parent().remove();
-            });
-            userDiv.append(newUserLabel);
-            userDiv.append(newUser);
-            passDiv.append(newPassLabel);
-            passDiv.append(newPass);
-            passDiv.append(removeButton);
-            userWrapper.append(userDiv);
-            userWrapper.append(passDiv);
-            $("#the_form").append(userWrapper);
-        });
+    //         removeButton.click(function() {
+    //             $(this).parent().prev().remove();
+    //             $(this).parent().remove();
+    //         });
+    //         userDiv.append(newUserLabel);
+    //         userDiv.append(newUser);
+    //         passDiv.append(newPassLabel);
+    //         passDiv.append(newPass);
+    //         passDiv.append(removeButton);
+    //         userWrapper.append(userDiv);
+    //         userWrapper.append(passDiv);
+    //         $("#the_form").append(userWrapper);
+    // });
 
     });
 </script>
@@ -138,12 +139,12 @@ Just fill out the information below then click <strong>Launch</strong>.
             </div>
         </div>
     </form>
-        <div>
+        <!-- <div>
             Should anyone else - such as students - be able to access this DH Box?
             <br>
            <button type="submit" class="add btn btn-info" id="add"><span class="glyphicon glyphicon-user"></span> Add a user</button>
         </div>
-        <br />
+         --><br />
         <div>
             <input name="save" id='dhbox_form_submit' type="submit" value="Launch" class="btn btn-success btn-lg" />
         </div>

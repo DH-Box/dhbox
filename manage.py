@@ -9,13 +9,13 @@ manager = Manager()
 @manager.command
 def new_seed():
     """Build new seed for DH Box"""
-    response = DockerBackend.build_dhbox(seed=True)
+    response = DockerBackend.build_dhbox()
     return response
 
 @manager.command
 def test():
     """Build new test DH Box"""
-    response = DockerBackend.setup_new_dhbox('test', 'password', 'oneperstephen@gmail.com')
+    response = DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 
 
@@ -24,7 +24,7 @@ def start_over():
     """Delete and make a new test DH Box"""
     cleanup()
     response = DockerBackend.kill_dhbox('test', delete_image=False)
-    DockerBackend.setup_new_dhbox('test', 'password', 'oneperstephen@gmail.com')
+    DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 
 @manager.command
@@ -32,7 +32,7 @@ def clean_slate():
     """Delete all DH Boxes"""
     cleanup()
     response = DockerBackend.kill_dhbox('test', delete_image=False)
-    DockerBackend.setup_new_dhbox('test', 'password', 'oneperstephen@gmail.com')
+    DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 
 @manager.command
