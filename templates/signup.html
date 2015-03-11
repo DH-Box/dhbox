@@ -60,7 +60,7 @@ $( document ).ready(function() {
                 mainUser = allUsers.users[0].name
                 allUsers = JSON.stringify(allUsers);
                 // console.log(allUsers);
-                // console.log(mainUser)
+                // console.log(mainUser);
                 $.post('{{ url_for('new_dhbox')}}', allUsers, function(data){ 
                 if (data == 'failure'){
                     $('#modal-content').modal('hide');
@@ -71,7 +71,7 @@ $( document ).ready(function() {
                     setTimeout(function () {
                         alert(data)
                         window.location = '/dhbox/'+mainUser;
-                        }, 5000);
+                        }, 9000);
                 }
                 });
               }
@@ -171,10 +171,10 @@ Just fill out the information below then click <strong>Launch</strong>.
   <div class="modal-dialog modal-sm">
   <div class="modal-header modal-header-danger">
         <button type="button" class="close" data-dismiss="modal">×</button>
-        <h4 class="modal-title">Username Taken</h4>
+        <h4 class="modal-title">Username or Password Taken</h4>
       </div>
     <div id='inside-failure' class="modal-content">
-        Please choose another username.
+        Please choose another username and password.
     </div>
   </div>
 </div>
