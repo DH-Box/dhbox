@@ -19,7 +19,7 @@ def build_dhbox(username='test'):
 	for image in images:
 		if image["RepoTags"] == ["dhbox/seed:latest"]:
 			image_id = image["Id"]
-			c.tag(image=image_id, tag='dhbox/seed:older', force=True)
+			c.tag(image=image_id, repository='dhbox/seed', tag='older', force=True)
 	os.chdir('seed/')
 	response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed:latest')]
 	os.chdir('../')

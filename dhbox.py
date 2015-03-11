@@ -197,8 +197,9 @@ def new_dhbox():
     for user in users:
         if 'name' in user:
             if 'email' in user: # Then is DH Box admin
-                already_has_dhbox_check = User.query.filter(User.name == user['name']).first()
-                if already_has_dhbox_check:
+                name_check = User.query.filter(User.name == user['name']).first()
+                email_check = User.query.filter(User.name == user['email']).first()
+                if name_check or email_check:
                     print "Username taken. Already has a DH Box."
                     return str('failure')
                 admin_user = user['name']
