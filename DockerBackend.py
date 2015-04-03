@@ -4,6 +4,9 @@ from docker.utils import kwargs_from_env
 import json
 from urllib2 import urlopen
 import os, time, subprocess
+import dhbox
+
+default_hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
 
 def attach_to_docker_client():
 	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
@@ -11,6 +14,17 @@ def attach_to_docker_client():
 	else:
 		c = Client()
 	return c
+
+def get_hostname():
+	"""Determine the IP address of the host server"""
+	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
+		hostname = 'dockerhost'
+	else:
+		if dhbox.app.config['TESTING']:
+			hostname = 'localhost'
+		else:
+			hostname = default_hostname
+	return hostname
 
 def build_dhbox(username='test'):
 	"""Builds a new Dh Box seed, renaming the old one if it exists"""
@@ -21,9 +35,12 @@ def build_dhbox(username='test'):
 			image_id = image["Id"]
 			c.tag(image=image_id, repository='dhbox/seed', tag='older', force=True)
 	os.chdir('seed/')
-	response = [line for line in c.build(path='.', rm=True, tag='dhbox/seed:latest')]
+	for line in c.build(path='.', rm=True, tag='dhbox/seed:latest'):
+		print line
+	if "errorDetail" in line:
+		# There was an error, so kill the container and the image
+		pass
 	os.chdir('../')
-	return response
 
 def all_containers():
 	info = c.containers(all=True)
@@ -47,13 +64,6 @@ def get_all_exposed_ports(container_name):
 		outside_port = outside_port[0]['HostPort']
 		public_ports_cleaned[inside_port] = outside_port
 	return public_ports_cleaned
-
-def get_hostname():
-	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
-		hostname = 'dockerhost'
-	else:
-		hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
-	return hostname
 
 def setup_new_dhbox(username, password, email):
 	"""Create a new DH Box container, customize it with 'exec'."""
@@ -110,7 +120,7 @@ def delete_untagged():
             print "Deleting untagged image\nhash=", image_id
             try:
                 c.remove_image(image["Id"])
-            except docker.errors.DockerAPIError as error:
+            except docker.errors.APIError as error:
                 print "Failed to delete image\nhash={}\terror={}", image_id, error
 
     if not found:

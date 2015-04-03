@@ -1,4 +1,4 @@
----
+# ---
 # The play operates on the local (Ansible control) machine.
 - name: Stage instance(s)
   hosts: local
@@ -8,12 +8,12 @@
 
   tasks:
     - debug: 'msg="System {{ inventory_hostname }}"'
-    - include: setup.yml
-    - include: NLTK.yml
-    - include: mallet.yml
-      vars:
-        malletdir: /dhbox/mallet
-    - include: rstudio.yml
+    # - include: setup.yml
+    # - include: NLTK.yml
+    # - include: mallet.yml
+      # vars:
+      #   malletdir: /dhbox/mallet
+    # - include: rstudio.yml
     - include: omeka.yml
       vars:
         omekadir: /var/www/omeka

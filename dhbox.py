@@ -84,8 +84,7 @@ class ExtendedLoginForm(LoginForm):
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
-
-# Create a user to test with
+# Create an admin user to test with
 def create_user_and_role():
     first_user = User.query.filter(User.name == str('steve')).first()
     if not first_user:
@@ -101,11 +100,6 @@ def create_user_and_role():
             print 'already have a container'
         except Exception, e:
             the_new_dhbox = DockerBackend.setup_new_dhbox(username, user_pass, user_email)
-
-# Make database if it doesn't exist
-if not os.path.exists('dhbox-docker.db'):
-    db.create_all()
-    create_user_and_role()
 
 """
 URLS/VIEWS
@@ -215,16 +209,24 @@ def new_dhbox():
 def kill_dhbox():
     the_next = request.form['next']
     user = request.form['user']
-    user = User.query.filter(User.name == user).first()
-    DockerBackend.kill_dhbox(user.name)
-    db.session.delete(user)
-    db.session.commit()
+    # user = User.query.filter(User.name == user).first() or user
+    # user = user.name 
+    DockerBackend.kill_dhbox(user)
+    try:
+        db.session.delete(user)
+        db.session.commit()
+    except Exception, e:
+        print e
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
 
 if __name__ == '__main__':
-	app.debug = True
+    app.debug = app.config['TESTING']
+    # Make database if it doesn't exist
+    if not os.path.exists('dhbox-docker.db'):
+        db.create_all()
+        create_user_and_role()
 	# Bind to PORT if defined, otherwise default to 5000.
-	port = int(os.environ.get('PORT', 5000))
-	app.run(host='0.0.0.0', port=port, threaded=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, threaded=True)
 	# app.run()

@@ -1,9 +1,4 @@
 ---
-    - name: install MALLET apt packages
-      apt: pkg={{ item }} state=latest
-      with_items:
-        - default-jdk
-        - ant
     - name: Make sure that the MALLET directory exists
       sudo: true
       action: file path={{ malletdir }} state=directory

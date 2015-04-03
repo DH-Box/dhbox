@@ -6,6 +6,7 @@
 <th>Status</th>
 {% if containers %}
 {%for container in containers%}
+{% if container.Names is not none %}  
   <tr>
   	<td>{{container.Names[0][1:]}}</td>
     <td>{{container.Status}}</td>
@@ -17,6 +18,7 @@
             </form>
     <a class='btn' href=""></a></td>
   </tr>
+{%endif%}
 {%endfor%}
 {%else%}
 No containers

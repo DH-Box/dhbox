@@ -1,21 +1,23 @@
 ---
     # - name: Update apt cache
     #   apt: update_cache=yes
-    - name: install apt-utils
-      apt: pkg=apt-utils state=latest
-    - name: install base apt packages
-      apt: pkg={{ item }} state=latest
-      with_items:
-        - sudo
-        - curl
-        - git
-        - wget
-        - unzip
-        - shellinabox
-        - python-pip
-        - opensmtpd
-        - ipython-notebook
-    - name: change shellinabox config
-      lineinfile: dest=/etc/default/shellinabox regexp=SHELLINABOX_ARGS line='SHELLINABOX_ARGS="--no-beep --disable-ssl"'
+    # - name: install apt-utils
+    #   apt: pkg=apt-utils state=latest
+    # - name: install base apt packages
+    #   apt: pkg={{ item }} state=latest
+    #   with_items:
+    #     - sudo
+    #     - curl
+    #     - git
+    #     - wget
+    #     - unzip
+    #     - shellinabox
+    #     - python-pip
+    #     - opensmtpd
+    #     - ipython-notebook
+    #     - nodejs
+    #     - npm
+    # - name: change shellinabox config
+    #   lineinfile: dest=/etc/default/shellinabox regexp=SHELLINABOX_ARGS line='SHELLINABOX_ARGS="--no-beep --disable-ssl"'
     - name: restart shellinabox
       service: name=shellinabox state=restarted
