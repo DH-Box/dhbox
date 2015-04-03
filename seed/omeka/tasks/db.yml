@@ -1,6 +1,6 @@
 ---
-# - name: apt-get python-mysqldb
-#   sudo: true
+- name: apt-get python-mysqldb
+  sudo: true
   apt: pkg=python-mysqldb state=latest
 - name: Start the MySQL service
   action: service name=mysql state=started

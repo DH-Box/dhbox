@@ -1,0 +1,67 @@
+# Omeka .htaccess: Apache configuration file
+# This file is required for Omeka to function correctly.
+
+# --------------- #
+# Error Reporting #
+# --------------- #
+
+# Uncomment the SetEnv line below to turn on detailed on-screen error
+# reporting.
+#
+# Note: This should only be enabled for development or debugging. Keep this
+# line commented for production sites.
+# 
+SetEnv APPLICATION_ENV development
+
+# ------------- #
+# Rewrite Rules #
+# ------------- #
+
+RewriteEngine on
+
+# If you know mod_rewrite is enabled, but you are still getting mod_rewrite
+# errors, uncomment the line below and replace "/" with your base directory.
+#
+# RewriteBase /
+
+# Allow direct access to files (except PHP files)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule !\.(php[0-9]?|phtml|phps)$ - [C]
+RewriteRule .* - [L]
+
+RewriteRule ^install/.*$ install/install.php [L]
+RewriteRule ^admin/.*$ admin/index.php [L]
+RewriteRule .* index.php
+
+# -------------- #
+# Access Control #
+# -------------- #
+
+# Block access to all .ini files.
+<FilesMatch "\.ini$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# --------#
+# Caching #
+# --------#
+
+# Uncomment the lines below in order to enable caching of some files
+# (after a finished site has gone live)
+#
+# <IfModule mod_expires.c>
+#    <FilesMatch "\.(js|ico|gif|jpg|png|css)$">
+#        ExpiresActive on
+#        ExpiresDefault "access plus 10 day"
+#    </FilesMatch>
+# </IfModule>
+
+# ------------ #
+# PHP Settings #
+# ------------ #
+
+<IfModule mod_php5.c>
+    php_flag register_globals off
+    php_flag magic_quotes_gpc off
+</IfModule>

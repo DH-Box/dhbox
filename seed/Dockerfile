@@ -47,43 +47,42 @@ RUN rm -rf /var/www/omeka/omeka-2.3/
 RUN chown -R www-data /var/www
 RUN chgrp -R www-data /var/www
 RUN echo "cgi.fix_pathinfo=0" > etc/php5/apache2/conf.d/10-fix_pathinfo.ini
+RUN /usr/sbin/mysqld & \
+    sleep 10s &&\
+    echo "CREATE USER 'omeka'@'localhost' IDENTIFIED BY 'omeka';" | mysql &&\
+    echo "CREATE USER 'omeka'@'%' IDENTIFIED BY 'omeka';" | mysql &&\
+    echo "CREATE DATABASE omeka CHARACTER SET='utf8' COLLATE='utf8_unicode_ci';" | mysql &&\
+    echo "GRANT ALL PRIVILEGES ON omeka.* TO 'omeka'@'localhost';" | mysql &&\
+    echo "GRANT ALL PRIVILEGES ON omeka.* TO 'omeka'@'%';" | mysql
 
-# weird database stuff
-# RUN service mysql start
-# RUN mysqld_safe &
-# RUN mysql -uroot -e "DROP USER omeka@localhost;"
-# RUN sleep 5
-# RUN mysql -uroot -e "CREATE USER 'steve'@'LOCALHOST' IDENTIFIED BY 'tsest'"
-
-ADD . /src
-# Install ansible
-RUN pip install ansible==1.7
-
-RUN mkdir -p /etc/ansible/
-RUN echo "[local]" > /etc/ansible/hosts
-RUN echo "localhost ansible_connection=local" >> /etc/ansible/hosts
-WORKDIR /src
-RUN ansible-playbook start.yml -v -c local
+ADD ./omeka/omeka.conf /etc/apache2/sites-available/000-omeka.conf
+RUN a2ensite 000-omeka.conf
+RUN a2enmod rewrite
+ADD ./omeka/db.ini /var/www/omeka/
+RUN chmod 0666 /var/www/omeka/db.ini
+ADD ./omeka/config.ini /var/www/omeka/application/config/config.ini
+ADD ./omeka/htaccess /var/www/omeka/.htaccess
+RUN chmod -R 777 /var/www/omeka/files
 
 #Adding Deamons to containers
 RUN mkdir -p /etc/service/rserver
-RUN mv /src/runit_scripts/rserver.sh /etc/service/rserver/run
+ADD ./runit_scripts/rserver.sh /etc/service/rserver/run
 RUN chmod +x /etc/service/rserver/run
 
 RUN mkdir -p /etc/service/mysql
-RUN mv /src/runit_scripts/mysql.sh /etc/service/mysql/run
+ADD ./runit_scripts/mysql.sh /etc/service/mysql/run
 RUN chmod +x /etc/service/mysql/run
 
 RUN mkdir -p /etc/service/apache2
-RUN mv /src/runit_scripts/apache2.sh /etc/service/apache2/run
+ADD ./runit_scripts/apache2.sh /etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run
 
 RUN mkdir -p /etc/service/shellinabox
-RUN mv /src/runit_scripts/shellinabox.sh /etc/service/shellinabox/run
+ADD ./runit_scripts/shellinabox.sh /etc/service/shellinabox/run
 RUN chmod +x /etc/service/shellinabox/run
 
 RUN mkdir -p /etc/service/smtpd
-RUN mv /src/runit_scripts/smtpd.sh /etc/service/smtpd/run
+ADD ./runit_scripts/smtpd.sh /etc/service/smtpd/run
 RUN chmod +x /etc/service/smtpd/run
 
 EXPOSE 22 25 8787 80 4200

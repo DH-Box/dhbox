@@ -3,6 +3,7 @@ from docker import Client
 from docker.utils import kwargs_from_env
 import DockerBackend
 import os
+from subprocess import call
 
 manager = Manager()
 
@@ -44,8 +45,10 @@ def killctr(ctr_name):
 
 @manager.command
 def cleanup():
-    """Delete unnamed images"""
-    print "Deleting Images"
+    """Delete ALL stopped containers, unnamed images"""
+    print "Deleting stopped containers"
+    call("docker ps -a | grep Exit | awk '{print $1}' |  xargs docker rm", shell=True)
+    print "Deleting images"
     DockerBackend.delete_untagged()
 
 if __name__ == '__main__':
