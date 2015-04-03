@@ -1,0 +1,7 @@
+SHELLINABOX_DAEMON_START=1
+
+# TCP port that shellinboxd's webserver listens on
+SHELLINABOX_PORT=4200
+
+# specify the IP address of a destination SSH server
+SHELLINABOX_ARGS="--no-beep --disable-ssl"
