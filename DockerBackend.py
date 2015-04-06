@@ -4,6 +4,7 @@ from docker.utils import kwargs_from_env
 import json
 from urllib2 import urlopen
 import os, time, subprocess
+from threading import Timer
 import dhbox
 
 default_hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
@@ -65,8 +66,8 @@ def get_all_exposed_ports(container_name):
 		public_ports_cleaned[inside_port] = outside_port
 	return public_ports_cleaned
 
-def setup_new_dhbox(username, password, email):
-	"""Create a new DH Box container, customize it with 'exec'."""
+def setup_new_dhbox(username, password, email, demo=False):
+	"""Create a new DH Box container, customize it."""
 	try:
 		print "Creating Container"
 		container = c.create_container(image='dhbox/seed:latest', name=username,
@@ -77,7 +78,7 @@ def setup_new_dhbox(username, password, email):
 		print "Starting Container"
 		restart_policy = { "MaximumRetryCount": 10, "Name": "always"}
 		c.start(container, publish_all_ports=True, restart_policy=restart_policy)
-		configure_dhbox(username, password, email)
+		configure_dhbox(username, password, email, demo=demo)
 		info = c.inspect_container(container)
 		return info
 
@@ -87,18 +88,29 @@ def execute(container, args):
 		print arg
 		c.execute(container, arg, stdout=True, stderr=True, tty=False)
 
-def configure_dhbox(user, the_pass, email):
+def configure_dhbox(user, the_pass, email, demo=False):
 	"""Use Docker exec to SSH into a new container, customizing it for the user.
 	Adds the user to the UNIX instance, and Omeka. """
+	container = user
+	if demo:
+		user='demonstration'
 	user_add_strings = ['adduser --disabled-password --gecos "" '+user, 'usermod -a -G sudo '+user]
-	config = execute(user, user_add_strings)
+	config = execute(container, user_add_strings)
 	if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
-		subprocess.call('echo '+user+':'+the_pass+' | docker exec -i '+user+' chpasswd', shell=True)
+		subprocess.call('echo '+user+':'+the_pass+' | docker exec -i '+container+' chpasswd', shell=True)
 	else:
-		subprocess.call('echo '+user+':'+the_pass+' | sudo docker exec -i '+user+' chpasswd', shell=True)
+		subprocess.call('echo '+user+':'+the_pass+' | sudo docker exec -i '+container+' chpasswd', shell=True)
 	omeka_string = 'wget -O /tmp/install.html --post-data "username={0}&password={1}&password_confirm={1}&super_email={2}&administrator_email={2}&site_title=DHBox&description=DHBox&copyright=2014&author=DHBOX&tag_delimiter=,&fullsize_constraint=800&thumbnail_constraint=200&square_thumbnail_constraint=200&per_page_admin=10&per_page_public=10&show_empty_elements=0&path_to_convert=/usr/bin&install_submit=Install" localhost:8080/install/install.php'.format(user, the_pass, email)
 	time.sleep(5)
-	execute(user, [omeka_string])
+	execute(container, [omeka_string])
+
+def demo_dhbox(username):
+	"""Make a demonstration DH Box with a random name. Expires after an hour."""
+	password = 'demonstration'
+	email = username+'@demo.com'
+	setup_new_dhbox(username, password, email, demo=True)
+	t = Timer(600.0, kill_and_remove_user, [username])
+	t.start() # after one hour, demo will be destroyed
 
 def kill_dhbox(ctr_name):
 	"""Kill a running DH Box container"""
@@ -108,7 +120,11 @@ def kill_dhbox(ctr_name):
 		c.remove_container(ctr_name)
 	except Exception, e:
 		raise e
-	
+
+def kill_and_remove_user(name):
+	kill_dhbox(name)
+	dhbox.delete_user(name)
+
 def delete_untagged():
     """Find the untagged images and remove them"""
     images = c.images()

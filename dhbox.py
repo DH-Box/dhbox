@@ -1,6 +1,4 @@
-import os
-import sys
-import os.path
+import os, os.path, sys, random, string
 from flask import Flask, flash, request, redirect, url_for, render_template, \
     make_response, jsonify, send_file, current_app, g, abort
 import ast
@@ -101,6 +99,14 @@ def create_user_and_role():
         except Exception, e:
             the_new_dhbox = DockerBackend.setup_new_dhbox(username, user_pass, user_email)
 
+def delete_user(user):
+    try:
+        user = User.query.filter(User.name == user).first()
+        db.session.delete(user)
+        db.session.commit()
+    except Exception, e:
+        print e
+
 """
 URLS/VIEWS
 """
@@ -133,6 +139,15 @@ def our_team():
 @app.route('/get_started')
 def get_started():
     return render_template('get_started.html')
+
+@app.route('/demo', methods=["GET"])
+def demo():
+    username = 'demo'+''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+    demo_user_object = user_datastore.create_user(email=username+'@demo.com', name=username, password='demo')
+    db.session.commit()
+    login_user(demo_user_object)
+    new_dhbox = DockerBackend.demo_dhbox(username)
+    return username
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -209,14 +224,8 @@ def new_dhbox():
 def kill_dhbox():
     the_next = request.form['next']
     user = request.form['user']
-    # user = User.query.filter(User.name == user).first() or user
-    # user = user.name 
     DockerBackend.kill_dhbox(user)
-    try:
-        db.session.delete(user)
-        db.session.commit()
-    except Exception, e:
-        print e
+    delete_user(user)
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
 
