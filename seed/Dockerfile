@@ -11,6 +11,7 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sour
 RUN apt-get -y update
 
 # General needs
+RUN apt-get -qy install emacs
 RUN apt-get -qy install git python-apt apt-utils python-pip python-dev sudo curl git wget unzip python-pip opensmtpd ipython-notebook nodejs npm
 RUN pip install PyYAML jinja2 paramiko
 
