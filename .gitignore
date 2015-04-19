@@ -5,6 +5,10 @@ settings.cfg
 
 *.py[cod]
 
+# Emacs
+*#
+*~
+
 # C extensions
 *.so
 
