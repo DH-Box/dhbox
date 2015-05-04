@@ -21,7 +21,7 @@ app.config.from_pyfile('config.cfg')
 # Create database connection object
 db = SQLAlchemy(app)
 
-all_apps = {'rstudio': '8787', 'bash': '4200', 'omeka': '8080', 'apache': '80'}
+all_apps = {'rstudio': '8787', 'bash': '4200', 'omeka': '8080', 'apache': '80', 'brackets': '4444' }
 
 """
 MODELS
@@ -236,6 +236,6 @@ if __name__ == '__main__':
         db.create_all()
         create_user_and_role()
 	# Bind to PORT if defined, otherwise default to 5000.
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 80))
     app.run(host='0.0.0.0', port=port, threaded=True)
 	# app.run()

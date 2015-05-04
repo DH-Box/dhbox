@@ -71,7 +71,7 @@ def setup_new_dhbox(username, password, email, demo=False):
 	try:
 		print "Creating Container"
 		container = c.create_container(image='dhbox/seed:latest', name=username,
-			ports=[(25, 'tcp'),(80, 'tcp'), (4200, 'tcp'), (8080, 'tcp'), (8787, 'tcp')], tty=True, stdin_open=True)
+			ports=dhbox.all_apps.values(), tty=True, stdin_open=True)
 	except docker.errors.APIError, e:
 		raise e
 	else:
@@ -83,7 +83,7 @@ def setup_new_dhbox(username, password, email, demo=False):
 		return info
 
 def execute(container, args):
-	"""Execute a list of arbitrary Bash commands inside a container"""
+	"""Execute a list orbitrary Bash commands inside a container"""
 	for arg in args:
 		print arg
 		c.execute(container, arg, stdout=True, stderr=True, tty=False)

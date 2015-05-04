@@ -48,12 +48,12 @@ $( document ).ready(function() {
             if (r==true)
               {
                 var allUsers = { users: [] };
-                $('.userwrapper').each(function () { 
-                    allUsers.users.push({ 
-                    name: $(this).find('[what=users]').val(), 
-                    pass: $(this).find('[what=passes]').val(), 
-                    email: $(this).find('[what=email]').val() 
-                    }) 
+                $('.userwrapper').each(function () {
+                    allUsers.users.push({
+                    name: $(this).find('[what=users]').val(),
+                    pass: $(this).find('[what=passes]').val(),
+                    email: $(this).find('[what=email]').val()
+                    })
                 });
                 $('#modal-content').modal('show');
                 allUsers.users = allUsers.users.filter(function(n){ return n != undefined });
@@ -61,7 +61,7 @@ $( document ).ready(function() {
                 allUsers = JSON.stringify(allUsers);
                 // console.log(allUsers);
                 // console.log(mainUser);
-                $.post('{{ url_for('new_dhbox')}}', allUsers, function(data){ 
+                $.post('{{ url_for('new_dhbox')}}', allUsers, function(data){
                 if (data == 'failure'){
                     $('#modal-content').modal('hide');
                     $('#failure-modal').modal({show: true});
@@ -138,7 +138,7 @@ Just fill out the information below then click <strong>Launch</strong>.
                   <input type'text' type="text" what="email" id='adminEmail' class='email form-control' name='adminEmail' required/>
             </div>
         </div>
-    </form>
+
         <!-- <div>
             Should anyone else - such as students - be able to access this DH Box?
             <br>
@@ -148,6 +148,7 @@ Just fill out the information below then click <strong>Launch</strong>.
         <div>
             <input name="save" id='dhbox_form_submit' type="submit" value="Launch" class="btn btn-success btn-lg" />
         </div>
+      </form>
 </div>
 <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button> -->
 <div id='modal-content' class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Progress" aria-hidden="true">

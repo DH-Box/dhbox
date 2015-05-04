@@ -27,7 +27,7 @@ RUN tar xfz /tmp/mallet.tar.gz --strip-components=1 -C /mallet
 RUN ant -buildfile /mallet/build.xml
 
 # For NLTK
-RUN apt-get -qy install python-numpy python-scipy python-matplotlib 
+RUN apt-get -qy install python-numpy python-scipy python-matplotlib
 RUN pip install NLTK
 
 # For R-Studio
@@ -37,7 +37,7 @@ RUN yes | gdebi rstudio.deb
 RUN ln -s /etc/apparmor.d/rstudio-server /etc/apparmor.d/disable/
 
 # For Omeka
-RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd 
+RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd
 RUN apt-get -qy install apache2 php5 rsync mysql-server php5-mysql imagemagick python-mysqldb
 RUN mkdir -p /var/www/omeka/
 RUN wget -O /tmp/omeka.zip http://omeka.org/files/omeka-2.3.zip
@@ -65,6 +65,10 @@ ADD ./omeka/config.ini /var/www/omeka/application/config/config.ini
 ADD ./omeka/htaccess /var/www/omeka/.htaccess
 RUN chmod -R 777 /var/www/omeka/files
 
+# For brackets
+RUN apt-get install -qy nodejs nodejs-legacy npm
+RUN npm install brackets -g
+
 #Adding Deamons to containers
 RUN mkdir -p /etc/service/rserver
 ADD ./runit_scripts/rserver.sh /etc/service/rserver/run
@@ -85,6 +89,10 @@ RUN chmod +x /etc/service/shellinabox/run
 RUN mkdir -p /etc/service/smtpd
 ADD ./runit_scripts/smtpd.sh /etc/service/smtpd/run
 RUN chmod +x /etc/service/smtpd/run
+
+RUN mkdir -p /etc/service/brackets
+ADD ./runit_scripts/brackets.sh /etc/service/brackets/run
+RUN chmod +x /etc/service/brackets/run
 
 EXPOSE 22 25 8787 80 4200
 
