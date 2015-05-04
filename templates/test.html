@@ -68,58 +68,65 @@ $( document ).ready(function() {
         });
 
     });
+
 </script>
 
 <div style="margin-left:50px">
 
-<h1 class="dhbox">Launch a New DH Box</h1>
+    <h1 class="dhbox">Launch a New DH Box</h1>
 
-<br>
+    <br>
 
-<h3>You're about to become the owner of a brand new DH Box.</h3>
+    <h3>You're about to become the owner of a brand new DH Box.</h3>
 
-<br>
+    <br>
 
-Just fill out the information below then click <strong>Launch</strong>.
+    Just fill out the information below then click <strong>Launch</strong>.
 
-<br><br>
+    <br><br>
 
 </div>
 
 <div class="container">
 
-<div class="col-lg-10">
-    <form class="form-horizontal" role="form" id="the_form" method="post" action="/new_dhbox">
-        <div class='form-group userwrapper' id='field1'>
-            <div class="col-lg-4">
-                <label for='admin' class="control-label">Your Username:</label>
-                <input type'text' what="users" minlength="1" class='users form-control' id='admin' name='admin' required/>
-                <span class="help-block">This is the user with complete control over a new DH Box.</span>
+    <div class="col-lg-10">
+        <form class="form-horizontal" role="form" id="the_form" method="post" action="/new_dhbox">
+            <div class='form-group userwrapper' id='field1'>
+                <div class="col-lg-4">
+                    <label for='admin' class="control-label">Your Username:</label>
+                    <input type'text' what="users" minlength="1" class='users form-control' id='admin' name='admin'
+                    required/>
+                    <span class="help-block">This is the user with complete control over a new DH Box.</span>
+                </div>
+                <div class="col-lg-4">
+                    <label for='adminPass' class="control-label">Password:</label>
+                    <input type'text' type="password" minlength="6" what="passes" id='adminPass' class='passes
+                    form-control' name='adminPass' required/>
+                    <span class="help-block">Passwords apply for access to: DH Box, Omeka, RStudio.</span>
+                </div>
+                <div class="col-lg-4">
+                    <label for='adminEmail' class="control-label">Email Address:</label>
+                    <input type'text' type="text" what="email" id='adminEmail' class='email form-control'
+                    name='adminEmail' required/>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <label for='adminPass' class="control-label">Password:</label>
-                <input type'text' type="password" minlength="6" what="passes" id='adminPass' class='passes form-control' name='adminPass' required/>
-                <span class="help-block">Passwords apply for access to: DH Box, Omeka, RStudio.</span>
-            </div>
-            <div class="col-lg-4">
-                <label for='adminEmail' class="control-label">Email Address:</label>
-                  <input type'text' type="text" what="email" id='adminEmail' class='email form-control' name='adminEmail' required/>
-            </div>
-        </div>
-    </form>
+        </form>
         <div>
 
             Should anyone else - such as students - be able to access this DH Box?
-            
+
             <br>
-           
-           <button type="submit" class="add btn btn-info" id="add"><span class="glyphicon glyphicon-user"></span> Add a user</button>
+
+            <button type="submit" class="add btn btn-info" id="add"><span class="glyphicon glyphicon-user"></span> Add a
+                user
+            </button>
         </div>
-        <br />
+        <br/>
+
         <div>
-            <input name="save" id='dhbox_form_submit' type="submit" value="Launch" class="btn btn-success btn-lg" />
+            <input name="save" id='dhbox_form_submit' type="submit" value="Launch" class="btn btn-success btn-lg"/>
         </div>
-</div>
+    </div>
 
 </div>
 {% endblock %}

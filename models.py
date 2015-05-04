@@ -7,13 +7,15 @@ db = SQLAlchemy()
 
 # Define models
 roles_users = db.Table('roles_users',
-        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+                       db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,34 +29,34 @@ class User(db.Model, UserMixin):
 
 
 
-# class User(Base):
-#     __tablename__ = 'users'
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String(50), unique=False)
-#     email = Column(String(120), unique=False)
-#     ip = Column(String(50), unique=False)
-#     active = Column(Boolean(), unique=False)
+    # class User(Base):
+    # __tablename__ = 'users'
+    #     id = Column(Integer, primary_key=True)
+    #     name = Column(String(50), unique=False)
+    #     email = Column(String(120), unique=False)
+    #     ip = Column(String(50), unique=False)
+    #     active = Column(Boolean(), unique=False)
 
-#     # def get_id(self):
-#     #     try:
-#     #         return unicode(self.id)  # python 2
-#     #     except NameError:
-#     #         return str(self.id)  # python 3
+    #     # def get_id(self):
+    #     #     try:
+    #     #         return unicode(self.id)  # python 2
+    #     #     except NameError:
+    #     #         return str(self.id)  # python 3
 
-#     # def is_active(self):
-#     #     # Need to define 'active'
-#     #     return True
+    #     # def is_active(self):
+    #     #     # Need to define 'active'
+    #     #     return True
 
-#     # def is_anonymous(self):
-#     #     return False
+    #     # def is_anonymous(self):
+    #     #     return False
 
-#     # def is_authenticated(self):
-#     #     return True
+    #     # def is_authenticated(self):
+    #     #     return True
 
-#     def __init__(self, name=None, email=None, ip=None):
-#         self.name = name
-#         self.email = email
-#         self.ip = ip
+    #     def __init__(self, name=None, email=None, ip=None):
+    #         self.name = name
+    #         self.email = email
+    #         self.ip = ip
 
-#     def __repr__(self):
-#         return '<User %r>' % (self.name)
+    #     def __repr__(self):
+    #         return '<User %r>' % (self.name)

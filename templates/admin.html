@@ -2,27 +2,27 @@
 {% block body %}
 <h1>Administration</h1>
 <table class="table table-striped">
-<th>Owner</th>
-<th>Status</th>
-{% if containers %}
-{%for container in containers%}
-{% if container.Names is not none %}  
-  <tr>
-  	<td>{{container.Names[0][1:]}}</td>
-    <td>{{container.Status}}</td>
-    <td>
-			<form action="{{url_for('kill_dhbox')}}" id="end_dhbox" method="post">
-            <input type="hidden" name="user" value="{{container.Names[0][1:]}}">
-            <input type="hidden" name="next" value="admin">
-            <input type="submit" value="Destroy">
+    <th>Owner</th>
+    <th>Status</th>
+    {% if containers %}
+    {%for container in containers%}
+    {% if container.Names is not none %}
+    <tr>
+        <td>{{container.Names[0][1:]}}</td>
+        <td>{{container.Status}}</td>
+        <td>
+            <form action="{{url_for('kill_dhbox')}}" id="end_dhbox" method="post">
+                <input type="hidden" name="user" value="{{container.Names[0][1:]}}">
+                <input type="hidden" name="next" value="admin">
+                <input type="submit" value="Destroy">
             </form>
-    <a class='btn' href=""></a></td>
-  </tr>
-{%endif%}
-{%endfor%}
-{%else%}
-No containers
-{% endif %}
+            <a class='btn' href=""></a></td>
+    </tr>
+    {%endif%}
+    {%endfor%}
+    {%else%}
+    No containers
+    {% endif %}
 </table>
 {{containers}}
 {% endblock %}
