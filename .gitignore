@@ -55,3 +55,6 @@ include
 
 .vagrant/
 instance/
+
+# pycharm settings
+.idea

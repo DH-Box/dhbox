@@ -83,7 +83,7 @@ def setup_new_dhbox(username, password, email, demo=False):
 		return info
 
 def execute(container, args):
-	"""Execute a list orbitrary Bash commands inside a container"""
+	"""Execute a list of arbitrary Bash commands inside a container"""
 	for arg in args:
 		print arg
 		c.execute(container, arg, stdout=True, stderr=True, tty=False)

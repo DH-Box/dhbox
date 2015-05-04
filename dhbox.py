@@ -44,14 +44,14 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
-    
+
     def __init__(self, name, active, roles, email, password):
         self.name = name
         self.email = email.lower()
         self.active = active
         self.roles = roles
         self.set_password(password)
-    
+
     def set_password(self, password):
         self.pwdhash = generate_password_hash(password)
 
@@ -115,7 +115,7 @@ URLS/VIEWS
 def test():
     from time import sleep
     return render_template('test.html')
-            
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -236,6 +236,6 @@ if __name__ == '__main__':
         db.create_all()
         create_user_and_role()
 	# Bind to PORT if defined, otherwise default to 5000.
-    port = int(os.environ.get('PORT', 80))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, threaded=True)
 	# app.run()
