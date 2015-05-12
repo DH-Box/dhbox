@@ -1,19 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 
-    <style type="text/css" media="all">
-        body { font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif; font-size: 20px; }
-        .full { background-image: url('http://dhbox.org/images/background.png') repeat; background-color: #FFFFFF;
-        background-position: top; height: auto; display: block; width: 100%; }
-        .jumbotron { text-align: center; }
-        .btn-custom { padding: 14px 22px; font-size: 17px; line-height: normal; -webkit-border-radius: 6px;
-        -moz-border-radius: 6px; border-radius: 6px; }
-        .headline > .description { font-size: 30px; }
-        .welcomepage > .container > .heading { font-size: 40px; color: #3C0987; }
-        .welcomepage > .container > hr { border: 0; border-bottom: 3px dashed #333; background: #999; }
-        .highlight { background: rgba(255, 230, 0, 0.5); padding: 3px 5px; margin: -3px -5px; line-height: 1.7;
-        border-radius: 3px; display:inline-block; }
-    </style>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/my_dhbox.css')}}">
 <div class="welcomepage">
     <div class="jumbotron">
         <img src="{{url_for('static', filename='images/logo.png')}}" alt="DH Box logo" height="100px" width="auto">

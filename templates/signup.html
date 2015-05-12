@@ -1,32 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
-<style type="text/css">
-    .modal-header-primary {
-    color:#fff;
-    padding:9px 15px;
-    border-bottom:1px solid #eee;
-    background-color: #428bca;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    }
-    .modal-header-danger {
-    color:#fff;
-    padding:9px 15px;
-    border-bottom:1px solid #eee;
-    background-color: #d9534f;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    }
-</style>
-<link href="{{url_for('static', filename='bootstrap-dialog.min.css')}}" rel="stylesheet" type="text/css"/>
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/modals.css')}}">
+<link href="{{url_for('static', filename='css/bootstrap-dialog.min.css')}}" rel="stylesheet" type="text/css"/>
 <script src="{{url_for('static', filename='javascript/bootstrap-dialog.min.js')}}"></script>
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -82,32 +58,6 @@ $( document ).ready(function() {
               }
         }
     });
-
-    // $(document).on('click', '#add', function(e) {
-    //         var intId = $("#the_form div").length + 1;
-    //         var userWrapper = $("<div class=\"form-group userwrapper\" id=\"field" + intId + "\"/>");
-    //         var userDiv = $("<div class=\"col-lg-4\">");
-    //         var newUserLabel = $("<label class=\" control-label\" for=\"user" + intId + "\">User:</label>");
-    //         var newUser = $("<input type=\"text\" minlength=\"1\" what=\"users\" class=\"form-control users\" name=\"user" + intId + "\" id=\"user" + intId + "\" /></div>");
-    //         var passDiv = $("<div class=\"col-lg-4\">");
-    //         var newPassLabel = $("<label class=\"control-label\" for=\"passUser" + intId + "\">Password:</label>");
-    //         var newPass = $("<input minlength=\"6\" type=\"password\" what=\"passes\" class=\"form-control passes\" name=\"pass" + intId + "\" id=\"passUser" + intId + "\" />");
-    //         var removeButton = $("<input type=\"button\" class=\"remove btn btn-danger\" aria-hidden=\"true\" value=\"&times;\"/>");
-
-    //         removeButton.click(function() {
-    //             $(this).parent().prev().remove();
-    //             $(this).parent().remove();
-    //         });
-    //         userDiv.append(newUserLabel);
-    //         userDiv.append(newUser);
-    //         passDiv.append(newPassLabel);
-    //         passDiv.append(newPass);
-    //         passDiv.append(removeButton);
-    //         userWrapper.append(userDiv);
-    //         userWrapper.append(passDiv);
-    //         $("#the_form").append(userWrapper);
-    // });
-
     });
 
 </script>
@@ -127,7 +77,7 @@ $( document ).ready(function() {
         <div class='form-group userwrapper' id='field1'>
             <div class="col-lg-4">
                 <label for='admin' class="control-label">Your Username:</label>
-                <input type="text" what="users" minlength="1" class='users form-control' id='admin' name='admin'
+                <input type="text" what="users" minlength="5" class='users form-control' id='admin' name='admin'
                 required/>
                 <span class="help-block">This is the user with complete control over a new DH Box.</span>
             </div>
