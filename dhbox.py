@@ -17,30 +17,11 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # install_secret_key(app)
 app.config.from_pyfile('config.cfg')
-app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templates'
-app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
+
 # Create database connection object
 db = SQLAlchemy(app)
 
-<<<<<<< HEAD
 all_apps = {'rstudio': '8787', 'bash': '4200', 'omeka': '8080', 'apache': '80'}
-=======
-all_apps = [
-    {'name': 'ipython', 'wiki-page': 'IPython', 'display-name': 'IPython'},
-    {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
-    {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
-    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Bash Shell'},
-    {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
-    {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
-    {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
-    {'name': 'apache', 'port': '80', 'hide': True}
-]
-
-def get_app(key):
-    for app in all_apps:
-        if app['name'] == key:
-            return app
->>>>>>> stash
 
 """
 MODELS
@@ -198,11 +179,7 @@ def user_box(the_user):
     dhbox_username = which_user.name
     port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
     hostname = DockerBackend.get_hostname()
-    resp = make_response(render_template('my_dhbox.html',
-                                         user=the_user,
-                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps)
-                                         )
-                         )
+    resp = make_response(render_template('my_dhbox.html', user=the_user, apps=all_apps))
     return resp
 
 @app.route("/dhbox/<the_user>/<app_name>")
@@ -210,8 +187,8 @@ def user_box(the_user):
 def app_box(the_user, app_name):
     which_user = User.query.filter(User.name == str(the_user)).first()
     dhbox_username = which_user.name
-    app_port = get_app(app_name)['port']
-    port_info = DockerBackend.get_container_port(dhbox_username, app_port)
+    which_app = all_apps[app_name]
+    port_info = DockerBackend.get_container_port(dhbox_username, which_app)
     hostname = DockerBackend.get_hostname()
     location = hostname+":"+port_info
     return redirect('http://'+location)

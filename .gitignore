@@ -50,15 +50,4 @@ include
 
 
 .vagrant/
-<<<<<<< HEAD
 instance/
-=======
-instance/
-
-# pycharm settings
-.idea
-
-# js packages
-src/static/bower_components/
-node_modules/
->>>>>>> stash
