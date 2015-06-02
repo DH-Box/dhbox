@@ -5,13 +5,16 @@ settings.cfg
 
 *.py[cod]
 
+# Emacs
+*#
+*~
+
 # C extensions
 *.so
 
 # Packages
 *.egg
 *.egg-info
-dist
 build
 eggs
 parts
@@ -51,3 +54,10 @@ include
 
 .vagrant/
 instance/
+
+# pycharm settings
+.idea
+
+# js packages
+src/static/bower_components/
+node_modules/
