@@ -6,6 +6,7 @@ from urllib2 import urlopen
 import os, time, subprocess
 from threading import Timer
 import dhbox
+import logging
 
 default_hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
 
@@ -67,6 +68,7 @@ def get_all_exposed_ports(container_name):
 	return public_ports_cleaned
 
 def setup_new_dhbox(username, password, email, demo=False):
+<<<<<<< HEAD
 	"""Create a new DH Box container, customize it."""
 	try:
 		print "Creating Container"
@@ -81,6 +83,24 @@ def setup_new_dhbox(username, password, email, demo=False):
 		configure_dhbox(username, password, email, demo=demo)
 		info = c.inspect_container(container)
 		return info
+=======
+    """Create a new DH Box container, customize it."""
+    try:
+        print "Creating Container"
+        container = c.create_container(image='dhbox/seed:latest', name=username,
+                                       ports=(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None),
+                                       tty=True, stdin_open=True)
+    except docker.errors.APIError, e:
+        raise e
+    else:
+        print "Starting Container"
+        restart_policy = {"MaximumRetryCount": 10, "Name": "always"}
+        c.start(container, publish_all_ports=True, restart_policy=restart_policy)
+        configure_dhbox(username, password, email, demo=demo)
+        info = c.inspect_container(container)
+        return info
+
+>>>>>>> stash
 
 def execute(container, args):
 	"""Execute a list of arbitrary Bash commands inside a container"""
