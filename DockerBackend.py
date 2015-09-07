@@ -8,7 +8,7 @@ from threading import Timer
 import dhbox
 import logging
 
-default_hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
+default_hostname = 'http://www.dhbox.org'
 
 
 def attach_to_docker_client():
