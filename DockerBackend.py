@@ -8,9 +8,6 @@ from threading import Timer
 import dhbox
 import logging
 
-default_hostname = dhbox.app.config['DEFAULT_HOSTNAME']
-
-
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
         c = Client(**kwargs_from_env(assert_hostname=False))
@@ -27,7 +24,7 @@ def get_hostname():
         if dhbox.app.config['TESTING']:
             hostname = 'localhost'
         else:
-            hostname = default_hostname
+            hostname = dhbox.app.config['DEFAULT_HOSTNAME']
     return hostname
 
 
