@@ -27,7 +27,7 @@ def get_hostname():
         if dhbox.app.config['TESTING']:
             hostname = 'localhost'
         else:
-            hostname = default_hostname
+            hostname = dhbox.app.config['TESTING']
     return hostname
 
 
