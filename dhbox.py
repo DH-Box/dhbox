@@ -177,7 +177,11 @@ def demo():
     db.session.commit()
     login_user(demo_user_object)
     new_dhbox = DockerBackend.demo_dhbox(username)
-    return username
+    return make_response(render_template('my_dhbox.html',
+                                         user=username,
+                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps)
+                                         )
+                         )
 
 
 @app.route("/login", methods=["GET", "POST"])
