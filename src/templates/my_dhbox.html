@@ -41,9 +41,15 @@
             <tbody>
             {% for app in apps %}
             <tr>
+                {% if app['port'] %}
                 <td><a href="{{url_for('app_box', the_user=user, app_name=app['name'])}}"
                        class="btn btn-info btn-block btn-custom">{{ app['display-name'] }}</a></td>
                 <td><a href="{{url_for('app_box', the_user=user, app_name=app['name'])}}">{{ app['display-name']}}</a></td>
+                {% else %}
+                <td><a
+                       class="btn btn-info btn-block btn-custom">Accessed through Bash Shell</a></td>
+                <td><a href="https://github.com/DH-Box/dhbox/wiki/{{ app['wiki-page'] }}" >{{ app['display-name']}}</a></td>
+                {% endif %}
                 <td><a href="https://github.com/DH-Box/dhbox/wiki/{{ app['wiki-page'] }}" target="_blank">https://github.com/DH-Box/dhbox/wiki/{{ app['wiki-page'] }}</a>
                 </td>
             </tr>
