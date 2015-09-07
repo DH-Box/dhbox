@@ -78,9 +78,10 @@ def get_all_exposed_ports(container_name):
 def setup_new_dhbox(username, password, email, demo=False):
     """Create a new DH Box container, customize it."""
     try:
+        ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
         print "Creating Container"
         container = c.create_container(image='dhbox/seed:latest', name=username,
-                                       ports=(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None),
+                                       ports=ports,
                                        tty=True, stdin_open=True)
     except docker.errors.APIError, e:
         raise e
