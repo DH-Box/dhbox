@@ -15,6 +15,7 @@ pip install -r requirements.txt
 cd ~/dhbox/seed/
 sudo docker build -t dhbox/seed:latest .
 cd ~/dhbox/
+ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g bower gulp
 npm install
 sudo -u ${USERNAME} bower install --allow-root
