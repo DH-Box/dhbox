@@ -18,5 +18,5 @@ cd ~/dhbox/
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g bower gulp
 npm install
-sudo -u ${USERNAME} bower install --allow-root
+sudo -u ${USERNAME} bower install --allow-root --no-interactive
 gulp build
