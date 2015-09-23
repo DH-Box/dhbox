@@ -12,6 +12,9 @@ Currently DH Box requires a linux that has apt-get.
 ```
 wget -qO- https://raw.githubusex/develop/install_dhbox.sh | sudo sh
 ```
+
+or:
+
 1. [Install Docker](https://www.docker.com/)
 2. Install `pip`, Python package manager
 3. Clone git repo (`git clone https://github.com/DH-Box/dhbox.git`)
