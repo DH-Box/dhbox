@@ -32,7 +32,7 @@ def start_over():
 def clean_slate():
     """Delete all DH Boxes"""
     cleanup()
-    response = DockerBackend.kill_dhbox('test', delete_image=False)
+    response = DockerBackend.kill_dhbox('test')
     DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 

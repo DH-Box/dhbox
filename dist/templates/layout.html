@@ -14,6 +14,8 @@
 
     <script src="/static/js/dhbox.js"></script>
 
+    
+
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -51,7 +53,10 @@
             </ul>
             {% else %}
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{url_for('login')}}">Log in!</a></li>
+                {% if config["TESTING"] %}
+                    <li><a href="{{url_for('signup')}}">Sign Up</a></li>
+                {% endif %}
+                <li><a href="{{url_for('login')}}">Log in</a></li>
             </ul>
             {% endif %}
         </div>
@@ -79,49 +84,7 @@
 
     {% block body %}{% endblock %}
 </div>
-<!--<div class="footer">-->
-    <!--<hr>-->
-    <!--<div class="pull-left">-->
-    <!--<div class="backtotop">-->
-        <!--<a href="#">Back to Top</a> ↑-->
-    <!--</div>-->
-        <!--</div>-->
-
-    <!--<div class="socialmedia pull-right">-->
-        <!--<strong>Connect</strong> //-->
-
-        <!--<a href="mailto:hello@dhbox.org" target="_blank">-->
-            <!--<i class="fa fa-envelope-o"></i>-->
-            <!--<span>Email</span>-->
-        <!--</a>-->
-        <!--//-->
-
-        <!--<a href="http://twitter.com/DH_Box" target="_blank">-->
-            <!--<i class="fa fa-twitter"></i>-->
-            <!--<span>Twitter</span>-->
-        <!--</a>-->
-        <!--//-->
-
-        <!--<a href="http://github.com/DH-Box" target="_blank">-->
-            <!--<i class="fa fa-github"></i>-->
-            <!--<span>GitHub</span>-->
-        <!--</a>-->
-        <!--//-->
-
-        <!--<a href="http://feeds.feedburner.com/DHBoxBlog" target="_blank">-->
-            <!--<i class="fa fa-rss"></i>-->
-            <!--<span>RSS</span>-->
-        <!--</a>-->
-        <!--//-->
-
-        <!--<a href="http://dhbox.commons.gc.cuny.edu/" target="_blank">-->
-            <!--<i class="fa fa-quote"></i>-->
-            <!--<span>Blog</span>-->
-        <!--</a>-->
-        <!--<br>-->
-    <!--</div>-->
-    <!--<br>-->
-
-<!--</div>-->
+<div class="footer">
+</div>
 </body>
 </html>

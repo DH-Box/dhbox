@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1>Administration</h1>
+<h1 class="h1-top">Administration</h1>
+<br/>
 <table class="table table-striped">
     <th>Owner</th>
     <th>Status</th>
+    <th>Button</th>
     {% if containers %}
     {%for container in containers%}
     {% if container.Names is not none %}
@@ -14,9 +16,8 @@
             <form action="{{url_for('kill_dhbox')}}" id="end_dhbox" method="post">
                 <input type="hidden" name="user" value="{{container.Names[0][1:]}}">
                 <input type="hidden" name="next" value="admin">
-                <input type="submit" value="Destroy">
-            </form>
-            <a class='btn' href=""></a></td>
+                <input class="btn center-block" type="submit" value="Destroy">
+            </form></td>
     </tr>
     {%endif%}
     {%endfor%}
@@ -24,5 +25,9 @@
     No containers
     {% endif %}
 </table>
-{{containers}}
+<h2>Container Info</h2>
+<br/>
+<pre>
+    {{containers}}
+</pre>
 {% endblock %}

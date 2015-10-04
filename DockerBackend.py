@@ -7,6 +7,10 @@ import os, time, subprocess
 from threading import Timer
 import dhbox
 import logging
+import ipgetter
+
+dhbox_repo = 'thedhbox'
+gotten_ip = ipgetter.myip()
 
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
@@ -24,7 +28,7 @@ def get_hostname():
         if dhbox.app.config['TESTING']:
             hostname = 'localhost'
         else:
-            hostname = dhbox.app.config['DEFAULT_HOSTNAME']
+            hostname = gotten_ip or dhbox.app.config['DEFAULT_HOSTNAME']
     return hostname
 
 
@@ -33,11 +37,11 @@ def build_dhbox(username='test'):
     print "Building Seed"
     images = c.images()
     for image in images:
-        if image["RepoTags"] == ["dhbox/seed:latest"]:
+        if image["RepoTags"] == [dhbox_repo+"/seed:latest"]:
             image_id = image["Id"]
-            c.tag(image=image_id, repository='dhbox/seed', tag='older', force=True)
+            c.tag(image=image_id, repository=dhbox_repo+'/seed', tag='older', force=True)
     os.chdir('seed/')
-    for line in c.build(path='.', rm=True, tag='dhbox/seed:latest'):
+    for line in c.build(path='.', rm=True, tag=dhbox_repo+'/seed:latest'):
         print line
     if "errorDetail" in line:
         # There was an error, so kill the container and the image
@@ -78,7 +82,7 @@ def setup_new_dhbox(username, password, email, demo=False):
        # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
        # print ports
         print "Creating Container"
-        container = c.create_container(image='dhbox/seed:latest', name=username,
+        container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
                                        ports=[8080, 8787, 4444, 4200],
                                        tty=True, stdin_open=True)
     except docker.errors.APIError, e:
