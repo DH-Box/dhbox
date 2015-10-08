@@ -12,6 +12,7 @@ import ipgetter
 dhbox_repo = 'thedhbox'
 gotten_ip = ipgetter.myip()
 
+
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
         c = Client(**kwargs_from_env(assert_hostname=False))

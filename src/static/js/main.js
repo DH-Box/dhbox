@@ -1,21 +1,8 @@
 $( document ).ready(function() {
-    var form = $( "form" );
-    $( "#demoButtonSubmit" ).click(function(e) {
-        $('#modal-content').modal('show');
-        e.preventDefault();
-        $.ajax({
-            url: 'demo',
-            type: 'GET',
-            success: function(response) {
-                console.log(response)
-                $('inside-modal').replaceWith('<div>DH Box successfully created.</div>');
-                setTimeout(function () {
-                    alert("Demo DH Box built")
-                    window.location = '/dhbox/'+response;
-                }, 9000);
-            }
-        });
-  });
+
+    $( "#start-demo" ).click(function(e) {
+        showModal('Building your Demo DHbox');
+     });
 
     var errorTemplate = '<div class="help-block"><i class="fa fa-exclamation-circle"></i><i class="fa fa-check"></i></div>';
 
@@ -49,7 +36,7 @@ $( document ).ready(function() {
                     email: $(this).find('[what=email]').val()
                     })
                 });
-                $('#modal-content').modal('show');
+                showModal('Building your DHbox');
                 allUsers.users = allUsers.users.filter(function(n){ return n != undefined });
                 mainUser = allUsers.users[0].name
                 allUsers = JSON.stringify(allUsers);
@@ -76,4 +63,12 @@ $( document ).ready(function() {
               }
         }
     });
+
+    function showModal(title) {
+        var modal = $('#progress-modal');
+
+        modal.find('.modal-title').text(title);
+
+        modal.modal('show');
+    }
 });

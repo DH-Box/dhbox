@@ -180,6 +180,7 @@ def demo():
     return redirect('/dhbox/' + username, 301)
 
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # form = LoginForm()
@@ -200,6 +201,7 @@ def admin():
     return render_template('admin.html', containers=containers)
 
 
+
 @app.route("/dhbox/<the_user>")
 @login_required
 def user_box(the_user):
@@ -217,6 +219,7 @@ def user_box(the_user):
                                          )
                          )
     return resp
+
 
 
 @app.route("/dhbox/<the_user>/<app_name>")
@@ -276,6 +279,8 @@ if __name__ == '__main__':
         db.create_all()
         create_user_and_role()
     # Bind to PORT if defined, otherwise default to 5000.
+
     port = int(os.environ.get('PORT', 80))
+
     app.run(host='0.0.0.0', port=port, threaded=True)
-# app.run()
+
