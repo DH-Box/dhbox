@@ -6,8 +6,11 @@ from urllib2 import urlopen
 import os, time, subprocess
 from threading import Timer
 import dhbox
+import logging
+import ipgetter
 
-default_hostname = json.load(urlopen('http://httpbin.org/ip'))['origin']
+dhbox_repo = 'thedhbox'
+gotten_ip = ipgetter.myip()
 
 
 def attach_to_docker_client():
@@ -26,7 +29,7 @@ def get_hostname():
         if dhbox.app.config['TESTING']:
             hostname = 'localhost'
         else:
-            hostname = default_hostname
+            hostname = gotten_ip or dhbox.app.config['DEFAULT_HOSTNAME']
     return hostname
 
 
@@ -35,11 +38,11 @@ def build_dhbox(username='test'):
     print "Building Seed"
     images = c.images()
     for image in images:
-        if image["RepoTags"] == ["dhbox/seed:latest"]:
+        if image["RepoTags"] == [dhbox_repo+"/seed:latest"]:
             image_id = image["Id"]
-            c.tag(image=image_id, repository='dhbox/seed', tag='older', force=True)
+            c.tag(image=image_id, repository=dhbox_repo+'/seed', tag='older', force=True)
     os.chdir('seed/')
-    for line in c.build(path='.', rm=True, tag='dhbox/seed:latest'):
+    for line in c.build(path='.', rm=True, tag=dhbox_repo+'/seed:latest'):
         print line
     if "errorDetail" in line:
         # There was an error, so kill the container and the image
@@ -77,9 +80,12 @@ def get_all_exposed_ports(container_name):
 def setup_new_dhbox(username, password, email, demo=False):
     """Create a new DH Box container, customize it."""
     try:
+       # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
+       # print ports
         print "Creating Container"
-        container = c.create_container(image='dhbox/seed:latest', name=username,
-                                       ports=dhbox.all_apps.values(), tty=True, stdin_open=True)
+        container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
+                                       ports=[8080, 8787, 4444, 4200],
+                                       tty=True, stdin_open=True)
     except docker.errors.APIError, e:
         raise e
     else:

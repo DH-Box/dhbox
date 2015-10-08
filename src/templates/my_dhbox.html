@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="dhbox-apps">
+    <div class="jumbotron">
+        <h1 class="h1-top">
+            Welcome to Your New DHbox
+            <i class="fa fa-gift"></i>
+        </h1>
+        <br>
+        <h4 class="highlight">This DH Box Expires on: [expiration date]</h4>
+    </div>
+    <div>
+        <div class="headline">
+            <div class="description">
+                <p>If you're ready to start using DH tools, you're in the right place.</p>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+
+        <div class="heading"><i class="fa fa-bookmark"></i> Bookmark This Page</div>
+        <br>
+
+        <p>This is your DH Box's homepage.</p>
+        <br><br>
+
+        <div class="heading"><i class="fa fa-gear"></i> Use Your Tools</div>
+        <br>
+
+        <p>Don't forget to read the documentation.</p>
+        <br>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Tool</th>
+                <th>Web Address</th>
+                <th>Documentation</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for app in apps %}
+            <tr>
+                {% if app['port'] %}
+                <td><a href="{{url_for('app_box', the_user=user, app_name=app['name'])}}"
+                       class="btn btn-info btn-block btn-custom">{{ app['display-name'] }}</a></td>
+                <td><a href="{{url_for('app_box', the_user=user, app_name=app['name'])}}">{{ app['display-name']}}</a></td>
+                {% else %}
+                <td><a
+                       class="btn btn-info btn-block btn-custom">Accessed through Bash Shell</a></td>
+                <td><a href="https://github.com/DH-Box/dhbox/wiki/{{ app['wiki-page'] }}" >{{ app['display-name']}}</a></td>
+                {% endif %}
+                <td><a href="https://github.com/DH-Box/dhbox/wiki/{{ app['wiki-page'] }}" target="_blank">https://github.com/DH-Box/dhbox/wiki/{{ app['wiki-page'] }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br><br>
+
+        <div class="heading"><i class="fa fa-clock-o"></i> Enjoy It While It Lasts</div>
+        <br>
+
+        <p></p>
+
+        <div class="highlight">Your DH Box expires on [expiration date].</div>
+        <p></p>
+        <br>
+
+        <p>Make sure to export any work you've done before then!</p>
+        <br><br>
+        <hr>
+        <p>
+            <a href="http://dhbox.org/terms" target="_blank">Terms of Service</a>
+            <br><br>
+            Visit <a href="http://dhbox.org/" target="_blank">dhbox.org</a> for more info.
+        </p>
+        <br><br>
+
+        <form action="{{url_for('kill_dhbox')}}" id="end_dhbox" method="post">
+            <input type="hidden" name="user" value="{{user}}">
+            <input type="submit" value="Destroy DH Box">
+        </form>
+    </div>
+<!-- End container -->
+</div>  <!-- End welcomepage -->
+{% endblock %}

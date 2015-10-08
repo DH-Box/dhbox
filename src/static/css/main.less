@@ -1,0 +1,237 @@
+@import "../bower_components/bootstrap/less/bootstrap.less";
+@import "../bower_components/bootstrap-dialog/dist/less/bootstrap-dialog.less";
+@import "../bower_components/fontawesome/less/font-awesome.less";
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,400italic,500,500italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+
+// variables
+
+@font-family-monospace:   "Inconsolata", Consolas, monospace;
+@font-family-base:        @font-family-monospace;
+@font-family-sans-serif: "Roboto", Helvetica, sans-serif;
+@brand-primary: #2e1a57;
+@btn-default-bg: #fff;
+@btn-default-border: @brand-primary;
+@btn-default-color: @brand-primary;
+@navbar-inverse-bg: @brand-primary;
+@navbar-inverse-link-color: #fff;
+@container-lg: @container-desktop;
+@hr-border: @brand-primary;
+
+// modal styles
+
+.modal-header-primary {
+    color:#fff;
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #428bca;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-header-danger {
+    color:#fff;
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #d9534f;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-dialog {
+    z-index: 9999;
+}
+
+// shared styles
+
+.navbar-nav > li > a {
+    padding: 20px 15px 5px 15px !important;
+    font-weight: 700;
+}
+
+h1, h2, h3, h4 {
+    font-family: @font-family-sans-serif;
+}
+
+        h1 {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        h2, h1.h1-top {
+            font-weight: 300;
+            margin-bottom: 5px;
+            &:first-of-type {
+                margin-top: 40px;
+            }
+        }
+
+.btn {
+    border-radius: 0 !important;
+    border: 1px solid @brand-primary;
+    color: @brand-primary;
+    font-weight: 700;
+    background-color: #fff;
+    &:hover {
+        background-color: fade(@brand-primary, 10%);
+    }
+    &.btn-huge {
+        width: 80%;
+        padding: 30px 0;
+    }
+    span:hover {
+        color:#0f081c;
+        text-decoration: underline;
+    }
+}
+
+.form-group {
+    .form-control {
+        border-radius: 0 !important;
+        border: 1px solid @brand-primary;
+        &.error {
+            border-color: @brand-danger;
+        }
+        &:focus {
+            border-width: 0 0 1px 0;
+            box-shadow: none;
+            padding-left: 13px;
+        }
+        &.valid + .help-block {
+            .fa-exclamation-circle {
+                display: none;
+            }
+            i {
+                color: @brand-success;
+                margin-right: 10px;
+            }
+        }
+        &.error + .help-block {
+            .fa-check {
+                display: none;
+            }
+            i {
+                color: @brand-danger;
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+// layout styles
+
+.navbar-inverse a.dhbox-logo {
+    font-size: 28px;
+    color: #777;
+    font-weight: 700;
+    text-decoration: none;
+    &:hover {
+        color: #888;
+    }
+    span {
+        color: #fff;
+    }
+}
+
+.footer {
+    height: 50px;
+}
+
+
+// page styles
+.dhbox-home {
+    .dhbox-welcome {
+        p.lead {
+            font-size: 18px;
+            max-width: @screen-sm;
+            font-weight: 300;
+            margin: 20px auto;
+        }
+    }
+
+    .dhbox-get {
+        font-family: @font-family-sans-serif;
+
+        label {
+            font-size: 24px;
+            font-weight: 300;
+        }
+        > div {
+            margin-bottom: 30px;
+        }
+    }
+    .dhbox-tools, .dhbox-partners {
+        font-size: 18px;
+        p {
+            margin-bottom: 0;
+        }
+        .logos {
+            margin-top: 20px;
+            img {
+                height: 50px;
+            }
+        }
+    }
+    .dhbox-partners {
+        .logos > div {
+            width: 20%;
+            img {
+                height: 75px;
+            }
+            span {
+
+            }
+        }
+    }
+}
+
+
+.dhbox-about {
+    h2:first-of-type {
+        margin-top: 0;
+    }
+}
+
+.dhbox-team {
+    h2 {
+        font-size: 18px;
+        font-family: @font-family-monospace;
+        font-weight: 700;
+        span {
+            font-weight: 400;
+        }
+    }
+}
+
+.dhbox-signup {
+    .signup-form {
+        margin-top: 20px;
+    }
+    .btn {
+        margin-left: 15px;
+    }
+}
+
+.dhbox-about {
+    h2:first-of-type {
+        margin-top: 0;
+    }
+}
+
+.dhbox-login {
+
+}
+
+.dhbox-apps {
+    .heading {
+        font-size: 24px;
+    }
+}

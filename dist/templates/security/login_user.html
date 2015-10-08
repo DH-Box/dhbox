@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% include "security/_messages.html" %}
+<div class="dhbox-login">
+    <div class="row">
+        <h1 class="h1-top">Login</h1>
+    </div>
+    <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form" class="form-horizontal">
+        {{ login_user_form.hidden_tag() }}
+        <!-- {{ render_field_with_errors(login_user_form.email) }} -->
+        <div class="row">
+                        <div class="col-xs-4 form-group">
+                    <label for='name' class="control-label">Username:</label>
+                    <input type="text" minlength="5" class='users form-control' id='name' name='name' pattern="/^[A-Za-z0-9]$/"
+                    required/>
+                </div></div><div class="row">
+                        <div class="col-xs-4 form-group">
+                    <label for='password' class="control-label">Password:</label>
+                    <input type="password" minlength="6" id='password' class='passes form-control'
+                           name='password' required/>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 form-group">
+                <input type="checkbox" class="" name="remember" id="remember" />
+                <label for="remember" class="control-label">Remember login?</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 form-group">
+                <button type="submit" class="btn btn-default">Login</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- {% include "security/_menu.html" %} -->
+{% endblock %}

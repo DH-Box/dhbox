@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="dhbox-home">
+    <div class="row dhbox-welcome">
+        <div class="col-xs-12 text-center">
+            <h2 class="featurette-heading">Ready to stop installing &amp; start exploring?
+            </h2>
+
+            <h1>Welcome to DHbox.</h1>
+            <img class="featurette-image img-responsive center-block"
+                 src="/static/images/dhbox_shell.png">
+
+            <p class="lead">Setting up an environment for digital humanities computational work can be time-consuming
+                and difficult. DHbox addresses this problem by streamlining installation processes and providing a
+                <strong>digital humanities laboratory in the cloud</strong> through simple sign-in via a web browser.</p>
+        </div>
+        <!-- END THE FEATURETTES -->
+    </div>
+    <div class="row dhbox-get">
+        <div class="col-md-4 col-md-offset-2 col-xs-12 text-center">
+            <label for="start-demo">Give it a try:</label><br/>
+            <a id="start-demo" class="btn btn-huge" href="/demo"><span>Start Hour Demo</span></a>
+        </div>
+        <div class="col-md-4 col-xs-12 text-center">
+            <label for="get-dhbox">Get it for your class:</label><br/>
+            <a id="get-dhbox" class="btn btn-huge" href="https://github.com/DH-Box/dhbox"><span>Download from GitHub</span></a>
+        </div>
+    </div>
+    <div class="dhbox-tools">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <p>The DHbox platform comes pre-equipped with <strong>essential DH tools</strong>:</p>
+
+                <p>IPython, RStudio, Omeka, and NLTK.</p>
+            </div>
+        </div>
+        <div class="row logos">
+            <div class="col-xs-3">
+                <img src="/static/images/omeka-logo.gif" class="pull-left" alt="omeka"/>
+            </div>
+            <div class="col-xs-6">
+                <img src="/static/images/ipython-logo.png" class="center-block" alt="ipython"/>
+            </div>
+            <div class="col-xs-3">
+                <img src="/static/images/rstudio-logo.png" class="pull-right" alt="rstudio"/>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="dhbox-partners">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <p>DHbox is created in partnership with:</p>
+            </div>
+        </div>
+        <div class="row logos">
+            <div class="col-xs-2">
+                <img src="/static/images/britishlibrary-logo.gif" class="pull-left" alt="British Library"/>
+            </div>
+            <div class="col-xs-2">
+                <img src="/static/images/cuny-logo.jpg" class="pull-left" alt="CUNY"/>
+            </div>
+            <div class="col-xs-2">
+                <img src="/static/images/nypl-logo.jpg" class="center-block" alt="NYPL"/>
+            </div>
+            <div class="col-xs-2">
+                <img src="/static/images/hilt-logo.png" class="pull-right" alt="HILT"/>
+            </div>
+            <div class="col-xs-2">
+                <img src="/static/images/dhsi-logo.jpg" class="pull-right" alt="dhsi.org" />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

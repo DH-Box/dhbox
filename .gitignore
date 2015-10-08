@@ -15,7 +15,6 @@ settings.cfg
 # Packages
 *.egg
 *.egg-info
-dist
 build
 eggs
 parts
@@ -58,3 +57,7 @@ instance/
 
 # pycharm settings
 .idea
+
+# js packages
+src/static/bower_components/
+node_modules/
