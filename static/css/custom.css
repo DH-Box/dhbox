@@ -1,0 +1,160 @@
+/*****************************************************************************/
+/*
+/* Custom
+/*
+/*****************************************************************************/
+
+html {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+p {
+  margin-left: 0px;
+  margin-right: 150px;
+}
+	
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 125%;
+}
+
+.dhbox {
+  font-family: "Helvetica", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+hr {
+  border: 0;
+  border-bottom: 3px dashed #333;
+  background: #999;
+  margin-right: 50px;
+}
+
+.logo-custom {
+  height: 60px;
+  width: auto;
+  border: 2px solid white;
+}
+
+.advisor > h2 {
+  font-size: 20px;
+}
+
+div:target {
+  padding-top: 60px;
+}
+
+.missingpage {
+  margin-left: 50px;
+}
+
+.headline > .container > h3 {
+  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3C0987;
+}
+
+.404 {
+  margin-left: 50px;
+}
+
+.why {
+  font-weight: bold;
+}
+
+.blog {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.breadcrumbtrail {
+  text-align: center;
+  margin-right: 50px;
+}
+
+.post {
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.postheader {
+  margin-bottom: 20px;
+}
+
+.post .date {
+  font-style: italic;
+}
+
+.postprint {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.posts {
+  list-style-type: none;
+  margin-bottom: 2em;
+}
+
+.posts li {
+  line-height: 1.75em;
+}
+
+.posts span {
+  color: #666;
+  font-family: Monaco, "Courier New", monospace;
+  font-size: 80%;
+}
+
+.footer {
+  color: #333;
+  margin-left: 50px;
+}
+
+.footer a, a.hover, a.visited {
+  color: #333;
+  text-decoration: underline;
+}
+
+.footer .socialmedia {
+  float: right;
+  overflow: hidden;
+  text-decoration: none;
+  margin-right:50px;
+}
+
+.footer .socialmedia a {
+  text-decoration: none;
+}
+
+.backtotop a, a.hover, a.visited {
+  text-decoration: none;
+}
+
+.footer .socialmedia {
+  text-align: right;
+}
+
+.footer > .menu {
+  text-align: left;
+}
+
+.credits {
+   font-size: 65%;
+}
+
+.searchdescription {
+  color: #333;
+  font-size: 75%;
+  margin-left: 10px;
+}
+
+.myicon {
+  width: 32px;
+  height: 32px;
+}
+
+/* .face {
+  width: 200px;
+  height: auto;
+} */

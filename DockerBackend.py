@@ -8,6 +8,7 @@ from threading import Timer
 import dhbox
 import logging
 
+
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
         c = Client(**kwargs_from_env(assert_hostname=False))
@@ -25,6 +26,7 @@ def get_hostname():
             hostname = 'localhost'
         else:
             hostname = dhbox.app.config['DEFAULT_HOSTNAME']
+
     return hostname
 
 
@@ -79,8 +81,7 @@ def setup_new_dhbox(username, password, email, demo=False):
        # print ports
         print "Creating Container"
         container = c.create_container(image='dhbox/seed:latest', name=username,
-                                       ports=[8080, 8787, 4444, 4200],
-                                       tty=True, stdin_open=True)
+                                       ports=[value['port'] for value in dhbox.all_apps if 'port' in value], tty=True, stdin_open=True)
     except docker.errors.APIError, e:
         raise e
     else:

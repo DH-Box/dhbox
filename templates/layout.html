@@ -4,17 +4,21 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
     <meta name="description" content="Reference Desk Statistics">
     <meta name="author" content="SZ">
-    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
     <title>DH Box</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="/static/css/dhbox.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
-    <script src="/static/js/dhbox.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/custom.css')}}">
 
-    
+    <script type="text/javascript" src="{{url_for('static', filename='javascript/jquery.validate.min.js')}}"></script>
 
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -27,7 +31,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand dhbox-logo" href="{{url_for('index')}}">&gt; <span>DH</span>box</a>
+            <a class="navbar-brand" href="{{url_for('index')}}"><img style="max-width:100px; margin-top: -7px;"
+                                                                     src="{{url_for('static', filename='images/logo.png')}}"></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -53,10 +58,7 @@
             </ul>
             {% else %}
             <ul class="nav navbar-nav navbar-right">
-                {% if config["TESTING"] %}
-                    <li><a href="{{url_for('signup')}}">Sign Up</a></li>
-                {% endif %}
-                <li><a href="{{url_for('login')}}">Log in</a></li>
+                <li><a href="{{url_for('login')}}">Log in!</a></li>
             </ul>
             {% endif %}
         </div>
@@ -85,6 +87,52 @@
     {% block body %}{% endblock %}
 </div>
 <div class="footer">
+    <hr>
+    <div class="menu">
+        <a href="http://dhbox.org/about">About</a> &nbsp;
+        <a href="http://dhbox.commons.gc.cuny.edu/">Blog</a> &nbsp;
+        <a href="http://dhbox.org/contact">Contact</a> &nbsp;
+    </div>
+    <div class="backtotop">
+        <a href="http://dhbox.org/#">Back to Top</a> ↑
+    </div>
+    <br>
+
+    <div class="socialmedia">
+        Connect //
+
+        <a href="mailto:hello@dhbox.org" target="_blank">
+            <i class="icon icon-email"></i>
+            <span>Email</span>
+        </a>
+        //
+
+        <a href="http://twitter.com/DH_Box" target="_blank">
+            <i class="icon icon-twitter"></i>
+            <span>Twitter</span>
+        </a>
+        //
+
+        <a href="http://github.com/DH-Box" target="_blank">
+            <i class="icon icon-github"></i>
+            <span>GitHub</span>
+        </a>
+        //
+
+        <a href="http://feeds.feedburner.com/DHBoxBlog" target="_blank">
+            <i class="icon icon-rss"></i>
+            <span>RSS</span>
+        </a>
+        //
+
+        <a href="http://dhbox.commons.gc.cuny.edu/" target="_blank">
+            <i class="icon icon-blog"></i>
+            <span>Blog</span>
+        </a>
+        <br>
+    </div>
+    <br>
+
 </div>
 </body>
 </html>

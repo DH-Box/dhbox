@@ -8503,8 +8503,11 @@ h1 {
 h2,
 h1.h1-top {
   font-weight: 300;
-  margin-top: 40px;
   margin-bottom: 5px;
+}
+h2:first-of-type,
+h1.h1-top:first-of-type {
+  margin-top: 40px;
 }
 .btn {
   border-radius: 0 !important;
@@ -8530,6 +8533,7 @@ h1.h1-top {
 .form-group .form-control:focus {
   border-width: 0 0 1px 0;
   box-shadow: none;
+  padding-left: 13px;
 }
 .form-group .form-control.valid + .help-block .fa-exclamation-circle {
   display: none;
@@ -8557,15 +8561,8 @@ h1.h1-top {
 .navbar-inverse a.dhbox-logo span {
   color: #fff;
 }
-.footer .socialmedia {
-  font-weight: 300;
-}
-.footer .socialmedia strong {
-  font-size: 15px;
-  color: #2e1a57;
-}
-.footer .socialmedia span {
-  text-decoration: underline;
+.footer {
+  height: 50px;
 }
 .dhbox-home .dhbox-welcome p.lead {
   font-size: 18px;
@@ -8605,11 +8602,8 @@ h1.h1-top {
 .dhbox-home .dhbox-partners .logos > div img {
   height: 75px;
 }
-.dhbox-signup .signup-form {
-  margin-top: 20px;
-}
-.dhbox-signup .btn {
-  margin-left: 15px;
+.dhbox-about h2:first-of-type {
+  margin-top: 0;
 }
 .dhbox-team h2 {
   font-size: 18px;
@@ -8618,6 +8612,15 @@ h1.h1-top {
 }
 .dhbox-team h2 span {
   font-weight: 400;
+}
+.dhbox-signup .signup-form {
+  margin-top: 20px;
+}
+.dhbox-signup .btn {
+  margin-left: 15px;
+}
+.dhbox-about h2:first-of-type {
+  margin-top: 0;
 }
 .dhbox-apps .heading {
   font-size: 24px;

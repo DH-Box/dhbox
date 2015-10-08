@@ -7,11 +7,13 @@ from subprocess import call
 
 manager = Manager()
 
+
 @manager.command
 def new_seed():
     """Build new seed for DH Box"""
     response = DockerBackend.build_dhbox()
     return response
+
 
 @manager.command
 def test():
@@ -28,6 +30,7 @@ def start_over():
     DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 
+
 @manager.command
 def clean_slate():
     """Delete all DH Boxes"""
@@ -36,12 +39,14 @@ def clean_slate():
     DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 
+
 @manager.command
 def killctr(ctr_name):
     """Delete a container"""
     print "killing container " + ctr_name
     response = DockerBackend.kill_dhbox(ctr_name)
     return response
+
 
 @manager.command
 def cleanup():
@@ -50,6 +55,7 @@ def cleanup():
     call("docker ps -a | grep Exit | awk '{print $1}' |  xargs docker rm", shell=True)
     print "Deleting images"
     DockerBackend.delete_untagged()
+
 
 if __name__ == '__main__':
     c = DockerBackend.attach_to_docker_client()
