@@ -26,7 +26,7 @@ all_apps = [
     {'name': 'ipython', 'wiki-page': 'IPython', 'display-name': 'IPython'},
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
-    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Bash Shell'},
+    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line'},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
@@ -210,17 +210,22 @@ def user_box(the_user):
         return redirect(url_for("index"))
     if current_user.name is not which_user.name:
         return redirect(url_for("index"))
+    email_domain = which_user.email.split("@",1)[1]
+    if email_domain == 'demo.com':
+        demo = True
+    else:
+        demo = False
     dhbox_username = which_user.name
     port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
     hostname = DockerBackend.get_hostname()
     resp = make_response(render_template('my_dhbox.html',
                                          user=the_user,
-                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps)
+                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps),
+                                         demo=demo
                                          )
                          )
     return resp
-
-
+    
 
 @app.route("/dhbox/<the_user>/<app_name>")
 @login_required
@@ -231,8 +236,10 @@ def app_box(the_user, app_name):
     port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     hostname = DockerBackend.get_hostname()
     location = hostname + ":" + port_info
-    return redirect('http://' + location)
-
+    if app_name == 'omeka':
+        return redirect('http://' + location+'/admin')
+    else:
+        return redirect('http://' + location)
 
 @app.route('/new_dhbox', methods=['POST'])
 def new_dhbox():
@@ -280,7 +287,7 @@ if __name__ == '__main__':
         create_user_and_role()
     # Bind to PORT if defined, otherwise default to 5000.
 
-    port = int(os.environ.get('PORT', 80))
+    port = int(os.environ.get('PORT', 8000))
 
     app.run(host='0.0.0.0', port=port, threaded=True)
 
