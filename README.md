@@ -24,4 +24,10 @@ or:
 7. Run `sudo docker build -t thedhbox/seed:latest .` (takes 15 minutes or more)
 8. Navigate to `dhbox/`
 9. Run `python dhbox.py`
-10. Navigate to site on `http://localhost:5000`
+10. Navigate to site on `http://localhost:80`
+
+###If you are developing for DH Box, there are a few more steps:
+
+11. Install Node and Node Package Manager: `apt-get install nodejs npm`
+12. Install Gulp and Bower: `npm install gulp bower`
+13. Changes to the site go into the `/src` directory. Propagate changes with `gulp build`
