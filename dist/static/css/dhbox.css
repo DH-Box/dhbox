@@ -8486,6 +8486,9 @@ button.close {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+.modal-dialog {
+  z-index: 9999;
+}
 .navbar-nav > li > a {
   padding: 20px 15px 5px 15px !important;
   font-weight: 700;
@@ -8522,6 +8525,10 @@ h1.h1-top:first-of-type {
 .btn.btn-huge {
   width: 80%;
   padding: 30px 0;
+}
+.btn span:hover {
+  color: #0f081c;
+  text-decoration: underline;
 }
 .form-group .form-control {
   border-radius: 0 !important;
