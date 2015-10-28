@@ -37,7 +37,7 @@
             <tr>
                 {% if app['port'] %}
                 <td><a href="{{url_for('app_box', the_user=user, app_name=app['name'])}}"
-                       class="btn btn-info btn-block btn-custom">{{ app['display-name'] }}</a></td>
+                       class="btn btn-info btn-block btn-custom" target="_blank">{{ app['display-name'] }}</a></td>
                 {% else %}
                 <td>{{ app['display-name']}}: Accessed through Command Line</td>
                 {% endif %}
