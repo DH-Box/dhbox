@@ -13,7 +13,7 @@ git clone https://github.com/DH-Box/dhbox.git
 cd ~/dhbox/
 pip install -r requirements.txt
 cd ~/dhbox/seed/
-sudo docker build -t dhbox/seed:latest .
+sudo docker build -t thedhbox/seed:latest .
 cd ~/dhbox/
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g bower gulp
