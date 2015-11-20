@@ -82,7 +82,10 @@ def setup_new_dhbox(username, password, email, demo=False):
     try:
        # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
        # print ports
-        print "Creating Container"
+        print "Creating Containers"
+        wp_container = c.create_container(image="twordpress:latest",
+                                          name="twordpress_foo10",
+                                          ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
                                        ports=[8080, 8787, 4444, 4200],
                                        tty=True, stdin_open=True)
@@ -91,11 +94,12 @@ def setup_new_dhbox(username, password, email, demo=False):
     else:
         print "Starting Container"
         restart_policy = {"MaximumRetryCount": 10, "Name": "always"}
-        c.start(container, publish_all_ports=True, restart_policy=restart_policy)
+        c.start('twordpress_foo10',
+                publish_all_ports=True,)
+        c.start(container, publish_all_ports=True, volumes_from='twordpress_foo10', restart_policy=restart_policy)
         configure_dhbox(username, password, email, demo=demo)
         info = c.inspect_container(container)
         return info
-
 
 def execute(container, args):
     """Execute a list of arbitrary Bash commands inside a container"""

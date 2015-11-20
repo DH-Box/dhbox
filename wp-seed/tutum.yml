@@ -1,0 +1,4 @@
+wordpress:
+  image: tutum/wordpress
+  ports:
+    - 80:80
