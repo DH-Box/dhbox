@@ -84,7 +84,7 @@ def setup_new_dhbox(username, password, email, demo=False):
        # print ports
         print "Creating Containers"
         wp_container = c.create_container(image="twordpress:latest",
-                                          name="twordpress_foo10",
+                                          name=username+'_wp',
                                           ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
                                        ports=[8080, 8787, 4444, 4200],
@@ -92,11 +92,11 @@ def setup_new_dhbox(username, password, email, demo=False):
     except docker.errors.APIError, e:
         raise e
     else:
-        print "Starting Container"
+        print "Starting Containers"
         restart_policy = {"MaximumRetryCount": 10, "Name": "always"}
-        c.start('twordpress_foo10',
+        c.start(wp_container,
                 publish_all_ports=True,)
-        c.start(container, publish_all_ports=True, volumes_from='twordpress_foo10', restart_policy=restart_policy)
+        c.start(container, publish_all_ports=True, volumes_from=username+'_wp', restart_policy=restart_policy)
         configure_dhbox(username, password, email, demo=demo)
         info = c.inspect_container(container)
         return info
