@@ -105,7 +105,8 @@ def execute(container, args):
     """Execute a list of arbitrary Bash commands inside a container"""
     for arg in args:
         print arg
-        c.execute(container, arg, stdout=True, stderr=True, tty=False)
+        exec_instance = c.exec_create(container=container,cmd=arg)
+        c.exec_start(exec_instance)
 
 
 def configure_dhbox(user, the_pass, email, demo=False):
