@@ -5,7 +5,7 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2015-10-01
+ENV REFRESHED_AT 2015-11-05
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
@@ -16,8 +16,14 @@ RUN apt-get -qy install git python-apt apt-utils python-pip python-dev sudo curl
 RUN pip install PyYAML jinja2 paramiko
 
 # For Shellinabox
-RUN apt-get -y install shellinabox
+RUN apt-get -qy install libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
+RUN git clone https://github.com/shellinabox/shellinabox.git
+WORKDIR /shellinabox
+RUN ls -l
+RUN autoreconf -i
+RUN ./configure && make && make install
 ADD ./shellinabox /etc/default/
+WORKDIR /
 
 # For MALLET
 RUN apt-get -qy install default-jdk ant
