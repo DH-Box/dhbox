@@ -8,10 +8,12 @@ from threading import Timer
 import dhbox
 import logging
 import ipgetter
+import datetime
 
 dhbox_repo = 'thedhbox'
 gotten_ip = ipgetter.myip()
 
+logging.basicConfig(filename='dhbox.log',level=logging.DEBUG)
 
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
@@ -101,8 +103,8 @@ def execute(container, args):
     """Execute a list of arbitrary Bash commands inside a container"""
     for arg in args:
         print arg
-        c.execute(container, arg, stdout=True, stderr=True, tty=False)
-
+        exec_instance = c.exec_create(container=container,cmd=arg)
+        c.exec_start(exec_instance)
 
 def configure_dhbox(user, the_pass, email, demo=False):
     """Use Docker exec to SSH into a new container, customizing it for the user.
@@ -144,26 +146,16 @@ def kill_dhbox(ctr_name):
 
 def kill_and_remove_user(name):
     kill_dhbox(name)
+    logging.info("killed user "+name)
     dhbox.delete_user(name)
 
 
-def delete_untagged():
-    """Find the untagged images and remove them"""
-    images = c.images()
-    found = False
-    for image in images:
-        if image["RepoTags"] == ["<none>:<none>"]:
-            found = True
-            image_id = image["Id"]
-            print "Deleting untagged image\nhash=", image_id
-            try:
-                c.remove_image(image["Id"])
-            except docker.errors.APIError as error:
-                print "Failed to delete image\nhash={}\terror={}", image_id, error
-
-    if not found:
-        print "Didn't find any untagged images to delete!"
-
+def how_long_up(container):
+    """Find out how long a container has been running, in seconds"""
+    detail = c.inspect_container(container)
+    time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
+    time_up = datetime.datetime.now() - time_started
+    return time_up.total_seconds()
 
 c = attach_to_docker_client()
 

@@ -54,9 +54,26 @@ def cleanup():
     print "Deleting stopped containers"
     call("docker ps -a | grep Exit | awk '{print $1}' |  xargs docker rm", shell=True)
     print "Deleting images"
-    DockerBackend.delete_untagged()
+    delete_untagged()
 
+def delete_untagged():
+    """Find the untagged images and remove them"""
+    images = c.images()
+    found = False
+    for image in images:
+        if image["RepoTags"] == ["<none>:<none>"]:
+            found = True
+            image_id = image["Id"]
+            print "Deleting untagged image\nhash=", image_id
+            try:
+                c.remove_image(image["Id"])
+            except docker.errors.APIError as error:
+                print "Failed to delete image\nhash={}\terror={}", image_id, error
+
+    if not found:
+        print "Didn't find any untagged images to delete!"
+
+c = DockerBackend.attach_to_docker_client()
 
 if __name__ == '__main__':
-    c = DockerBackend.attach_to_docker_client()
     manager.main()

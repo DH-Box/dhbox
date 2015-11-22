@@ -61,3 +61,5 @@ instance/
 # js packages
 src/static/bower_components/
 node_modules/
+
+*.log
