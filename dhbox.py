@@ -42,7 +42,7 @@ def get_app(key):
 MODELS
 """
 roles_users = db.Table('roles_users',
-                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+                       db.Column('userr_id', db.Integer(), db.ForeignKey('user.id')),
                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
 
@@ -103,10 +103,10 @@ security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
 # Create an admin user to test with
 def create_user_and_role():
-    first_user = User.query.filter(User.name == str('steve')).first()
+    first_user = User.query.filter(User.name == str('admin')).first()
     if not first_user:
-        user_email = 'oneperstephen@gmail.com'
-        username = 'steve'
+        user_email = 'test@gmail.com'
+        username = 'admin'
         user_pass = 'password'
         the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass)
         the_role = user_datastore.create_role(name='admin', description='The administrator')
@@ -280,6 +280,7 @@ if __name__ == '__main__':
     app.debug = app.config['TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
+        print "Building database"
         db.create_all()
         create_user_and_role()
     # Bind to PORT if defined, otherwise default to 5000.
