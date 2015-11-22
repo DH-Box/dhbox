@@ -259,13 +259,10 @@ def new_dhbox():
                 if name_check or email_check:
                     print "Username taken. Already has a DH Box."
                     return str('failure')
-                admin_user = user['name']
-                admin_email = user['email']
-                admin_pass = user['pass']
-                admin_user_object = user_datastore.create_user(email=admin_email, name=admin_user, password=admin_pass)
+                admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'])
                 db.session.commit()
                 login_user(admin_user_object)
-                the_new_dhbox = DockerBackend.setup_new_dhbox(admin_user, admin_pass, admin_email)
+                the_new_dhbox = DockerBackend.setup_new_dhbox(user['name'], user['pass'], user['email'])
     return str('Successfully created a new DH Box.')
 
 
@@ -287,7 +284,7 @@ if __name__ == '__main__':
         create_user_and_role()
     # Bind to PORT if defined, otherwise default to 5000.
 
-    port = int(os.environ.get('PORT', 8000))
+    port = int(os.environ.get('PORT', 5000))
 
     app.run(host='0.0.0.0', port=port, threaded=True)
 

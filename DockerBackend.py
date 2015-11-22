@@ -50,24 +50,14 @@ def build_dhbox(username='test'):
     os.chdir('../')
 
 
-def all_containers():
-    info = c.containers(all=True)
-    return info
-
-
-def get_container_info(which_container):
-    info = c.inspect_container(which_container)
-    return info
-
-
 def get_container_port(container_name, app_port):
-    container = get_container_info(container_name)
+    container = c.inspect_container(container_name)
     public_port = container['NetworkSettings']['Ports'][app_port + '/tcp'][0]['HostPort']
     return public_port
 
 
 def get_all_exposed_ports(container_name):
-    container = get_container_info(container_name)
+    container = c.inspect_container(container_name)
     public_ports = container['NetworkSettings']['Ports']
     public_ports_cleaned = {}
     for inside_port, outside_port in public_ports.iteritems():
@@ -133,7 +123,7 @@ def demo_dhbox(username):
     password = 'demonstration'
     email = username + '@demo.com'
     setup_new_dhbox(username, password, email, demo=True)
-    t = Timer(600.0, kill_and_remove_user, [username])
+    t = Timer(3600.0, kill_and_remove_user, [username])
     t.start()  # after one hour, demo will be destroyed
 
 
