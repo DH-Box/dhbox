@@ -58,15 +58,17 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(255), unique=True)
     pwdhash = db.Column(db.String(160))
     active = db.Column(db.Boolean())
+    dhbox_duration = db.Column(db.Integer)
     confirmed_at = db.Column(db.DateTime())
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
-    def __init__(self, name, active, roles, email, password):
+    def __init__(self, name, active, roles, email, password, dhbox_duration):
         self.name = name
         self.email = email.lower()
         self.active = active
         self.roles = roles
+        self.dhbox_duration = dhbox_duration
         self.set_password(password)
 
     def set_password(self, password):
@@ -108,7 +110,7 @@ def create_user_and_role():
         user_email = 'test@gmail.com'
         username = 'admin'
         user_pass = 'password'
-        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass)
+        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000)
         the_role = user_datastore.create_role(name='admin', description='The administrator')
         user_datastore.add_role_to_user(the_user, the_role)
         db.session.commit()
@@ -259,7 +261,7 @@ def new_dhbox():
                 if name_check or email_check:
                     print "Username taken. Already has a DH Box."
                     return str('failure')
-                admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'])
+                admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=60)
                 db.session.commit()
                 login_user(admin_user_object)
                 the_new_dhbox = DockerBackend.setup_new_dhbox(user['name'], user['pass'], user['email'])
@@ -276,6 +278,7 @@ def kill_dhbox():
     return redirect(url_for(the_next) or url_for("index"))
 
 
+
 if __name__ == '__main__':
     app.debug = app.config['TESTING']
     # Make database if it doesn't exist
@@ -283,6 +286,9 @@ if __name__ == '__main__':
         print "Building database"
         db.create_all()
         create_user_and_role()
+    else:
+        user = User.query.filter(User.name == 'admin').first()
+        DockerBackend.check_and_kill(user)
     # Bind to PORT if defined, otherwise default to 5000.
 
     port = int(os.environ.get('PORT', 5000))
