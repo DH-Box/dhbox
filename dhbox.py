@@ -30,7 +30,8 @@ all_apps = [
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
-    {'name': 'apache', 'port': '80', 'hide': True}
+    {'name': 'apache', 'port': '80', 'hide': True},
+    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
 ]
 
 def get_app(key):
@@ -232,8 +233,12 @@ def user_box(the_user):
 def app_box(the_user, app_name):
     which_user = User.query.filter(User.name == str(the_user)).first()
     dhbox_username = which_user.name
-    app_port = get_app(app_name)['port']
-    port_info = DockerBackend.get_container_port(dhbox_username, app_port)
+    if app_name == 'wordpress':
+        app_port = get_app(app_name)['port']
+        port_info = DockerBackend.get_container_port(dhbox_username+'_wp', app_port)
+    else:
+        app_port = get_app(app_name)['port']
+        port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     hostname = DockerBackend.get_hostname()
     location = hostname + ":" + port_info
     if app_name == 'omeka':
