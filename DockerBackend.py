@@ -141,6 +141,7 @@ def kill_dhbox(ctr_name):
 
 def kill_and_remove_user(name):
     kill_dhbox(name)
+    kill_dhbox(name+'_wp')
     logging.info("killed user "+name)
     dhbox.delete_user(name)
 
@@ -154,13 +155,11 @@ def how_long_up(container):
 
 
 def check_and_kill(user):
-    """Checks a container and kills it and the user if time is up"""
-    # user = User.query.filter(User.name == container).first()
+    """Checks a container's uptime and kills it and the user if time is up"""
     requested_duration = user.dhbox_duration
     duration = user.dhbox_duration - how_long_up(user.name)
-    print duration
-
-# check_and_kill('admin')
+    if duration < 0:
+        kill_and_remove_user(user.name)
 
 
 c = attach_to_docker_client()

@@ -138,7 +138,6 @@ URLS/VIEWS
 @app.route('/test')
 def test():
     from time import sleep
-
     return render_template('test.html')
 
 
@@ -278,20 +277,19 @@ def kill_dhbox():
     return redirect(url_for(the_next) or url_for("index"))
 
 
-
 if __name__ == '__main__':
     app.debug = app.config['TESTING']
+    print app.debug
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
         print "Building database"
         db.create_all()
         create_user_and_role()
-    else:
-        user = User.query.filter(User.name == 'admin').first()
-        DockerBackend.check_and_kill(user)
+    # else:
+    #     user = User.query.filter(User.name == 'admin').first()
+    #     DockerBackend.check_and_kill(user)
     # Bind to PORT if defined, otherwise default to 5000.
 
     port = int(os.environ.get('PORT', 5000))
-
     app.run(host='0.0.0.0', port=port, threaded=True)
 
