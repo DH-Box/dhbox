@@ -33,7 +33,8 @@ $( document ).ready(function() {
                     allUsers.users.push({
                     name: $(this).find('[what=users]').val(),
                     pass: $(this).find('[what=passes]').val(),
-                    email: $(this).find('[what=email]').val()
+                    email: $(this).find('[what=email]').val(),
+                    duration: $(this).find('[what=duration]:checked').val()
                     })
                 });
                 showModal('Building your DHbox');

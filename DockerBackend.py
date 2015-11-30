@@ -5,12 +5,16 @@ import json
 from urllib2 import urlopen
 import os, time, subprocess
 from threading import Timer
-import dhbox
 import logging
 import ipgetter
+import datetime as dt
+import dhbox
+
 
 dhbox_repo = 'thedhbox'
 gotten_ip = ipgetter.myip()
+
+# logging.basicConfig(filename='dhbox.log',level=logging.ERROR)
 
 
 def attach_to_docker_client():
@@ -149,7 +153,10 @@ def kill_dhbox(ctr_name):
 
 def kill_and_remove_user(name):
     kill_dhbox(name)
+    kill_dhbox(name+'_wp')
     dhbox.delete_user(name)
+    # logging.info("killed user "+name)
+
 
 
 def delete_untagged():
@@ -170,7 +177,26 @@ def delete_untagged():
         print "Didn't find any untagged images to delete!"
 
 
+def how_long_up(container):
+    """Find out how long a container has been running, in seconds"""
+    detail = c.inspect_container(container)
+    time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
+    time_up = dt.datetime.now() - time_started
+    return time_up.total_seconds()
+
+
+
+def check_and_kill(user):
+    """Checks a container's uptime and kills it and the user if time is up"""
+    requested_duration = user.dhbox_duration
+    duration = user.dhbox_duration - how_long_up(user.name)
+    if duration < 0:
+        kill_and_remove_user(user.name)
+
+
 c = attach_to_docker_client()
+
+
 
 if __name__ == '__main__':
     c = DockerBackend.attach_to_docker_client()
