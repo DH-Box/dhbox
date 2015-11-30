@@ -260,7 +260,13 @@ def new_dhbox():
                 if name_check or email_check:
                     print "Username taken. Already has a DH Box."
                     return str('failure')
-                admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=60)
+                if user['duration'] == 'day':
+                    duration = 86400
+                elif user['duration'] == 'week':
+                    duration = 604800
+                else:
+                    duration = 2592000 
+                admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
                 the_new_dhbox = DockerBackend.setup_new_dhbox(user['name'], user['pass'], user['email'])
@@ -279,7 +285,6 @@ def kill_dhbox():
 
 if __name__ == '__main__':
     app.debug = app.config['TESTING']
-    print app.debug
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
         print "Building database"
@@ -289,7 +294,6 @@ if __name__ == '__main__':
     #     user = User.query.filter(User.name == 'admin').first()
     #     DockerBackend.check_and_kill(user)
     # Bind to PORT if defined, otherwise default to 5000.
-
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5000) )
     app.run(host='0.0.0.0', port=port, threaded=True)
 

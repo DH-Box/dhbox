@@ -13,7 +13,7 @@ import dhbox
 dhbox_repo = 'thedhbox'
 gotten_ip = ipgetter.myip()
 
-logging.basicConfig(filename='dhbox.log',level=logging.DEBUG)
+# logging.basicConfig(filename='dhbox.log',level=logging.ERROR)
 
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
@@ -50,6 +50,16 @@ def build_dhbox(username='test'):
         # There was an error, so kill the container and the image
         pass
     os.chdir('../')
+
+
+def all_containers():
+    info = c.containers(all=True)
+    return info
+
+
+def get_container_info(which_container):
+    info = c.inspect_container(which_container)
+    return info
 
 
 def get_container_port(container_name, app_port):
