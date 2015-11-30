@@ -8,12 +8,10 @@ from threading import Timer
 import dhbox
 import logging
 import ipgetter
-import datetime
 
 dhbox_repo = 'thedhbox'
 gotten_ip = ipgetter.myip()
 
-logging.basicConfig(filename='dhbox.log',level=logging.DEBUG)
 
 def attach_to_docker_client():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
@@ -52,14 +50,24 @@ def build_dhbox(username='test'):
     os.chdir('../')
 
 
+def all_containers():
+    info = c.containers(all=True)
+    return info
+
+
+def get_container_info(which_container):
+    info = c.inspect_container(which_container)
+    return info
+
+
 def get_container_port(container_name, app_port):
-    container = c.inspect_container(container_name)
+    container = get_container_info(container_name)
     public_port = container['NetworkSettings']['Ports'][app_port + '/tcp'][0]['HostPort']
     return public_port
 
 
 def get_all_exposed_ports(container_name):
-    container = c.inspect_container(container_name)
+    container = get_container_info(container_name)
     public_ports = container['NetworkSettings']['Ports']
     public_ports_cleaned = {}
     for inside_port, outside_port in public_ports.iteritems():
@@ -125,7 +133,7 @@ def demo_dhbox(username):
     password = 'demonstration'
     email = username + '@demo.com'
     setup_new_dhbox(username, password, email, demo=True)
-    t = Timer(3600.0, kill_and_remove_user, [username])
+    t = Timer(600.0, kill_and_remove_user, [username])
     t.start()  # after one hour, demo will be destroyed
 
 
@@ -141,16 +149,26 @@ def kill_dhbox(ctr_name):
 
 def kill_and_remove_user(name):
     kill_dhbox(name)
-    logging.info("killed user "+name)
     dhbox.delete_user(name)
 
 
-def how_long_up(container):
-    """Find out how long a container has been running, in seconds"""
-    detail = c.inspect_container(container)
-    time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    time_up = datetime.datetime.now() - time_started
-    return time_up.total_seconds()
+def delete_untagged():
+    """Find the untagged images and remove them"""
+    images = c.images()
+    found = False
+    for image in images:
+        if image["RepoTags"] == ["<none>:<none>"]:
+            found = True
+            image_id = image["Id"]
+            print "Deleting untagged image\nhash=", image_id
+            try:
+                c.remove_image(image["Id"])
+            except docker.errors.APIError as error:
+                print "Failed to delete image\nhash={}\terror={}", image_id, error
+
+    if not found:
+        print "Didn't find any untagged images to delete!"
+
 
 c = attach_to_docker_client()
 

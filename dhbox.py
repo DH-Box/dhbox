@@ -30,7 +30,8 @@ all_apps = [
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
-    {'name': 'apache', 'port': '80', 'hide': True}
+    {'name': 'apache', 'port': '80', 'hide': True},
+    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
 ]
 
 def get_app(key):
@@ -42,7 +43,7 @@ def get_app(key):
 MODELS
 """
 roles_users = db.Table('roles_users',
-                       db.Column('userr_id', db.Integer(), db.ForeignKey('user.id')),
+                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
 
@@ -103,10 +104,10 @@ security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
 # Create an admin user to test with
 def create_user_and_role():
-    first_user = User.query.filter(User.name == str('admin')).first()
+    first_user = User.query.filter(User.name == str('steve')).first()
     if not first_user:
-        user_email = 'test@gmail.com'
-        username = 'admin'
+        user_email = 'oneperstephen@gmail.com'
+        username = 'steve'
         user_pass = 'password'
         the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass)
         the_role = user_datastore.create_role(name='admin', description='The administrator')
@@ -232,8 +233,12 @@ def user_box(the_user):
 def app_box(the_user, app_name):
     which_user = User.query.filter(User.name == str(the_user)).first()
     dhbox_username = which_user.name
-    app_port = get_app(app_name)['port']
-    port_info = DockerBackend.get_container_port(dhbox_username, app_port)
+    if app_name == 'wordpress':
+        app_port = get_app(app_name)['port']
+        port_info = DockerBackend.get_container_port(dhbox_username+'_wp', app_port)
+    else:
+        app_port = get_app(app_name)['port']
+        port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     hostname = DockerBackend.get_hostname()
     location = hostname + ":" + port_info
     if app_name == 'omeka':
@@ -259,10 +264,13 @@ def new_dhbox():
                 if name_check or email_check:
                     print "Username taken. Already has a DH Box."
                     return str('failure')
-                admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'])
+                admin_user = user['name']
+                admin_email = user['email']
+                admin_pass = user['pass']
+                admin_user_object = user_datastore.create_user(email=admin_email, name=admin_user, password=admin_pass)
                 db.session.commit()
                 login_user(admin_user_object)
-                the_new_dhbox = DockerBackend.setup_new_dhbox(user['name'], user['pass'], user['email'])
+                the_new_dhbox = DockerBackend.setup_new_dhbox(admin_user, admin_pass, admin_email)
     return str('Successfully created a new DH Box.')
 
 
@@ -280,12 +288,10 @@ if __name__ == '__main__':
     app.debug = app.config['TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
-        print "Building database"
         db.create_all()
         create_user_and_role()
     # Bind to PORT if defined, otherwise default to 5000.
 
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8000))
 
     app.run(host='0.0.0.0', port=port, threaded=True)
-
