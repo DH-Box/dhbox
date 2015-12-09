@@ -1,4 +1,4 @@
-import os, os.path, sys, random, string
+import os, os.path, sys, random, string, time
 from flask import Flask, flash, request, redirect, url_for, render_template, \
     make_response, jsonify, send_file, current_app, g, abort
 import ast
@@ -9,6 +9,8 @@ from wtforms.validators import DataRequired
 from wtforms import TextField, Form
 from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.contrib.fixers import ProxyFix
+import schedule
+from threading import Thread
 import DockerBackend
 
 # create application
@@ -106,12 +108,12 @@ security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
 # Create an admin user to test with
 def create_user_and_role():
-    first_user = User.query.filter(User.name == str('steve')).first()
+    first_user = User.query.filter(User.name == str('admin')).first()
     if not first_user:
-        user_email = 'oneperstephen@gmail.com'
-        username = 'steve'
+        user_email = 'test@gmail.com'
+        username = 'admin'
         user_pass = 'password'
-        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000)
+        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=10)
         the_role = user_datastore.create_role(name='admin', description='The administrator')
         user_datastore.add_role_to_user(the_user, the_role)
         db.session.commit()
@@ -291,16 +293,28 @@ def kill_dhbox():
     return redirect(url_for(the_next) or url_for("index"))
 
 
+def police():
+    users = User.query.all()
+    for user in users:
+        DockerBackend.check_and_kill(user)
+
+def run_schedule():
+    while 1:
+        schedule.run_pending()
+        time.sleep(1)
+
 if __name__ == '__main__':
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        # The app is not in debug mode or we are in the reloaded process
+        schedule.every(1).minutes.do(police)
+        t = Thread(target=run_schedule)
+        t.daemon = True
+        t.start()
     app.debug = app.config['TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
         db.create_all()
         create_user_and_role()
-    # else:
-    #     user = User.query.filter(User.name == 'admin').first()
-    #     DockerBackend.check_and_kill(user)
     # Bind to PORT if defined, otherwise default to 5000.
-
-    port = int(os.environ.get('PORT', 8000))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, threaded=True)
