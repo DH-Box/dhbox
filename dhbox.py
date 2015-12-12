@@ -113,7 +113,7 @@ def create_user_and_role():
         user_email = 'test@gmail.com'
         username = 'admin'
         user_pass = 'password'
-        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=10)
+        the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000000)
         the_role = user_datastore.create_role(name='admin', description='The administrator')
         user_datastore.add_role_to_user(the_user, the_role)
         db.session.commit()
@@ -177,7 +177,7 @@ def get_started():
 @app.route('/demo', methods=["GET"])
 def demo():
     username = 'demo' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    demo_user_object = user_datastore.create_user(email=username + '@demo.com', name=username, password='demo')
+    demo_user_object = user_datastore.create_user(email=username + '@demo.com', name=username, password='demo', dhbox_duration=3600)
     db.session.commit()
     login_user(demo_user_object)
     new_dhbox = DockerBackend.demo_dhbox(username)
@@ -306,7 +306,7 @@ def run_schedule():
 if __name__ == '__main__':
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         # The app is not in debug mode or we are in the reloaded process
-        schedule.every(1).minutes.do(police)
+        schedule.every().hour.do(police)
         t = Thread(target=run_schedule)
         t.daemon = True
         t.start()

@@ -137,8 +137,8 @@ def demo_dhbox(username):
     password = 'demonstration'
     email = username + '@demo.com'
     setup_new_dhbox(username, password, email, demo=True)
-    t = Timer(600.0, kill_and_remove_user, [username])
-    t.start()  # after one hour, demo will be destroyed
+    # t = Timer(600.0, kill_and_remove_user, [username])
+    # t.start()  # after one hour, demo will be destroyed
 
 
 def kill_dhbox(ctr_name):
@@ -181,18 +181,22 @@ def how_long_up(container):
     """Find out how long a container has been running, in seconds"""
     detail = c.inspect_container(container)
     time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    time_up = time_started - dt.datetime.now()
-    print "TIME UP: "+ str(time_up.total_seconds())
+    # print "Time started:", time_started
+    # print "Now: ", dt.datetime.utcnow()
+    time_up = dt.datetime.utcnow() - time_started
+    # print "TIME UP: ", time_up.total_seconds()
     return time_up.total_seconds()
-
 
 
 def check_and_kill(user):
     """Checks a container's uptime and kills it and the user if time is up"""
     requested_duration = user.dhbox_duration
-    duration = user.dhbox_duration - how_long_up(user.name)
-    print "DURATION: "+ str(duration)
-    if duration < 0:
+    if requested_duration = 1000000000:
+        # This is the admin box
+        pass
+    time_left = user.dhbox_duration - how_long_up(user.name)
+    # print "Time left: ", time_left
+    if time_left < 0:
         kill_and_remove_user(user.name)
         print "killed "+user.name
 
