@@ -2,6 +2,7 @@ from manager import Manager
 from docker import Client
 from docker.utils import kwargs_from_env
 import DockerBackend
+import dhbox
 import os
 from subprocess import call
 
@@ -55,6 +56,11 @@ def cleanup():
     call("docker ps -a | grep Exit | awk '{print $1}' |  xargs docker rm", shell=True)
     print "Deleting images"
     delete_untagged()
+
+@manager.command
+def police():
+    """check for boxes over their time limit, kill them"""
+    dhbox.police()
 
 def delete_untagged():
     """Find the untagged images and remove them"""
