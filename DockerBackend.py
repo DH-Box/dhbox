@@ -191,7 +191,7 @@ def how_long_up(container):
 def check_and_kill(user):
     """Checks a container's uptime and kills it and the user if time is up"""
     requested_duration = user.dhbox_duration
-    if requested_duration = 1000000000:
+    if requested_duration == 1000000000:
         # This is the admin box
         pass
     time_left = user.dhbox_duration - how_long_up(user.name)
