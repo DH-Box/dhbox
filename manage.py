@@ -5,6 +5,7 @@ import DockerBackend
 import dhbox
 import os
 from subprocess import call
+import docker.errors
 
 manager = Manager()
 
@@ -27,7 +28,8 @@ def test():
 def start_over():
     """Delete and make a new test DH Box"""
     cleanup()
-    response = DockerBackend.kill_dhbox('test', delete_image=False)
+    response = DockerBackend.kill_dhbox('test')
+    response = DockerBackend.kill_dhbox('test_wp')
     DockerBackend.setup_new_dhbox('test', 'password', 'test@gmail.com')
     return response
 

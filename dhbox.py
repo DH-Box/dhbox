@@ -25,7 +25,6 @@ app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
 db = SQLAlchemy(app)
 
 all_apps = [
-    {'name': 'ipython', 'wiki-page': 'IPython', 'display-name': 'IPython'},
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
     {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line'},
@@ -33,6 +32,7 @@ all_apps = [
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
     {'name': 'apache', 'port': '80', 'hide': True},
+    {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
     {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
 ]
 

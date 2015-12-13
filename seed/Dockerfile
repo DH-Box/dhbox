@@ -12,7 +12,7 @@ RUN apt-get -y update
 
 # General needs
 RUN apt-get -qy install emacs
-RUN apt-get -qy install git python-apt apt-utils python-pip python-dev sudo curl git wget unzip python-pip opensmtpd ipython-notebook nodejs npm
+RUN apt-get -qy install git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl git wget unzip python-pip opensmtpd ipython-notebook nodejs npm
 RUN pip install PyYAML jinja2 paramiko
 
 # For Shellinabox
@@ -31,6 +31,17 @@ RUN mkdir /mallet
 RUN wget -O /tmp/mallet.tar.gz http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
 RUN tar xfz /tmp/mallet.tar.gz --strip-components=1 -C /mallet
 RUN ant -buildfile /mallet/build.xml
+
+# For Jupyter
+RUN pip3 install jupyter
+RUN add-apt-repository ppa:chris-lea/zeromq
+RUN apt-get update
+RUN apt-get -qy --force-yes install libzmq3-dbg libzmq3-dev libzmq3 littler
+# Set default CRAN repo
+RUN echo 'options("repos"="http://cran.rstudio.com")' >> /usr/lib/R/etc/Rprofile.site
+# Install IRkernel
+RUN Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', getOption('repos')))" -e "IRkernel::installspec()"
+
 
 # For NLTK
 RUN apt-get -qy install python-numpy python-scipy python-matplotlib
@@ -75,7 +86,7 @@ RUN chmod -R 777 /var/www/omeka/files
 RUN apt-get install -qy nodejs nodejs-legacy npm
 RUN npm install brackets -g
 
-#Adding Deamons to containers
+# Adding Deamons to containers
 RUN mkdir -p /etc/service/rserver
 ADD ./runit_scripts/rserver.sh /etc/service/rserver/run
 RUN chmod +x /etc/service/rserver/run
@@ -100,7 +111,17 @@ RUN mkdir -p /etc/service/brackets
 ADD ./runit_scripts/brackets.sh /etc/service/brackets/run
 RUN chmod +x /etc/service/brackets/run
 
-EXPOSE 22 25 8787 80 4200
+RUN mkdir -p /etc/service/notebook
+ADD ./runit_scripts/notebook.sh /etc/service/notebook/run
+RUN chmod +x /etc/service/notebook/run
+
+##startup scripts
+#ENV HEY hey
+RUN mkdir -p /etc/my_init.d
+ADD ./runit_scripts/startup.sh /etc/my_init.d/startup.sh
+RUN chmod +x /etc/my_init.d/startup.sh
+
+EXPOSE 22 25 8787 80 4200 8888
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

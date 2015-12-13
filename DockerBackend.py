@@ -83,6 +83,9 @@ def get_all_exposed_ports(container_name):
 
 def setup_new_dhbox(username, password, email, demo=False):
     """Create a new DH Box container, customize it."""
+    environment = {"PASS": password, "EMAIL": email, "THEUSER": username, "DEMO": demo}
+    if demo:
+        environment = {"PASS": 'demonstration', "EMAIL": email, "THEUSER": 'demonstration', "DEMO": demo}        
     try:
        # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
        # print ports
@@ -91,15 +94,16 @@ def setup_new_dhbox(username, password, email, demo=False):
                                           name=username+'_wp',
                                           ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
-                                       ports=[8080, 8787, 4444, 4200],
-                                       tty=True, stdin_open=True)
+                                       ports=[8080, 8787, 4444, 4200, 8888],
+                                       tty=True, stdin_open=True, 
+                                       environment=environment)
     except docker.errors.APIError, e:
         raise e
     else:
         print "Starting Containers"
         restart_policy = {"MaximumRetryCount": 10, "Name": "always"}
         c.start(wp_container,
-                publish_all_ports=True,)
+                publish_all_ports=True, restart_policy=restart_policy)
         c.start(container, publish_all_ports=True, volumes_from=username+'_wp', restart_policy=restart_policy)
         configure_dhbox(username, password, email, demo=demo)
         info = c.inspect_container(container)
@@ -119,13 +123,6 @@ def configure_dhbox(user, the_pass, email, demo=False):
     container = user
     if demo:
         user = 'demonstration'
-    user_add_strings = ['adduser --disabled-password --gecos "" ' + user, 'usermod -a -G sudo ' + user]
-    config = execute(container, user_add_strings)
-    if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
-        subprocess.call('echo ' + user + ':' + the_pass + ' | docker exec -i ' + container + ' chpasswd', shell=True)
-    else:
-        subprocess.call('echo ' + user + ':' + the_pass + ' | sudo docker exec -i ' + container + ' chpasswd',
-                        shell=True)
     omeka_string = 'wget -O /tmp/install.html --post-data "username={0}&password={1}&password_confirm={1}&super_email={2}&administrator_email={2}&site_title=DHBox&description=DHBox&copyright=2014&author=DHBOX&tag_delimiter=,&fullsize_constraint=800&thumbnail_constraint=200&square_thumbnail_constraint=200&per_page_admin=10&per_page_public=10&show_empty_elements=0&path_to_convert=/usr/bin&install_submit=Install" localhost:8080/install/install.php'.format(
         user, the_pass, email)
     time.sleep(5)
@@ -137,8 +134,6 @@ def demo_dhbox(username):
     password = 'demonstration'
     email = username + '@demo.com'
     setup_new_dhbox(username, password, email, demo=True)
-    # t = Timer(600.0, kill_and_remove_user, [username])
-    # t.start()  # after one hour, demo will be destroyed
 
 
 def kill_dhbox(ctr_name):
@@ -148,7 +143,7 @@ def kill_dhbox(ctr_name):
         c.kill(ctr_name)
         c.remove_container(ctr_name)
     except Exception, e:
-        raise e
+        print "Could not kill container", ctr_name
 
 
 def kill_and_remove_user(name):
@@ -156,7 +151,6 @@ def kill_and_remove_user(name):
     kill_dhbox(name+'_wp')
     dhbox.delete_user(name)
     # logging.info("killed user "+name)
-
 
 
 def delete_untagged():
@@ -181,24 +175,20 @@ def how_long_up(container):
     """Find out how long a container has been running, in seconds"""
     detail = c.inspect_container(container)
     time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    # print "Time started:", time_started
-    # print "Now: ", dt.datetime.utcnow()
-    time_up = dt.datetime.utcnow() - time_started
-    # print "TIME UP: ", time_up.total_seconds()
+    time_up = dt.datetime.now() - time_started
     return time_up.total_seconds()
+
 
 
 def check_and_kill(user):
     """Checks a container's uptime and kills it and the user if time is up"""
     requested_duration = user.dhbox_duration
-    if requested_duration == 1000000000:
-        # This is the admin box
-        pass
-    time_left = user.dhbox_duration - how_long_up(user.name)
-    # print "Time left: ", time_left
-    if time_left < 0:
-        kill_and_remove_user(user.name)
-        print "killed "+user.name
+    try:
+        duration = user.dhbox_duration - how_long_up(user.name)
+        if duration < 0:
+            kill_and_remove_user(user.name)
+    except docker.errors.NotFound, e:
+        dhbox.delete_user(user.name)
 
 
 c = attach_to_docker_client()
@@ -207,3 +197,4 @@ c = attach_to_docker_client()
 
 if __name__ == '__main__':
     c = DockerBackend.attach_to_docker_client()
+# setup_new_dhbox('test', 'password', 'test@gmail.com')
