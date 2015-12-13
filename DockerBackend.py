@@ -140,6 +140,7 @@ def kill_dhbox(ctr_name):
     """Kill a running DH Box container"""
     try:
         print "Killing container."
+        c.stop(ctr_name)
         c.kill(ctr_name)
         c.remove_container(ctr_name)
     except Exception, e:
@@ -175,7 +176,7 @@ def how_long_up(container):
     """Find out how long a container has been running, in seconds"""
     detail = c.inspect_container(container)
     time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    time_up = dt.datetime.now() - time_started
+    time_up = dt.datetime.utcnow() - time_started
     return time_up.total_seconds()
 
 
@@ -185,6 +186,7 @@ def check_and_kill(user):
     requested_duration = user.dhbox_duration
     try:
         duration = user.dhbox_duration - how_long_up(user.name)
+        print duration
         if duration < 0:
             kill_and_remove_user(user.name)
     except docker.errors.NotFound, e:
