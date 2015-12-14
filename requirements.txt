@@ -19,7 +19,8 @@ ipgetter==0.6
 itsdangerous==0.24
 manage.py==0.2.6
 passlib==1.6.2
-requests==2.4.3
-six==1.8.0
-websocket-client==0.21.0
+requests==2.8.1
+schedule==0.3.2
+six==1.10.0
+websocket-client==0.34.0
 wsgiref==0.1.2

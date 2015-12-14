@@ -151,7 +151,6 @@ def kill_and_remove_user(name):
     kill_dhbox(name)
     kill_dhbox(name+'_wp')
     dhbox.delete_user(name)
-    # logging.info("killed user "+name)
 
 
 def delete_untagged():
@@ -196,7 +195,5 @@ def check_and_kill(user):
 c = attach_to_docker_client()
 
 
-
 if __name__ == '__main__':
     c = DockerBackend.attach_to_docker_client()
-# setup_new_dhbox('test', 'password', 'test@gmail.com')

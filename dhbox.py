@@ -304,12 +304,10 @@ def run_schedule():
         time.sleep(1)
 
 if __name__ == '__main__':
-    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-        # The app is not in debug mode or we are in the reloaded process
-        schedule.every().hour.do(police)
-        t = Thread(target=run_schedule)
-        t.daemon = True
-        t.start()
+    schedule.every(10).minutes.do(police)
+    t = Thread(target=run_schedule)
+    t.daemon = True
+    t.start()
     app.debug = app.config['TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
