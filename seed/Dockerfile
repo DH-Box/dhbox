@@ -5,15 +5,15 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2015-11-05
+ENV REFRESHED_AT 2016-01-09
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
 
 # General needs
-RUN apt-get -qy install emacs
-RUN apt-get -qy install git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl git wget unzip python-pip opensmtpd ipython-notebook nodejs npm
+RUN apt-get -qy install emacs git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl git wget unzip python-pip opensmtpd ipython-notebook nodejs npm python3-scipy python3-pandas python3-matplotlib python3-numpy
 RUN pip install PyYAML jinja2 paramiko
+
 
 # For Shellinabox
 RUN apt-get -qy install libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential

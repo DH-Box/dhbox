@@ -136,21 +136,19 @@ def demo_dhbox(username):
     setup_new_dhbox(username, password, email, demo=True)
 
 
-def kill_dhbox(ctr_name):
-    """Kill a running DH Box container"""
+def kill_and_remove_user(name):
+    """Kill a running DH Box container and remove the user"""
     try:
         print "Killing container."
-        c.stop(ctr_name)
-        c.kill(ctr_name)
-        c.remove_container(ctr_name)
+        # c.stop(name)
+        # c.stop(name+'_wp')
+        c.kill(name)
+        c.kill(name+'_wp')
+        c.remove_container(name)
+        c.remove_container(name+'_wp')
+        dhbox.delete_user(name)
     except Exception, e:
-        print "Could not kill container", ctr_name
-
-
-def kill_and_remove_user(name):
-    kill_dhbox(name)
-    kill_dhbox(name+'_wp')
-    dhbox.delete_user(name)
+        print "Could not kill container", name
 
 
 def delete_untagged():

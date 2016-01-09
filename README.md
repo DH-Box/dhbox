@@ -23,7 +23,7 @@ or:
 6. Navigate to `dhbox/seed` 
 7. Run `sudo docker build -t thedhbox/seed:latest .` (takes 15 minutes or more)
 8. Navigate to `dhbox/`
-9. Run `python dhbox.py`
+9. Run `gunicorn -c wsgi.py dhbox:app`
 10. Navigate to site on `http://localhost:80`
 
 ###If you are developing for DH Box, there are a few more steps:

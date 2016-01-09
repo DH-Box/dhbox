@@ -5,6 +5,7 @@ import ast
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
     UserMixin, RoleMixin, login_required, roles_required, registerable, current_user, LoginForm
+from flask_mail import Mail, Message
 from wtforms.validators import DataRequired
 from wtforms import TextField, Form
 from werkzeug import generate_password_hash, check_password_hash
@@ -23,6 +24,21 @@ app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templa
 app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
 # Create database connection object
 db = SQLAlchemy(app)
+# Set up email
+mail = Mail(app)
+
+app.config.update(
+    #EMAIL SETTINGS
+    MAIL_DEBUG = True,
+    MAIL_SUPPRESS_SEND = False,
+    TESTING = False,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME = 'dhboxsignup@google.com',
+    MAIL_PASSWORD = 'dhbox123'
+    )
+
 
 all_apps = [
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
@@ -140,14 +156,16 @@ URLS/VIEWS
 
 @app.route('/test')
 def test():
-    from time import sleep
-    return render_template('test.html')
-
+    msg = Message("testing", recipients=["srzweibel@gmail.com"])
+    msg.body = "testing"
+    msg.sender = "dhboxsignup@gmail.com"
+    mail.send(msg)
+    print "sent?"
+    return render_template('index.html')
 
 @app.route("/")
 def index():
     return render_template('index.html')
-
 
 @app.route("/signup")
 def signup():
@@ -287,8 +305,7 @@ def new_dhbox():
 def kill_dhbox():
     the_next = request.form['next']
     user = request.form['user']
-    DockerBackend.kill_dhbox(user)
-    delete_user(user)
+    DockerBackend.kill_and_remove_user(user)
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
 
@@ -304,7 +321,7 @@ def run_schedule():
         time.sleep(1)
 
 if __name__ == '__main__':
-    schedule.every(10).minutes.do(police)
+    schedule.every(1).minutes.do(police)
     t = Thread(target=run_schedule)
     t.daemon = True
     t.start()
