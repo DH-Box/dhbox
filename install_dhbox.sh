@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt-get install -y wget python-pip nodejs nodejs-legacy git build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev npm python-pip
+apt-get install -y wget python-pip python-dev nodejs nodejs-legacy git build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev npm python-pip
 cd ~/Downloads/
 wget http://python.org/ftp/python/2.7.5/Python-2.7.5.tgz
 tar -xvf Python-2.7.5.tgz

@@ -207,7 +207,6 @@ def demo():
 def login():
     # form = LoginForm()
     # if form.validate_on_submit():
-    # print 'asdasd'
     #     # login and validate the user...
     #     login_user(user)
     #     flash("Logged in successfully.", 'alert-success')
@@ -238,12 +237,17 @@ def user_box(the_user):
     else:
         demo = False
     dhbox_username = which_user.name
+    time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
+    m, s = divmod(time_left, 60) 
+    h, m = divmod(m, 60)
+    time_left = "%d hours, %02d minutes" % (h, m)
     port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
     hostname = DockerBackend.get_hostname()
     resp = make_response(render_template('my_dhbox.html',
                                          user=the_user,
                                          apps=filter(lambda app: app.get('hide', False) != True, all_apps),
-                                         demo=demo
+                                         demo=demo,
+                                         time_left =time_left
                                          )
                          )
     return resp
@@ -320,11 +324,12 @@ def run_schedule():
         schedule.run_pending()
         time.sleep(1)
 
+schedule.every(1).minutes.do(police)
+t = Thread(target=run_schedule)
+t.daemon = True
+t.start()
+
 if __name__ == '__main__':
-    schedule.every(1).minutes.do(police)
-    t = Thread(target=run_schedule)
-    t.daemon = True
-    t.start()
     app.debug = app.config['TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
