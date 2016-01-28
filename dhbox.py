@@ -288,12 +288,18 @@ def new_dhbox():
                 admin_user = user['name']
                 admin_email = user['email']
                 admin_pass = user['pass']
-                if user['duration'] == 'day':
-                    duration = 86400
-                elif user['duration'] == 'week':
+                # if user['duration'] == 'day':
+                #     duration = 86400
+                # elif user['duration'] == 'week':
+                #     duration = 604800
+                # else:
+                #     duration = 2592000
+                if user['duration'] == 'week':
                     duration = 604800
+                elif user['duration'] == 'month':
+                    duration = 2592000
                 else:
-                    duration = 2592000 
+                    duration = 13148730 
                 admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
