@@ -27,17 +27,17 @@ db = SQLAlchemy(app)
 # Set up email
 mail = Mail(app)
 
-app.config.update(
-    #EMAIL SETTINGS
-    MAIL_DEBUG = True,
-    MAIL_SUPPRESS_SEND = False,
-    TESTING = False,
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME = 'dhboxsignup@google.com',
-    MAIL_PASSWORD = 'dhbox123'
-    )
+# app.config.update(
+#     #EMAIL SETTINGS
+#     MAIL_DEBUG = True,
+#     MAIL_SUPPRESS_SEND = False,
+#     TESTING = False,
+#     MAIL_SERVER='smtp.gmail.com',
+#     MAIL_PORT=465,
+#     MAIL_USE_SSL=True,
+#     MAIL_USERNAME = 'dhboxsignup@google.com',
+#     MAIL_PASSWORD = 'dhbox123'
+#     )
 
 
 all_apps = [
@@ -218,8 +218,16 @@ def login():
 @login_required
 @roles_required('admin')
 def admin():
-    containers = DockerBackend.all_containers()
-    return render_template('admin.html', containers=containers)
+    containers = User.query.all()
+    containers_list = []
+    for container in containers:
+        uptime = DockerBackend.how_long_up(container.name)
+        time_left = DockerBackend.check_if_over_time(container)
+        info = DockerBackend.get_container_info(container.name)
+        containers_list.append({'name':container.name, 'uptime':uptime, 'time_left':time_left, 
+            'info':info})
+    print containers_list
+    return render_template('admin.html', containers=containers_list)
 
 
 

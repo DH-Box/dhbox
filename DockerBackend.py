@@ -176,7 +176,13 @@ def how_long_up(container):
     time_up = dt.datetime.utcnow() - time_started
     return time_up.total_seconds()
 
-
+def check_if_over_time(user):
+    requested_duration = user.dhbox_duration
+    try:
+        duration = user.dhbox_duration - how_long_up(user.name)
+        return duration
+    except docker.errors.NotFound, e:
+        return e
 
 def check_and_kill(user):
     """Checks a container's uptime and kills it and the user if time is up"""
