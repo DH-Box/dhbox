@@ -13,6 +13,7 @@ from werkzeug.contrib.fixers import ProxyFix
 import schedule
 from threading import Thread
 import DockerBackend
+from datetime import datetime, timedelta
 
 # create application
 app = Flask('dhbox')
@@ -223,10 +224,9 @@ def admin():
     for container in containers:
         uptime = DockerBackend.how_long_up(container.name)
         time_left = DockerBackend.check_if_over_time(container)
+        time_left = display_time(time_left)
         info = DockerBackend.get_container_info(container.name)
-        containers_list.append({'name':container.name, 'uptime':uptime, 'time_left':time_left, 
-            'info':info})
-    print containers_list
+        containers_list.append({'name':container.name, 'uptime':uptime, 'time_left':time_left})
     return render_template('admin.html', containers=containers_list)
 
 
@@ -246,9 +246,7 @@ def user_box(the_user):
         demo = False
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
-    m, s = divmod(time_left, 60) 
-    h, m = divmod(m, 60)
-    time_left = "%d hours, %02d minutes" % (h, m)
+    time_left = display_time(time_left)
     port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
     hostname = DockerBackend.get_hostname()
     resp = make_response(render_template('my_dhbox.html',
@@ -337,6 +335,26 @@ def run_schedule():
     while 1:
         schedule.run_pending()
         time.sleep(1)
+
+
+
+def display_time(seconds, granularity=2):
+    intervals = (
+    ('weeks', 604800),  # 60 * 60 * 24 * 7
+    ('days', 86400),    # 60 * 60 * 24
+    ('hours', 3600),    # 60 * 60
+    ('minutes', 60),
+    ('seconds', 1),
+    )
+    result = []
+    for name, count in intervals:
+        value = seconds // count
+        if value:
+            seconds -= value * count
+            if value == 1:
+                name = name.rstrip('s')
+            result.append("{} {}".format(value, name))
+    return ', '.join(result[:granularity])
 
 schedule.every(1).minutes.do(police)
 t = Thread(target=run_schedule)

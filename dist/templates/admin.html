@@ -4,22 +4,22 @@
 <br/>
 <table class="table table-striped">
     <th>Owner</th>
-    <th>Status</th>
+    <th>Time Up</th>
+    <th>Time Left</th>
     <th>Button</th>
     {% if containers %}
     {%for container in containers%}
-    {% if container.Names is not none %}
     <tr>
-        <td>{{container.Names[0][1:]}}</td>
-        <td>{{container.Status}}</td>
+        <td>{{container.name}}</td>
+        <td>{{container.uptime}}</td>
+        <td>{{container.time_left}}</td>
         <td>
             <form action="{{url_for('kill_dhbox')}}" id="end_dhbox" method="post">
-                <input type="hidden" name="user" value="{{container.Names[0][1:]}}">
+                <input type="hidden" name="user" value="{{container.name}}">
                 <input type="hidden" name="next" value="admin">
                 <input class="btn center-block" type="submit" value="Destroy">
             </form></td>
     </tr>
-    {%endif%}
     {%endfor%}
     {%else%}
     No containers
@@ -28,6 +28,8 @@
 <h2>Container Info</h2>
 <br/>
 <pre>
+{% if containers %}
     {{containers}}
+{% endif %}
 </pre>
 {% endblock %}
