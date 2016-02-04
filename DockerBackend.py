@@ -140,15 +140,13 @@ def kill_and_remove_user(name):
     """Kill a running DH Box container and remove the user"""
     try:
         print "Killing container."
-        # c.stop(name)
-        # c.stop(name+'_wp')
         c.kill(name)
         c.kill(name+'_wp')
         c.remove_container(name)
         c.remove_container(name+'_wp')
         dhbox.delete_user(name)
     except Exception, e:
-        print "Could not kill container", name
+        print "Could not kill container ", name
 
 
 def delete_untagged():
