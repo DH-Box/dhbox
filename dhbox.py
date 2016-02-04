@@ -362,7 +362,7 @@ t.daemon = True
 t.start()
 
 if __name__ == '__main__':
-    app.debug = app.config['TESTING']
+    app.debug = app.config['TESTING'] or app.config['SERVER_TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
         db.create_all()
