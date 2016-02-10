@@ -1,7 +1,7 @@
 *.pyc
 *.db
 hosts
-settings.cfg
+*.cfg
 
 *.py[cod]
 
