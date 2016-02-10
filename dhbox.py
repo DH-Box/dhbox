@@ -25,9 +25,9 @@ app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templa
 app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
 # Create database connection object
 db = SQLAlchemy(app)
-# Set up email
-mail = Mail(app)
 
+# Set up email
+# mail = Mail(app)
 # app.config.update(
 #     #EMAIL SETTINGS
 #     MAIL_DEBUG = True,
@@ -154,15 +154,31 @@ def delete_user(user):
 URLS/VIEWS
 """
 
-
-@app.route('/test')
-def test():
-    msg = Message("testing", recipients=["srzweibel@gmail.com"])
-    msg.body = "testing"
-    msg.sender = "dhboxsignup@gmail.com"
-    mail.send(msg)
-    print "sent?"
-    return render_template('index.html')
+@app.route("/test/<the_user>")
+def test(the_user):
+    which_user = User.query.filter(User.name == str(the_user)).first()
+    if which_user is None:
+        return redirect(url_for("index"))
+    if current_user.name is not which_user.name:
+        return redirect(url_for("index"))
+    email_domain = which_user.email.split("@",1)[1]
+    if email_domain == 'demo.com':
+        demo = True
+    else:
+        demo = False
+    dhbox_username = which_user.name
+    time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
+    time_left = DockerBackend.display_time(time_left)
+    port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
+    hostname = DockerBackend.get_hostname()
+    resp = make_response(render_template('alt_dhbox.html',
+                                         user=the_user,
+                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps),
+                                         demo=demo,
+                                         time_left =time_left
+                                         )
+                         )
+    return resp
 
 @app.route("/")
 def index():
@@ -224,7 +240,7 @@ def admin():
     for container in containers:
         uptime = DockerBackend.how_long_up(container.name)
         time_left = DockerBackend.check_if_over_time(container)
-        time_left = display_time(time_left)
+        time_left = DockerBackend.display_time(time_left)
         info = DockerBackend.get_container_info(container.name)
         containers_list.append({'name':container.name, 'uptime':uptime, 'time_left':time_left})
     return render_template('admin.html', containers=containers_list)
@@ -246,7 +262,7 @@ def user_box(the_user):
         demo = False
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
-    time_left = display_time(time_left)
+    time_left = DockerBackend.display_time(time_left)
     port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
     hostname = DockerBackend.get_hostname()
     resp = make_response(render_template('my_dhbox.html',
@@ -336,25 +352,6 @@ def run_schedule():
         schedule.run_pending()
         time.sleep(1)
 
-
-
-def display_time(seconds, granularity=2):
-    intervals = (
-    ('weeks', 604800),  # 60 * 60 * 24 * 7
-    ('days', 86400),    # 60 * 60 * 24
-    ('hours', 3600),    # 60 * 60
-    ('minutes', 60),
-    ('seconds', 1),
-    )
-    result = []
-    for name, count in intervals:
-        value = seconds // count
-        if value:
-            seconds -= value * count
-            if value == 1:
-                name = name.rstrip('s')
-            result.append("{} {}".format(value, name))
-    return ', '.join(result[:granularity])
 
 schedule.every(1).minutes.do(police)
 t = Thread(target=run_schedule)

@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="dhbox-apps">
+    <div class="row">
+        <div class="span12">
+            <ul class="nav nav-tabs" id="myTabs">
+              <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+            {% for app in apps %}
+                {% if app['port'] %}
+              <li><a href="#{{app['name']}}" data-toggle="tab">{{app['name']}}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <p>test</p>
+                </div>
+            {% for app in apps %}
+                {% if app['port'] %} 
+              <div class="tab-pane" id="{{app['name']}}" data-src="{{url_for('app_box', the_user=user, app_name=app['name'])}}">
+                  <iframe height='1000' width='1000' frameBorder="0" src=""></iframe>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+       $('#myTabs').bind('show', function(e) {  
+        paneID = $(e.target).attr('href');
+        console.log("??")
+        src = $(paneID).attr('data-src');
+        // if the iframe hasn't already been loaded once
+        if($(paneID+" iframe").attr("src")=="")
+        {
+            $(paneID+" iframe").attr("src",src);
+    }
+});
+</script>
+
+{% endblock %}
+
+
