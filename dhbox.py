@@ -346,6 +346,14 @@ def police():
     users = User.query.all()
     for user in users:
         DockerBackend.check_and_kill(user)
+    all_containers = DockerBackend.all_containers()
+    for container in all_containers:
+        time_up = DockerBackend.how_long_up(container)
+        info = DockerBackend.get_container_info(container)
+        name = info['Name'][1:]
+        print time_up
+        if name.startswith('demo') and time_up > 60:
+            DockerBackend.kill_and_remove_user(name)
 
 def run_schedule():
     while 1:

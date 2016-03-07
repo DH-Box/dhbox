@@ -5,7 +5,7 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-01-09
+ENV REFRESHED_AT 2016-02-22
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update

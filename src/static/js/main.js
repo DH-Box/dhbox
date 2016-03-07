@@ -49,7 +49,6 @@ $( document ).ready(function() {
                     $('#failure-modal').modal({show: true});
                 }else
                 {
-                    // $('inside-modal').replaceWith('<div>DH Box successfully created.</div>');
                     setTimeout(function () {
                         alert(data)
                         window.location = '/dhbox/'+mainUser;
@@ -79,7 +78,9 @@ $( document ).ready(function() {
             var re = new RegExp(regexp);
             return this.optional(element) || re.test(value);
         },
-        "Please check your input. No capital letters."
+        "Please check your input. No capital letters or spaces."
     );
     $("#admin").rules("add", { regex: "^[a-z][-a-z0-9]*\$" })
+    // $("#admin").rules("add", { regex: "^[a-z][-a-z0-9]*\$" })
+
 });

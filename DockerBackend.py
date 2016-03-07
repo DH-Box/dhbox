@@ -136,15 +136,16 @@ def demo_dhbox(username):
     setup_new_dhbox(username, password, email, demo=True)
 
 
-def kill_and_remove_user(name):
-    """Kill a running DH Box container and remove the user"""
+def kill_and_remove_user(name, user=True):
+    """Kill a running DH Box container and remove the user if there is one"""
     try:
         print "Killing container."
         c.kill(name)
         c.kill(name+'_wp')
         c.remove_container(name)
         c.remove_container(name+'_wp')
-        dhbox.delete_user(name)
+        if user:
+            dhbox.delete_user(name)
     except Exception, e:
         print "Could not kill container ", name
 
@@ -171,7 +172,7 @@ def how_long_up(container):
     """Find out how long a container has been running, in seconds"""
     detail = c.inspect_container(container)
     time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    time_up = dt.datetime.utcnow() - time_started
+    time_up = dt.datetime.utcnow() - time_started   
     return time_up.total_seconds()
 
 def check_if_over_time(user):
