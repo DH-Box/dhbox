@@ -3,12 +3,10 @@
 <div class="dhbox-home">
     <div class="row dhbox-welcome">
         <div class="col-xs-12 text-center">
-            <h2 class="featurette-heading">Ready to stop installing &amp; start exploring?
-            </h2>
-
-            <h1>Welcome to DHbox.</h1>
+        <br/><br/>
             <img class="featurette-image img-responsive center-block"
                  src="/static/images/dhbox_shell.png">
+            <h1>{{institution}}</h1>
 
             <p class="lead">Setting up an environment for digital humanities computational work can be time-consuming
                 and difficult. DHbox addresses this problem by streamlining installation processes and providing a
@@ -16,6 +14,7 @@
         </div>
         <!-- END THE FEATURETTES -->
     </div>
+    {% if demo %}
     <div class="row dhbox-get">
         <div class="col-md-4 col-md-offset-2 col-xs-12 text-center">
             <label for="start-demo">Give it a try:</label><br/>
@@ -26,10 +25,22 @@
             <a id="signup" class="btn btn-huge" href="/signup"><span>Sign Up</span></a>
         </div>
         <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
+            <label for="get-dhbox">Get the source code:</label><br/>
+            <a id="get-dhbox" class="btn btn-huge" href="https://github.com/DH-Box/dhbox"><span>Download from GitHub</span></a>
+        </div>
+    </div>
+    {% else %}
+    <div class="row dhbox-get">
+        <div class="col-md-4 col-xs-12 text-center">
+            <label for="signup">Use it for your workshop:</label><br/>
+            <a id="signup" class="btn btn-huge" href="/signup"><span>Sign Up</span></a>
+        </div>
+        <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
             <label for="get-dhbox">Get it for your school:</label><br/>
             <a id="get-dhbox" class="btn btn-huge" href="https://github.com/DH-Box/dhbox"><span>Download from GitHub</span></a>
         </div>
     </div>
+    {% endif %}
     <div class="dhbox-tools">
         <div class="row">
             <div class="col-xs-12 text-center">

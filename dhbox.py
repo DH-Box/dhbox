@@ -182,7 +182,7 @@ def test(the_user):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', institution=app.config['INSTITUTION'], demo=app.config['DEMO_ENABLED'])
 
 @app.route("/signup")
 def signup():
