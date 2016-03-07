@@ -146,8 +146,11 @@ def kill_and_remove_user(name, user=True):
         c.remove_container(name+'_wp')
         if user:
             dhbox.delete_user(name)
-    except Exception, e:
+    # except Exception, e:
+    except docker.errors.NotFound, e:
         print "Could not kill container ", name
+        print e
+        return e
 
 
 def delete_untagged():
@@ -170,11 +173,14 @@ def delete_untagged():
 
 def how_long_up(container):
     """Find out how long a container has been running, in seconds"""
-    detail = c.inspect_container(container)
-    time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    time_up = dt.datetime.utcnow() - time_started   
-    return time_up.total_seconds()
-
+    try:
+        detail = c.inspect_container(container)
+        time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
+        time_up = dt.datetime.utcnow() - time_started   
+        return time_up.total_seconds()
+    except docker.errors.NotFound, e:
+        return e
+            
 def check_if_over_time(user):
     requested_duration = user.dhbox_duration
     try:
@@ -184,15 +190,17 @@ def check_if_over_time(user):
         return e
 
 def check_and_kill(user):
-    """Checks a container's uptime and kills it and the user if time is up"""
+    # """Checks a container's uptime and kills it and the user if time is up"""
     requested_duration = user.dhbox_duration
     try:
-        duration = user.dhbox_duration - how_long_up(user.name)
-        print duration
-        if duration < 0:
+        get_container_info(user.name)
+        time_left = user.dhbox_duration - how_long_up(user.name)
+        # print user.name, " time left: ", time_left, " seconds"
+        if time_left <= 0:
             kill_and_remove_user(user.name)
     except docker.errors.NotFound, e:
         dhbox.delete_user(user.name)
+
 
 def display_time(seconds, granularity=2):
     intervals = (

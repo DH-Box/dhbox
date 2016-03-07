@@ -314,18 +314,18 @@ def new_dhbox():
                 admin_user = user['name']
                 admin_email = user['email']
                 admin_pass = user['pass']
-                # if user['duration'] == 'day':
-                #     duration = 86400
-                # elif user['duration'] == 'week':
-                #     duration = 604800
-                # else:
-                #     duration = 2592000
-                if user['duration'] == 'week':
+                if user['duration'] == 'day':
+                    duration = 86400
+                elif user['duration'] == 'week':
                     duration = 604800
-                elif user['duration'] == 'month':
-                    duration = 2592000
                 else:
-                    duration = 13148730 
+                    duration = 2592000
+                # if user['duration'] == 'week':
+                #     duration = 604800
+                # elif user['duration'] == 'month':
+                #     duration = 2592000
+                # else:
+                #     duration = 13148730 
                 admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
@@ -359,9 +359,8 @@ def police():
         time_up = DockerBackend.how_long_up(container)
         info = DockerBackend.get_container_info(container)
         name = info['Name'][1:]
-        print time_up
-        if name.startswith('demo') and time_up > 60:
-            DockerBackend.kill_and_remove_user(name)
+        if name.startswith('demo') and time_up > 3600:
+            DockerBackend.kill_and_remove_user(name, user=False)
 
 def run_schedule():
     while 1:

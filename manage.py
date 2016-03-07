@@ -81,6 +81,13 @@ def delete_untagged():
     if not found:
         print "Didn't find any untagged images to delete!"
 
+@manager.command
+def check_users():
+    """list all usernames"""
+    users = dhbox.User.query.all()
+    for user in users:
+        print user.name
+
 c = DockerBackend.attach_to_docker_client()
 
 if __name__ == '__main__':
