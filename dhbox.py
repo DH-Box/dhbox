@@ -334,9 +334,17 @@ def new_dhbox():
 
 
 @app.route('/kill_dhbox', methods=['POST'])
+@login_required
 def kill_dhbox():
-    the_next = request.form['next']
-    user = request.form['user']
+    the_next = request.form.get('next')
+    user = request.form.get('user')
+    print(user)
+    if current_user.has_role("admin"):
+        pass
+    elif user != current_user.name:
+        # If they're not an admin and they're trying to delete a user that isn't them,
+        # return a Forbidden error.
+        return abort(403)
     DockerBackend.kill_and_remove_user(user)
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
