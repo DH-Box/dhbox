@@ -44,7 +44,7 @@ db = SQLAlchemy(app)
 all_apps = [
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
-    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line'},
+    {'name': 'bash', 'port': '3000', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line'},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
@@ -343,17 +343,18 @@ def kill_dhbox():
 
 
 def police():
-    users = User.query.all()
-    for user in users:
-        DockerBackend.check_and_kill(user)
-    all_containers = DockerBackend.all_containers()
-    for container in all_containers:
-        time_up = DockerBackend.how_long_up(container)
-        info = DockerBackend.get_container_info(container)
-        name = info['Name'][1:]
-        print time_up
-        if name.startswith('demo') and time_up > 60:
-            DockerBackend.kill_and_remove_user(name)
+    if os.path.isfile('dhbox-docker.db'): 
+        users = User.query.all()
+        for user in users:
+            DockerBackend.check_and_kill(user)
+        all_containers = DockerBackend.all_containers()
+        for container in all_containers:
+            time_up = DockerBackend.how_long_up(container)
+            info = DockerBackend.get_container_info(container)
+            name = info['Name'][1:]
+            print "time up:", time_up
+            if name.startswith('demo') and time_up > 60:
+                DockerBackend.kill_and_remove_user(name)
 
 def run_schedule():
     while 1:

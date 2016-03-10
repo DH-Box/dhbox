@@ -5,25 +5,25 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-02-22
+ENV REFRESHED_AT 2016-03-15
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
 
 # General needs
-RUN apt-get -qy install emacs git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl git wget unzip python-pip opensmtpd ipython-notebook nodejs npm python3-scipy python3-pandas python3-matplotlib python3-numpy
+RUN apt-get -qy install emacs git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs npm python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
 RUN pip install PyYAML jinja2 paramiko
 
 
-# For Shellinabox
-RUN apt-get -qy install libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
-RUN git clone https://github.com/shellinabox/shellinabox.git
-WORKDIR /shellinabox
-RUN ls -l
-RUN autoreconf -i
-RUN ./configure && make && make install
-ADD ./shellinabox /etc/default/
+# For Wetty
+RUN apt-get install -qy nodejs nodejs-legacy npm
+RUN git clone https://github.com/krishnasrinivas/wetty
+WORKDIR /wetty
+RUN npm install -g
+RUN cp /usr/local/lib/node_modules/wetty/bin/wetty.conf /etc/init
+
 WORKDIR /
+
 
 # For MALLET
 RUN apt-get -qy install default-jdk ant
@@ -83,7 +83,6 @@ ADD ./omeka/htaccess /var/www/omeka/.htaccess
 RUN chmod -R 777 /var/www/omeka/files
 
 # For brackets
-RUN apt-get install -qy nodejs nodejs-legacy npm
 RUN npm install brackets -g
 
 # Adding Deamons to containers
@@ -99,9 +98,9 @@ RUN mkdir -p /etc/service/apache2
 ADD ./runit_scripts/apache2.sh /etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run
 
-RUN mkdir -p /etc/service/shellinabox
-ADD ./runit_scripts/shellinabox.sh /etc/service/shellinabox/run
-RUN chmod +x /etc/service/shellinabox/run
+RUN mkdir -p /etc/service/wetty
+ADD ./runit_scripts/wetty.sh /etc/service/wetty/run
+RUN chmod +x /etc/service/wetty/run
 
 RUN mkdir -p /etc/service/smtpd
 ADD ./runit_scripts/smtpd.sh /etc/service/smtpd/run
@@ -121,7 +120,7 @@ RUN mkdir -p /etc/my_init.d
 ADD ./runit_scripts/startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
-EXPOSE 22 25 8787 80 4200 8888
+EXPOSE 22 25 8787 80 3000 8888
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

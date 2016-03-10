@@ -1,4 +1,4 @@
-FROM tlamp
+FROM thedhbox/tlamp
 MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
 
 # Install plugins

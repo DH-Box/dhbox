@@ -12,13 +12,8 @@ wget -qO- https://get.docker.com/ | sh
 git clone https://github.com/DH-Box/dhbox.git
 cd ~/dhbox/
 pip install -r requirements.txt
-cd seed/
-sudo docker build -t thedhbox/seed:latest .
-cd ../lamp-seed/
-sudo docker build -t tlamp .
-cd ../wp-seed/
-sudo docker build -t twordpress .
-cd ~/dhbox/
+sudo docker pull -t thedhbox/seed:latest
+sudo docker pull -t thedhbox/twordpress
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g bower gulp
 npm install

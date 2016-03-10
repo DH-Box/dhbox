@@ -16,6 +16,11 @@ def new_seed():
     response = DockerBackend.build_dhbox()
     return response
 
+@manager.command
+def start():
+    """download seed for DH Box"""
+    response = DockerBackend.download_dhbox()
+    return response
 
 @manager.command
 def test():

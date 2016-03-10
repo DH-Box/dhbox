@@ -36,6 +36,19 @@ def get_hostname():
             hostname = gotten_ip or dhbox.app.config['DEFAULT_HOSTNAME']
     return hostname
 
+def download_dhbox(username='test'):
+    """Downloads a DH Box seed, renaming the old one if it exists"""
+    print "Downloading Seed"
+    images = c.images()
+    for image in images:
+        if image["RepoTags"] == [dhbox_repo+"/seed:latest"]:
+            image_id = image["Id"]
+            c.tag(image=image_id, repository=dhbox_repo+'/seed', tag='older', force=True)
+    for line in c.pull(dhbox_repo+'/seed:latest', stream=True):
+        print(json.dumps(json.loads(line), indent=4))
+    for line in c.pull(dhbox_repo+'/twordpress:latest', stream=True):
+        print(json.dumps(json.loads(line), indent=4))
+
 
 def build_dhbox(username='test'):
     """Builds a new Dh Box seed, renaming the old one if it exists"""
@@ -90,11 +103,11 @@ def setup_new_dhbox(username, password, email, demo=False):
        # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
        # print ports
         print "Creating Containers"
-        wp_container = c.create_container(image="twordpress:latest",
+        wp_container = c.create_container(image=dhbox_repo+"/twordpress:latest",
                                           name=username+'_wp',
                                           ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
-                                       ports=[8080, 8787, 4444, 4200, 8888],
+                                       ports=[8080, 8787, 4444, 3000, 8888],
                                        tty=True, stdin_open=True, 
                                        environment=environment)
     except docker.errors.APIError, e:
@@ -188,7 +201,6 @@ def check_and_kill(user):
     requested_duration = user.dhbox_duration
     try:
         duration = user.dhbox_duration - how_long_up(user.name)
-        print duration
         if duration < 0:
             kill_and_remove_user(user.name)
     except docker.errors.NotFound, e:
