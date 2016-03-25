@@ -12,7 +12,7 @@
 
                 <div class="col-md-4 col-xs-12 form-group">
                     <label for='admin' class="control-label">Your Username:</label>
-                    <input tabindex=1 type="text" what="users" minlength="1" class='users form-control' id='admin' name='admin' pattern="/^[A-Za-z0-9]$/"
+                    <input tabindex=1 type="text" what="users" minlength="1" class='users form-control' id='admin' name='admin' pattern="^[a-z][-a-z0-9]*\$"
                     required/>
                     <span class="help-block">This is the user with complete control over a new DH Box.</span>
                 </div>
@@ -23,19 +23,19 @@
                     <span class="help-block">Passwords apply for access to: DH Box, Omeka, RStudio.</span>
                     <br/><br/>
                     <div class="btn-group form-group center-block" data-toggle="buttons">
-                        <!-- <label class="btn btn-primary active">
+                        <label class="btn btn-primary active">
                         <input tabindex=4 type="radio" what="duration" name="duration" id="day" autocomplete="off" value="day" checked> 24 hours
-                        </label> -->
+                        </label>
                         <label class="btn btn-primary">
                         <input type="radio" what="duration" name="duration" id="week" autocomplete="off" value="week">a week
                         </label>
                         <label class="btn btn-primary">
                         <input type="radio" what="duration" name="duration" id="month" autocomplete="off" value="month">a month
                         </label>
-                        <label class="btn btn-primary">
-                        <input type="radio" what="duration" name="duration" id="semester" autocomplete="off" value="semester">a semester
+                        <!-- <label class="btn btn-primary"> -->
+                        <!-- <input type="radio" what="duration" name="duration" id="semester" autocomplete="off" value="semester">a semester
                         </label>
-                        <br/><br/>
+                         --><br/><br/>
                         <span class="help-block">How long would you like to use your DH Box?</span>
                     </div>
                 </div>

@@ -184,7 +184,7 @@ def test(the_user):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', institution=app.config['INSTITUTION'], demo=app.config['DEMO_ENABLED'])
 
 
 @app.route("/signup")
@@ -311,18 +311,22 @@ def new_dhbox():
                 admin_user = user['name']
                 admin_email = user['email']
                 admin_pass = user['pass']
-                # if user['duration'] == 'day':
-                #     duration = 86400
-                # elif user['duration'] == 'week':
-                #     duration = 604800
-                # else:
-                #     duration = 2592000
-                if user['duration'] == 'week':
+                if user['duration'] == 'day':
+                    duration = 86400
+                elif user['duration'] == 'week':
                     duration = 604800
-                elif user['duration'] == 'month':
-                    duration = 2592000
                 else:
+<<<<<<< HEAD
                     duration = 13148730
+=======
+                    duration = 2592000
+                # if user['duration'] == 'week':
+                #     duration = 604800
+                # elif user['duration'] == 'month':
+                #     duration = 2592000
+                # else:
+                #     duration = 13148730 
+>>>>>>> master
                 admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
@@ -331,15 +335,24 @@ def new_dhbox():
 
 
 @app.route('/kill_dhbox', methods=['POST'])
+@login_required
 def kill_dhbox():
-    the_next = request.form['next']
-    user = request.form['user']
+    the_next = request.form.get('next')
+    user = request.form.get('user')
+    print(user)
+    if current_user.has_role("admin"):
+        pass
+    elif user != current_user.name:
+        # If they're not an admin and they're trying to delete a user that isn't them,
+        # return a Forbidden error.
+        return abort(403)
     DockerBackend.kill_and_remove_user(user)
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
 
 
 def police():
+<<<<<<< HEAD
     if os.path.isfile('dhbox-docker.db'):
         users = User.query.all()
         for user in users:
@@ -353,6 +366,18 @@ def police():
             if name.startswith('demo') and time_up > 60:
                 DockerBackend.kill_and_remove_user(name)
 
+=======
+    users = User.query.all()
+    for user in users:
+        DockerBackend.check_and_kill(user)
+    all_containers = DockerBackend.all_containers()
+    for container in all_containers:
+        time_up = DockerBackend.how_long_up(container)
+        info = DockerBackend.get_container_info(container)
+        name = info['Name'][1:]
+        if name.startswith('demo') and time_up > 3600:
+            DockerBackend.kill_and_remove_user(name, user=False)
+>>>>>>> master
 
 def run_schedule():
     while 1:
