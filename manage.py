@@ -16,11 +16,13 @@ def new_seed():
     response = DockerBackend.build_dhbox()
     return response
 
+
 @manager.command
 def start():
     """download seed for DH Box"""
     response = DockerBackend.download_dhbox()
     return response
+
 
 @manager.command
 def test():
@@ -57,6 +59,12 @@ def killctr(ctr_name):
 
 
 @manager.command
+def renew_admin():
+    """Updates admin's DH Box to the new seed."""
+    DockerBackend.replace_admin_dhbox_image()
+
+
+@manager.command
 def cleanup():
     """Delete ALL stopped containers, unnamed images"""
     print "Deleting stopped containers"
@@ -64,10 +72,12 @@ def cleanup():
     print "Deleting images"
     delete_untagged()
 
+
 @manager.command
 def police():
     """check for boxes over their time limit, kill them"""
     dhbox.police()
+
 
 def delete_untagged():
     """Find the untagged images and remove them"""

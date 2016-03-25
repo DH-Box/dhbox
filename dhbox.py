@@ -53,6 +53,7 @@ all_apps = [
     {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
 ]
 
+
 def get_app(key):
     for app in all_apps:
         if app['name'] == key:
@@ -62,8 +63,8 @@ def get_app(key):
 MODELS
 """
 roles_users = db.Table('roles_users',
-                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-                       db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
 
 class Role(db.Model, RoleMixin):
@@ -123,22 +124,23 @@ class ExtendedLoginForm(LoginForm):
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
+
 # Create an admin user to test with
 def create_user_and_role():
     first_user = User.query.filter(User.name == str('admin')).first()
     if not first_user:
         user_email = 'test@gmail.com'
         username = 'admin'
-        user_pass = 'password'
+        user_pass = app.config['ADMIN_PASS']
         the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000000)
         the_role = user_datastore.create_role(name='admin', description='The administrator')
         user_datastore.add_role_to_user(the_user, the_role)
         db.session.commit()
         try:
-            is_container = DockerBackend.get_container_info(username)
+            DockerBackend.get_container_info(username)
             print 'already have a container'
-        except Exception, e:
-            the_new_dhbox = DockerBackend.setup_new_dhbox(username, user_pass, user_email)
+        except Exception:
+            DockerBackend.setup_new_dhbox(username, user_pass, user_email)
 
 
 def delete_user(user):
@@ -154,6 +156,7 @@ def delete_user(user):
 URLS/VIEWS
 """
 
+
 @app.route("/test/<the_user>")
 def test(the_user):
     which_user = User.query.filter(User.name == str(the_user)).first()
@@ -161,7 +164,7 @@ def test(the_user):
         return redirect(url_for("index"))
     if current_user.name is not which_user.name:
         return redirect(url_for("index"))
-    email_domain = which_user.email.split("@",1)[1]
+    email_domain = which_user.email.split("@", 1)[1]
     if email_domain == 'demo.com':
         demo = True
     else:
@@ -169,20 +172,20 @@ def test(the_user):
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
-    port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
-    hostname = DockerBackend.get_hostname()
     resp = make_response(render_template('alt_dhbox.html',
-                                         user=the_user,
-                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps),
-                                         demo=demo,
-                                         time_left =time_left
-                                         )
-                         )
+                     user=the_user,
+                     apps=filter(lambda app: app.get('hide', False) != True, all_apps),
+                     demo=demo,
+                     time_left=time_left
+                     )
+                 )
     return resp
+
 
 @app.route("/")
 def index():
     return render_template('index.html')
+
 
 @app.route("/signup")
 def signup():
@@ -215,9 +218,8 @@ def demo():
     demo_user_object = user_datastore.create_user(email=username + '@demo.com', name=username, password='demo', dhbox_duration=3600)
     db.session.commit()
     login_user(demo_user_object)
-    new_dhbox = DockerBackend.demo_dhbox(username)
+    DockerBackend.demo_dhbox(username)
     return redirect('/dhbox/' + username, 301)
-
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -246,7 +248,6 @@ def admin():
     return render_template('admin.html', containers=containers_list)
 
 
-
 @app.route("/dhbox/<the_user>")
 @login_required
 def user_box(the_user):
@@ -255,7 +256,7 @@ def user_box(the_user):
         return redirect(url_for("index"))
     if current_user.name is not which_user.name:
         return redirect(url_for("index"))
-    email_domain = which_user.email.split("@",1)[1]
+    email_domain = which_user.email.split("@", 1)[1]
     if email_domain == 'demo.com':
         demo = True
     else:
@@ -263,17 +264,15 @@ def user_box(the_user):
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
-    port_info = DockerBackend.get_all_exposed_ports(dhbox_username)
-    hostname = DockerBackend.get_hostname()
     resp = make_response(render_template('my_dhbox.html',
                                          user=the_user,
                                          apps=filter(lambda app: app.get('hide', False) != True, all_apps),
                                          demo=demo,
-                                         time_left =time_left
+                                         time_left=time_left
                                          )
                          )
     return resp
-    
+
 
 @app.route("/dhbox/<the_user>/<app_name>")
 @login_required
@@ -293,11 +292,9 @@ def app_box(the_user, app_name):
     else:
         return redirect('http://' + location)
 
+
 @app.route('/new_dhbox', methods=['POST'])
 def new_dhbox():
-    users_and_passes = []
-    admins_and_passes = []
-    form = request.form
     data = {key: request.form.getlist(key)[0] for key in request.form.keys()}
     for key in data:
         users_dict = key
@@ -325,7 +322,7 @@ def new_dhbox():
                 elif user['duration'] == 'month':
                     duration = 2592000
                 else:
-                    duration = 13148730 
+                    duration = 13148730
                 admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
@@ -343,7 +340,7 @@ def kill_dhbox():
 
 
 def police():
-    if os.path.isfile('dhbox-docker.db'): 
+    if os.path.isfile('dhbox-docker.db'):
         users = User.query.all()
         for user in users:
             DockerBackend.check_and_kill(user)
@@ -352,9 +349,10 @@ def police():
             time_up = DockerBackend.how_long_up(container)
             info = DockerBackend.get_container_info(container)
             name = info['Name'][1:]
-            print "time up:", time_up
+            # print name, "time up:", time_up
             if name.startswith('demo') and time_up > 60:
                 DockerBackend.kill_and_remove_user(name)
+
 
 def run_schedule():
     while 1:

@@ -36,6 +36,7 @@ def get_hostname():
             hostname = gotten_ip or dhbox.app.config['DEFAULT_HOSTNAME']
     return hostname
 
+
 def download_dhbox(username='test'):
     """Downloads a DH Box seed, renaming the old one if it exists"""
     print "Downloading Seed"
@@ -122,12 +123,13 @@ def setup_new_dhbox(username, password, email, demo=False):
         info = c.inspect_container(container)
         return info
 
+
 def execute(container, args):
     """Execute a list of arbitrary Bash commands inside a container"""
     for arg in args:
-        print arg
-        exec_instance = c.exec_create(container=container,cmd=arg)
-        c.exec_start(exec_instance)
+        # print arg
+        exec_instance = c.exec_create(container=container, cmd=arg)
+        return c.exec_start(exec_instance)
 
 
 def configure_dhbox(user, the_pass, email, demo=False):
@@ -143,10 +145,16 @@ def configure_dhbox(user, the_pass, email, demo=False):
 
 
 def demo_dhbox(username):
-    """Make a demonstration DH Box with a random name. Expires after an hour."""
+    """Make a demonstration DH Box with a random name. Expires in an hour."""
     password = 'demonstration'
     email = username + '@demo.com'
     setup_new_dhbox(username, password, email, demo=True)
+
+
+def add_user(container, username, password):
+    """Add a user to a running DH Box"""
+    execute(container, ["useradd " + username])
+    execute(container, ["echo " + username + ":" + password + " | chpasswd"])
 
 
 def kill_and_remove_user(name, user=True):
@@ -185,34 +193,41 @@ def how_long_up(container):
     """Find out how long a container has been running, in seconds"""
     detail = c.inspect_container(container)
     time_started = dt.datetime.strptime(detail['Created'][:-4], '%Y-%m-%dT%H:%M:%S.%f')
-    time_up = dt.datetime.utcnow() - time_started   
+    time_up = dt.datetime.utcnow() - time_started
     return time_up.total_seconds()
 
+
 def check_if_over_time(user):
-    requested_duration = user.dhbox_duration
     try:
         duration = user.dhbox_duration - how_long_up(user.name)
         return duration
     except docker.errors.NotFound, e:
         return e
 
+
 def check_and_kill(user):
     """Checks a container's uptime and kills it and the user if time is up"""
-    requested_duration = user.dhbox_duration
     try:
         duration = user.dhbox_duration - how_long_up(user.name)
         if duration < 0:
             kill_and_remove_user(user.name)
-    except docker.errors.NotFound, e:
+    except docker.errors.NotFound:
         dhbox.delete_user(user.name)
+
+
+def replace_admin_dhbox_image():
+    """Updates admin's DH Box to the new seed image."""
+    kill_and_remove_user('admin', user=False)
+    setup_new_dhbox('admin', dhbox.app.config['ADMIN_PASS'], dhbox.app.config['ADMIN_EMAIL'], demo=False)
+
 
 def display_time(seconds, granularity=2):
     intervals = (
-    ('weeks', 604800),  # 60 * 60 * 24 * 7
-    ('days', 86400),    # 60 * 60 * 24
-    ('hours', 3600),    # 60 * 60
-    ('minutes', 60),
-    ('seconds', 1),
+        ('weeks', 604800),  # 60 * 60 * 24 * 7
+        ('days', 86400),    # 60 * 60 * 24
+        ('hours', 3600),    # 60 * 60
+        ('minutes', 60),
+        ('seconds', 1),
     )
     result = []
     for name, count in intervals:
@@ -225,9 +240,8 @@ def display_time(seconds, granularity=2):
     return ', '.join(result[:granularity])
 
 
-
 c = attach_to_docker_client()
 
 
 if __name__ == '__main__':
-    c = DockerBackend.attach_to_docker_client()
+    c = attach_to_docker_client()
