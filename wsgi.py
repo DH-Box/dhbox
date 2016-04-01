@@ -3,14 +3,9 @@ from multiprocessing import cpu_count
 from gunicorn.app.base import Application
 from gunicorn import util
 
-def max_workers():    
+
+def max_workers():
     return cpu_count()
-
-
-# bind = '0.0.0.0:8000'
-# max_requests = 1000
-# worker_class = 'gevent'
-# workers = max_workers()
 
 
 class runDHBox(Application):

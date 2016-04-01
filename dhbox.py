@@ -44,6 +44,7 @@ db = SQLAlchemy(app)
 all_apps = [
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
+    {'name': 'filemanager', 'port': '8081', 'wiki-page': 'manager', 'display-name': 'File Manager'},
     {'name': 'bash', 'port': '3000', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line'},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
@@ -316,9 +317,6 @@ def new_dhbox():
                 elif user['duration'] == 'week':
                     duration = 604800
                 else:
-<<<<<<< HEAD
-                    duration = 13148730
-=======
                     duration = 2592000
                 # if user['duration'] == 'week':
                 #     duration = 604800
@@ -326,7 +324,6 @@ def new_dhbox():
                 #     duration = 2592000
                 # else:
                 #     duration = 13148730 
->>>>>>> master
                 admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
@@ -352,32 +349,23 @@ def kill_dhbox():
 
 
 def police():
-<<<<<<< HEAD
     if os.path.isfile('dhbox-docker.db'):
+        # print "policing"
         users = User.query.all()
         for user in users:
             DockerBackend.check_and_kill(user)
         all_containers = DockerBackend.all_containers()
         for container in all_containers:
-            time_up = DockerBackend.how_long_up(container)
-            info = DockerBackend.get_container_info(container)
-            name = info['Name'][1:]
-            # print name, "time up:", time_up
-            if name.startswith('demo') and time_up > 60:
-                DockerBackend.kill_and_remove_user(name)
+            try:
+                time_up = DockerBackend.how_long_up(container)
+                info = DockerBackend.get_container_info(container)
+                name = info['Name'][1:]
+                if name.startswith('demo') and time_up > 3600:
+                    DockerBackend.kill_and_remove_user(name)
+            except Exception, e:
+                print "Tried to check container: ", container
+                raise e
 
-=======
-    users = User.query.all()
-    for user in users:
-        DockerBackend.check_and_kill(user)
-    all_containers = DockerBackend.all_containers()
-    for container in all_containers:
-        time_up = DockerBackend.how_long_up(container)
-        info = DockerBackend.get_container_info(container)
-        name = info['Name'][1:]
-        if name.startswith('demo') and time_up > 3600:
-            DockerBackend.kill_and_remove_user(name, user=False)
->>>>>>> master
 
 def run_schedule():
     while 1:

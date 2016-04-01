@@ -167,10 +167,9 @@ def kill_and_remove_user(name, user=True):
         c.remove_container(name+'_wp')
         if user:
             dhbox.delete_user(name)
-    # except Exception, e:
-    except docker.errors.NotFound, e:
+    except (docker.errors.NotFound, docker.errors.APIError) as e:
         print "Could not kill container ", name
-        print e
+        dhbox.delete_user(name)
         return e
 
 

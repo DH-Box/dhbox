@@ -5,22 +5,23 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-03-15
+ENV REFRESHED_AT 2016-03-27
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
 
 # General needs
-RUN apt-get -qy install emacs git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs npm python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
+RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+RUN apt-get -qy install emacs git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
 RUN pip install PyYAML jinja2 paramiko
 
 
 # For Wetty
-RUN apt-get install -qy nodejs nodejs-legacy npm
-RUN git clone https://github.com/krishnasrinivas/wetty
-WORKDIR /wetty
-RUN npm install -g
-RUN cp /usr/local/lib/node_modules/wetty/bin/wetty.conf /etc/init
+# RUN apt-get install -qy nodejs-legacy
+# RUN git clone https://github.com/krishnasrinivas/wetty
+# WORKDIR /wetty
+RUN npm install -g wetty
+# RUN cp /usr/local/lib/node_modules/wetty/bin/wetty.conf /etc/init
 
 WORKDIR /
 
@@ -84,6 +85,8 @@ RUN chmod -R 777 /var/www/omeka/files
 
 # For brackets
 RUN npm install brackets -g
+# For the file manager
+RUN npm install node-file-manager -g
 
 # Adding Deamons to containers
 RUN mkdir -p /etc/service/rserver
@@ -102,6 +105,10 @@ RUN mkdir -p /etc/service/wetty
 ADD ./runit_scripts/wetty.sh /etc/service/wetty/run
 RUN chmod +x /etc/service/wetty/run
 
+RUN mkdir -p /etc/service/explorer
+ADD ./runit_scripts/explorer.sh /etc/service/explorer/run
+RUN chmod +x /etc/service/explorer/run
+
 RUN mkdir -p /etc/service/smtpd
 ADD ./runit_scripts/smtpd.sh /etc/service/smtpd/run
 RUN chmod +x /etc/service/smtpd/run
@@ -115,12 +122,11 @@ ADD ./runit_scripts/notebook.sh /etc/service/notebook/run
 RUN chmod +x /etc/service/notebook/run
 
 ##startup scripts
-#ENV HEY hey
 RUN mkdir -p /etc/my_init.d
 ADD ./runit_scripts/startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
-EXPOSE 22 25 8787 80 3000 8888
+EXPOSE 22 25 8787 80 3000 8888 8081
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
