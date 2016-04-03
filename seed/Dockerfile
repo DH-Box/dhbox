@@ -126,7 +126,7 @@ RUN mkdir -p /etc/my_init.d
 ADD ./runit_scripts/startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
-EXPOSE 22 25 8787 80 3000 8888 8081
+EXPOSE 22 25 8787 80 8080 8888 4200
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

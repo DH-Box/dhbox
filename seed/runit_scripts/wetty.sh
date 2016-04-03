@@ -4,4 +4,4 @@
 # If you omit that part, the command will be run as root.
 sleep 5
 echo "Starting Wetty"
-exec wetty -p 3000 2>&1
+exec wetty -p 4200 2>&1
