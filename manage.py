@@ -65,6 +65,16 @@ def renew_admin():
 
 
 @manager.command
+def build_database():
+    """Builds website database and adds admin."""
+    if not os.path.exists('dhbox-docker.db'):
+        dhbox.db.create_all()
+        dhbox.create_user_and_role()
+    else:
+        print "Database exists."
+
+
+@manager.command
 def cleanup():
     """Delete ALL stopped containers, unnamed images"""
     print "Deleting stopped containers"
@@ -92,9 +102,9 @@ def delete_untagged():
                 c.remove_image(image["Id"])
             except docker.errors.APIError as error:
                 print "Failed to delete image\nhash={}\terror={}", image_id, error
-
     if not found:
         print "Didn't find any untagged images to delete!"
+
 
 @manager.command
 def check_users():
