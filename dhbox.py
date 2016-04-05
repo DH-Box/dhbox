@@ -130,7 +130,7 @@ security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 def create_user_and_role():
     first_user = User.query.filter(User.name == str('admin')).first()
     if not first_user:
-        user_email = 'test@gmail.com'
+        user_email = app.config['ADMIN_EMAIL']
         username = 'admin'
         user_pass = app.config['ADMIN_PASS']
         the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000000)
