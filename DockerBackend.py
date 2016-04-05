@@ -108,7 +108,7 @@ def setup_new_dhbox(username, password, email, demo=False):
                                           name=username+'_wp',
                                           ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
-                                       ports=[8080, 8787, 4444, 3000, 8888],
+                                       ports=[8080, 8081, 8787, 4444, 4200, 3000, 8888],
                                        tty=True, stdin_open=True, 
                                        environment=environment)
     except docker.errors.APIError, e:
