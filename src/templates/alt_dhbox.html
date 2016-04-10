@@ -3,7 +3,7 @@
 <div class="dhbox-apps">
     <div class="row">
         <div class="span12">
-            <ul class="nav nav-tabs" id="myTabs">
+            <ul class="nav nav-tabs" id="appTabs">
               <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
             {% for app in apps %}
                 {% if app['port'] %}
@@ -19,7 +19,7 @@
             {% for app in apps %}
                 {% if app['port'] %} 
               <div class="tab-pane" id="{{app['name']}}" data-src="{{url_for('app_box', the_user=user, app_name=app['name'])}}">
-                  <iframe height='1000' width='1000' frameBorder="0" src=""></iframe>
+                  <iframe height='{{ app['height'] if app['height'] else '600' }}' width='{{ app['width'] if app['width'] else '1000' }}' frameBorder="0" src=""></iframe>
                 </div>
                 {% endif %}
                 {% endfor %}
@@ -27,18 +27,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-       $('#myTabs').bind('show', function(e) {  
-        paneID = $(e.target).attr('href');
-        console.log("??")
-        src = $(paneID).attr('data-src');
-        // if the iframe hasn't already been loaded once
-        if($(paneID+" iframe").attr("src")=="")
-        {
-            $(paneID+" iframe").attr("src",src);
-    }
-});
-</script>
 
 {% endblock %}
 

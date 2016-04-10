@@ -5,4 +5,4 @@
 echo "Starting Jupyter Notebook"
 cd /home
 export HASH=$(python3 -c "from IPython.lib import passwd; print(passwd('${PASS}'))")
-exec jupyter notebook --no-browser --port 8888 --ip='*' --NotebookApp.password="$HASH"
+exec jupyter notebook --no-browser --port 8888 --ip='*' --NotebookApp.password="$HASH" --NotebookApp.tornado_settings='{"headers": {"X-Frame-Options": "ALLOWALL", "Content-Security-Policy": "frame-ancestors *"}}'
