@@ -1,11 +1,10 @@
-import os, os.path, sys, random, string, time
+import os, os.path, random, string, time
 from flask import Flask, flash, request, redirect, url_for, render_template, \
-    make_response, jsonify, send_file, current_app, g, abort
+    make_response, abort
 import ast
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
-    UserMixin, RoleMixin, login_required, roles_required, registerable, current_user, LoginForm
-from flask_mail import Mail, Message
+    UserMixin, RoleMixin, login_required, roles_required, current_user, LoginForm
 from wtforms.validators import DataRequired
 from wtforms import TextField, Form
 from werkzeug import generate_password_hash, check_password_hash
@@ -13,7 +12,6 @@ from werkzeug.contrib.fixers import ProxyFix
 import schedule
 from threading import Thread
 import DockerBackend
-from datetime import datetime, timedelta
 
 # create application
 app = Flask('dhbox')
@@ -21,31 +19,18 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # install_secret_key(app)
 app.config.from_pyfile('config.cfg')
-app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templates'
-app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
+# app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templates'
+# app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
+app.template_folder = 'dist/templates'
+app.static_folder = 'dist/static'
 # Create database connection object
 db = SQLAlchemy(app)
-
-# Set up email
-# mail = Mail(app)
-# app.config.update(
-#     #EMAIL SETTINGS
-#     MAIL_DEBUG = True,
-#     MAIL_SUPPRESS_SEND = False,
-#     TESTING = False,
-#     MAIL_SERVER='smtp.gmail.com',
-#     MAIL_PORT=465,
-#     MAIL_USE_SSL=True,
-#     MAIL_USERNAME = 'dhboxsignup@google.com',
-#     MAIL_PASSWORD = 'dhbox123'
-#     )
-
 
 all_apps = [
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
     {'name': 'filemanager', 'port': '8081', 'wiki-page': 'manager', 'display-name': 'File Manager'},
-    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500, 'width': 1000},
+    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
@@ -170,14 +155,14 @@ def test(the_user):
         demo = True
     else:
         demo = False
-    dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
     resp = make_response(render_template('alt_dhbox.html',
                      user=the_user,
                      apps=filter(lambda app: app.get('hide', False) != True, all_apps),
                      demo=demo,
-                     time_left=time_left
+                     time_left=time_left,
+                     dhbox_page=True
                      )
                  )
     return resp
@@ -269,6 +254,7 @@ def user_box(the_user):
                                          user=the_user,
                                          apps=filter(lambda app: app.get('hide', False) != True, all_apps),
                                          demo=demo,
+                                         dhbox_page=True,
                                          time_left=time_left
                                          )
                          )
