@@ -1,5 +1,15 @@
 $( document ).ready(function() {
 
+    $('#appTabs').on('click', function(e) {  
+        paneID = $(e.target).attr('href');
+        src = $(paneID).attr('data-src');
+        // if the iframe hasn't already been loaded once
+        if($(paneID+" iframe").attr("src")=="")
+        {
+            $(paneID+" iframe").attr("src",src);
+    }
+    });
+
     $( "#start-demo" ).click(function(e) {
         showModal('Building your Demo DHbox');
      });

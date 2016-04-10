@@ -45,7 +45,7 @@ all_apps = [
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
     {'name': 'filemanager', 'port': '8081', 'wiki-page': 'manager', 'display-name': 'File Manager'},
-    {'name': 'bash', 'port': '3000', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line'},
+    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500, 'width': 1000},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
@@ -130,7 +130,7 @@ security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 def create_user_and_role():
     first_user = User.query.filter(User.name == str('admin')).first()
     if not first_user:
-        user_email = 'test@gmail.com'
+        user_email = app.config['ADMIN_EMAIL']
         username = 'admin'
         user_pass = app.config['ADMIN_PASS']
         the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000000)
@@ -323,11 +323,7 @@ def new_dhbox():
                 # elif user['duration'] == 'month':
                 #     duration = 2592000
                 # else:
-<<<<<<< HEAD
                 #     duration = 13148730 
-=======
-                #     duration = 13148730
->>>>>>> master
                 admin_user_object = user_datastore.create_user(email=user['email'], name=user['name'], password=user['pass'], dhbox_duration=duration)
                 db.session.commit()
                 login_user(admin_user_object)
@@ -360,7 +356,6 @@ def police():
             DockerBackend.check_and_kill(user)
         all_containers = DockerBackend.all_containers()
         for container in all_containers:
-<<<<<<< HEAD
             try:
                 time_up = DockerBackend.how_long_up(container)
                 info = DockerBackend.get_container_info(container)
@@ -370,13 +365,6 @@ def police():
             except Exception, e:
                 print "Tried to check container: ", container
                 raise e
-=======
-            time_up = DockerBackend.how_long_up(container)
-            info = DockerBackend.get_container_info(container)
-            name = info['Name'][1:]
-            if name.startswith('demo') and time_up > 60:
-                DockerBackend.kill_and_remove_user(name)
->>>>>>> master
 
 
 def run_schedule():

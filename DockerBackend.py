@@ -108,7 +108,7 @@ def setup_new_dhbox(username, password, email, demo=False):
                                           name=username+'_wp',
                                           ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
-                                       ports=[8080, 8787, 4444, 3000, 8888],
+                                       ports=[8080, 8081, 8787, 4444, 4200, 3000, 8888],
                                        tty=True, stdin_open=True, 
                                        environment=environment)
     except docker.errors.APIError, e:
@@ -169,7 +169,8 @@ def kill_and_remove_user(name, user=True):
             dhbox.delete_user(name)
     except (docker.errors.NotFound, docker.errors.APIError) as e:
         print "Could not kill container ", name
-        dhbox.delete_user(name)
+        if user:
+            dhbox.delete_user(name)
         return e
 
 
@@ -225,7 +226,8 @@ def check_and_kill(user):
 def replace_admin_dhbox_image():
     """Updates admin's DH Box to the new seed image."""
     kill_and_remove_user('admin', user=False)
-    setup_new_dhbox('admin', dhbox.app.config['ADMIN_PASS'], dhbox.app.config['ADMIN_EMAIL'], demo=False)
+    dhbox.create_user_and_role()
+    # setup_new_dhbox('admin', dhbox.app.config['ADMIN_PASS'], dhbox.app.config['ADMIN_EMAIL'], demo=False)
 
 
 def display_time(seconds, granularity=2):

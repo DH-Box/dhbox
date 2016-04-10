@@ -5,7 +5,7 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-03-27
+ENV REFRESHED_AT 2016-04-10
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
@@ -42,7 +42,6 @@ RUN apt-get -qy --force-yes install libzmq3-dbg libzmq3-dev libzmq3 littler
 RUN echo 'options("repos"="http://cran.rstudio.com")' >> /usr/lib/R/etc/Rprofile.site
 # Install IRkernel
 RUN Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', getOption('repos')))" -e "IRkernel::installspec()"
-
 
 # For NLTK
 RUN apt-get -qy install python-numpy python-scipy python-matplotlib
@@ -113,20 +112,20 @@ RUN mkdir -p /etc/service/smtpd
 ADD ./runit_scripts/smtpd.sh /etc/service/smtpd/run
 RUN chmod +x /etc/service/smtpd/run
 
-RUN mkdir -p /etc/service/brackets
-ADD ./runit_scripts/brackets.sh /etc/service/brackets/run
-RUN chmod +x /etc/service/brackets/run
-
 RUN mkdir -p /etc/service/notebook
 ADD ./runit_scripts/notebook.sh /etc/service/notebook/run
 RUN chmod +x /etc/service/notebook/run
+
+RUN mkdir -p /etc/service/brackets
+ADD ./runit_scripts/brackets.sh /etc/service/brackets/run
+RUN chmod +x /etc/service/brackets/run
 
 ##startup scripts
 RUN mkdir -p /etc/my_init.d
 ADD ./runit_scripts/startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
-EXPOSE 22 25 8787 80 3000 8888 8081
+EXPOSE 22 25 8787 8081 8080 4200 8888
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
