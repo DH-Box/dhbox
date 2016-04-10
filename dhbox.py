@@ -45,7 +45,7 @@ all_apps = [
     {'name': 'mallet', 'wiki-page': 'MALLET', 'display-name': 'MALLET'},
     {'name': 'ntlk', 'wiki-page': 'NLTK', 'display-name': 'NLTK'},
     {'name': 'filemanager', 'port': '8081', 'wiki-page': 'manager', 'display-name': 'File Manager'},
-    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500, 'width': 1000},
+    {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
     {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
@@ -157,32 +157,6 @@ def delete_user(user):
 URLS/VIEWS
 """
 
-
-@app.route("/test/<the_user>")
-def test(the_user):
-    which_user = User.query.filter(User.name == str(the_user)).first()
-    if which_user is None:
-        return redirect(url_for("index"))
-    if current_user.name is not which_user.name:
-        return redirect(url_for("index"))
-    email_domain = which_user.email.split("@", 1)[1]
-    if email_domain == 'demo.com':
-        demo = True
-    else:
-        demo = False
-    dhbox_username = which_user.name
-    time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
-    time_left = DockerBackend.display_time(time_left)
-    resp = make_response(render_template('alt_dhbox.html',
-                     user=the_user,
-                     apps=filter(lambda app: app.get('hide', False) != True, all_apps),
-                     demo=demo,
-                     time_left=time_left
-                     )
-                 )
-    return resp
-
-
 @app.route("/")
 def index():
     return render_template('index.html', institution=app.config['INSTITUTION'], demo=app.config['DEMO_ENABLED'])
@@ -265,15 +239,15 @@ def user_box(the_user):
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
-    resp = make_response(render_template('my_dhbox.html',
-                                         user=the_user,
-                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps),
-                                         demo=demo,
-                                         time_left=time_left
-                                         )
-                         )
+    resp = make_response(render_template('alt_dhbox.html',
+                     user=the_user,
+                     apps=filter(lambda app: app.get('hide', False) != True, all_apps),
+                     demo=demo,
+                     time_left=time_left,
+                     bootstrap_container = 'container-fluid'
+                     )
+                 )
     return resp
-
 
 @app.route("/dhbox/<the_user>/<app_name>")
 @login_required

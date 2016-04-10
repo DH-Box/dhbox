@@ -19,7 +19,7 @@
             {% for app in apps %}
                 {% if app['port'] %} 
               <div class="tab-pane" id="{{app['name']}}" data-src="{{url_for('app_box', the_user=user, app_name=app['name'])}}">
-                  <iframe height='{{ app['height'] if app['height'] else '500' }}' width='{{ app['width'] if app['width'] else '1000' }}' frameBorder="0" src=""></iframe>
+                  <iframe height='{{ app['height'] if app['height'] else '600' }}' width='{{ app['width'] if app['width'] else '100%' }}' frameBorder="0" src=""></iframe>
                 </div>
                 {% endif %}
                 {% endfor %}
