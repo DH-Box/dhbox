@@ -239,7 +239,7 @@ def user_box(the_user):
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
-    resp = make_response(render_template('alt_dhbox.html',
+    resp = make_response(render_template('dhbox.html',
                      user=the_user,
                      apps=filter(lambda app: app.get('hide', False) != True, all_apps),
                      demo=demo,
