@@ -143,31 +143,6 @@ URLS/VIEWS
 """
 
 
-@app.route("/test/<the_user>")
-def test(the_user):
-    which_user = User.query.filter(User.name == str(the_user)).first()
-    if which_user is None:
-        return redirect(url_for("index"))
-    if current_user.name is not which_user.name:
-        return redirect(url_for("index"))
-    email_domain = which_user.email.split("@", 1)[1]
-    if email_domain == 'demo.com':
-        demo = True
-    else:
-        demo = False
-    time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
-    time_left = DockerBackend.display_time(time_left)
-    resp = make_response(render_template('alt_dhbox.html',
-                     user=the_user,
-                     apps=filter(lambda app: app.get('hide', False) != True, all_apps),
-                     demo=demo,
-                     time_left=time_left,
-                     dhbox_page=True
-                     )
-                 )
-    return resp
-
-
 @app.route("/")
 def index():
     return render_template('index.html', institution=app.config['INSTITUTION'], demo=app.config['DEMO_ENABLED'])
@@ -250,14 +225,14 @@ def user_box(the_user):
     dhbox_username = which_user.name
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
-    resp = make_response(render_template('my_dhbox.html',
-                                         user=the_user,
-                                         apps=filter(lambda app: app.get('hide', False) != True, all_apps),
-                                         demo=demo,
-                                         dhbox_page=True,
-                                         time_left=time_left
-                                         )
-                         )
+    resp = make_response(render_template('dhbox.html',
+                     user=the_user,
+                     apps=filter(lambda app: app.get('hide', False) != True, all_apps),
+                     demo=demo,
+                     time_left=time_left,
+                     bootstrap_container='container-fluid'
+                     )
+                 )
     return resp
 
 

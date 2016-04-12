@@ -73,8 +73,8 @@
     </div>
 </nav>
 <br/>
-<br/>   
-<div class="{{ 'container-fluid' if dhbox_page else 'container' }}">
+<div class="{{bootstrap_container or 'container'}}">
+
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class=flashes>
