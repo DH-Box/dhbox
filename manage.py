@@ -108,10 +108,11 @@ def delete_untagged():
 
 @manager.command
 def check_users():
-    """list all usernames"""
+    """list all usernames and emails"""
     users = dhbox.User.query.all()
     for user in users:
         print user.name
+        print user.email
 
 c = DockerBackend.attach_to_docker_client()
 
