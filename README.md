@@ -10,7 +10,7 @@ A toolbox for Digital Humanities.
 Currently DH Box requires a linux that has apt-get.
 #### One line install:
 ```
-wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/develop/install_dhbox.sh | sudo sh
+wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/master/install_dhbox.sh | sudo sh
 ```
 Edit settings as desired in `config.cfg` and run with `python wsgi.py`.
 
