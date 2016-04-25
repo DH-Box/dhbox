@@ -5,6 +5,7 @@ import ast
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
     UserMixin, RoleMixin, login_required, roles_required, current_user, LoginForm
+from flaskext.markdown import Markdown
 from wtforms.validators import DataRequired
 from wtforms import TextField, Form
 from werkzeug import generate_password_hash, check_password_hash
@@ -16,7 +17,7 @@ import DockerBackend
 # create application
 app = Flask('dhbox')
 app.wsgi_app = ProxyFix(app.wsgi_app)
-
+Markdown(app)
 # install_secret_key(app)
 app.config.from_pyfile('config.cfg')
 # app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templates'
@@ -37,6 +38,7 @@ all_apps = [
     {'name': 'apache', 'port': '80', 'hide': True},
     {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
     {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
+    {'name': 'website', 'port': '4000', 'wiki-page': 'webpage', 'display-name': 'Your Site'}
 ]
 
 
@@ -168,6 +170,17 @@ def our_team():
     return render_template('our_team.html')
 
 
+@app.route('/news')
+def news():
+    news_folder = 'src/templates/news/'
+    news_list = []
+    for file in os.listdir(news_folder):
+        with open(news_folder + file) as f:
+            content = f.read()
+            news_list.append(content)
+    return render_template('news.html', news_list=news_list)
+
+
 @app.route('/get_started')
 def get_started():
     return render_template('get_started.html')
@@ -230,7 +243,8 @@ def user_box(the_user):
                      apps=filter(lambda app: app.get('hide', False) != True, all_apps),
                      demo=demo,
                      time_left=time_left,
-                     bootstrap_container='container-fluid'
+                     bootstrap_container='container-fluid',
+                     fixed_scroll='fixed_scroll'
                      )
                  )
     return resp

@@ -1,11 +1,13 @@
 Flask==0.10.1
 Flask-Login==0.2.11
 Flask-Mail==0.9.1
+Flask-Markdown==0.3
 Flask-Principal==0.4.0
 Flask-SQLAlchemy==2.0
 Flask-Security==1.7.4
 Flask-WTF==0.10.3
 Jinja2==2.7.3
+Markdown==2.6.6
 MarkupSafe==0.23
 SQLAlchemy==0.9.8
 WTForms==2.0.1

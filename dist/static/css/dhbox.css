@@ -8813,3 +8813,6 @@ h1.h1-top:first-of-type {
 .dhbox-apps .heading {
   font-size: 24px;
 }
+.fixed_scroll {
+  overflow-y: hidden;
+}

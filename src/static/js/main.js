@@ -3,6 +3,8 @@ $( document ).ready(function() {
     $('#appTabs').on('click', function(e) {  
         paneID = $(e.target).attr('href');
         src = $(paneID).attr('data-src');
+        windowHeight = $(window).height() - 100; 
+        $(paneID+" iframe").attr("height",windowHeight);
         // if the iframe hasn't already been loaded once
         if($(paneID+" iframe").attr("src")=="")
         {
@@ -35,7 +37,7 @@ $( document ).ready(function() {
         e.preventDefault();
         if (form.valid()){
             var x;
-            var r=confirm("All settings correct?");
+            var r=true
             if (r==true)
               {
                 var allUsers = { users: [] };

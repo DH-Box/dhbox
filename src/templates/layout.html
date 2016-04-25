@@ -25,7 +25,7 @@
     <script type="text/javascript" src="/static/bower_components/less/dist/less.js"></script>
     <!-- endbuild -->
 
-<body>
+<body class={{fixed_scroll or ''}}>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -44,6 +44,7 @@
                 <li><a href="{{url_for('our_team')}}">Our Team</a></li>
                 <li><a href="{{url_for('contact')}}">Contact</a></li>
                 <li><a href="{{url_for('get_started')}}">Get Started</a></li>
+                <li><a href="{{url_for('news')}}">News</a></li>
                 <!-- <li><a href="{{url_for('signup')}}">Sign Up</a></li> -->
             </ul>
             {% if current_user.is_authenticated() %}

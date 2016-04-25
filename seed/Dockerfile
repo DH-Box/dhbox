@@ -5,14 +5,14 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-04-10
+ENV REFRESHED_AT 2016-04-23
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
 
 # General needs
 RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-RUN apt-get -qy install emacs git python-apt apt-utils python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
+RUN apt-get -qy install emacs git python-apt apt-utils software-properties-common python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
 RUN pip install PyYAML jinja2 paramiko
 
 
@@ -83,7 +83,16 @@ ADD ./omeka/htaccess /var/www/omeka/.htaccess
 RUN chmod -R 777 /var/www/omeka/files
 
 # For brackets
-RUN npm install brackets -g
+# RUN npm install brackets -g
+RUN npm install -g grunt-cli
+    # npm install -g node-inspector
+RUN git clone https://github.com/rabchev/brackets-server.git
+WORKDIR /brackets-server
+RUN git submodule update --init --recursive && \
+    npm install && \
+    grunt build
+WORKDIR /
+
 # For the file manager
 RUN npm install node-file-manager -g
 
@@ -125,7 +134,7 @@ RUN mkdir -p /etc/my_init.d
 ADD ./runit_scripts/startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/startup.sh
 
-EXPOSE 22 25 8787 8081 8080 4200 8888
+EXPOSE 22 25 8787 8081 8080 4000 4200 8888
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
