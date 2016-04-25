@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+{% filter markdown %}
+{% for news in news_list %}
+&nbsp;
+
+&nbsp;
+
+{{news}}
+{% endfor %}
+{% endfilter %}
+{% endblock %}
+
+
