@@ -1,4 +1,4 @@
-import os, os.path, random, string, time
+import os, os.path, random, string, time, urllib2
 from flask import Flask, flash, request, redirect, url_for, render_template, \
     make_response, abort
 import ast
@@ -37,8 +37,8 @@ all_apps = [
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
     {'name': 'apache', 'port': '80', 'hide': True},
     {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
-    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
-    {'name': 'website', 'port': '4000', 'wiki-page': 'webpage', 'display-name': 'Your Site'}
+    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'}
+    # {'name': 'website', 'port': '4000', 'wiki-page': 'webpage', 'display-name': 'Your Site'}
 ]
 
 
@@ -236,6 +236,11 @@ def user_box(the_user):
     else:
         demo = False
     dhbox_username = which_user.name
+    try:
+        port_4000 = urllib2.urlopen(str(request.url) + '/website')
+        port_4000 = True
+    except Exception, e:
+        port_4000 = False
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
     resp = make_response(render_template('dhbox.html',
@@ -244,7 +249,8 @@ def user_box(the_user):
                      demo=demo,
                      time_left=time_left,
                      bootstrap_container='container-fluid',
-                     fixed_scroll='fixed_scroll'
+                     fixed_scroll='fixed_scroll',
+                     port_4000=port_4000
                      )
                  )
     return resp
@@ -258,6 +264,8 @@ def app_box(the_user, app_name):
     if app_name == 'wordpress':
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username+'_wp', app_port)
+    elif app_name == 'website':
+        port_info = '4000'
     else:
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)

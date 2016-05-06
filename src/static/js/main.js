@@ -16,6 +16,12 @@ $( document ).ready(function() {
         showModal('Building your Demo DHbox');
      });
 
+    $( window ).resize(function() {
+        $('.app-iframe').each(function() {
+            $(this).attr("height",$( window ).height() - 100);
+        });
+    });
+
     var errorTemplate = '<div class="help-block"><i class="fa fa-exclamation-circle"></i><i class="fa fa-check"></i></div>';
 
     $.validator.setDefaults({
