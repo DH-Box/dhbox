@@ -47,7 +47,7 @@
                 {% endfor %}
                 {% if port_4000 %} 
                 <div class="tab-pane" id="website" data-src="{{url_for('app_box', the_user=user, app_name='website')}}">
-                    <iframe height='{{ app['height'] if app['height'] else '550' }}' width='{{ app['width'] if app['width'] else '100%' }}' frameBorder="0" src="" class='app-iframe'></iframe>
+                    <iframe height='550' width='100%' frameBorder="0" src="" class='app-iframe'></iframe>
                 </div>
                 {% else %}
                 <div class="tab-pane" id="website" data-src="{{url_for('app_box', the_user=user, app_name='website')}}">

@@ -235,11 +235,12 @@ def user_box(the_user):
         demo = True
     else:
         demo = False
-    dhbox_username = which_user.name
     try:
         port_4000 = urllib2.urlopen(str(request.url) + '/website')
         port_4000 = True
-    except Exception, e:
+        print "port 4000 website found"
+    except Exception:
+        print "no port 4000 site"
         port_4000 = False
     time_left = which_user.dhbox_duration - DockerBackend.how_long_up(which_user.name)
     time_left = DockerBackend.display_time(time_left)
@@ -265,7 +266,8 @@ def app_box(the_user, app_name):
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username+'_wp', app_port)
     elif app_name == 'website':
-        port_info = '4000'
+        app_port = '4000'
+        port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     else:
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
