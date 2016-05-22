@@ -115,14 +115,18 @@ security = Security(app, user_datastore, login_form=ExtendedLoginForm)
 
 # Create an admin user to test with
 def create_user_and_role():
-    first_user = User.query.filter(User.name == str('admin')).first()
+    first_user = User.query.filter(User.name == 'admin').first()
     if not first_user:
         user_email = app.config['ADMIN_EMAIL']
         username = 'admin'
         user_pass = app.config['ADMIN_PASS']
         the_user = user_datastore.create_user(email=user_email, name=username, password=user_pass, dhbox_duration=1000000000)
-        the_role = user_datastore.create_role(name='admin', description='The administrator')
-        user_datastore.add_role_to_user(the_user, the_role)
+        check_admin_role = Role.query.filter(Role.name == 'admin').first()
+        if not check_admin_role:
+            the_role = user_datastore.create_role(name='admin', description='The administrator')
+            user_datastore.add_role_to_user(the_user, the_role)
+        else:
+            user_datastore.add_role_to_user(the_user, check_admin_role)
         db.session.commit()
         try:
             DockerBackend.get_container_info(username)
