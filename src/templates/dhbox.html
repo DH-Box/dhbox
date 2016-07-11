@@ -45,23 +45,13 @@
                 </div>
                 {% endif %}
                 {% endfor %}
-                {% if port_4000 %} 
+                {% if port_4000 %}
                 <div class="tab-pane" id="website" data-src="{{url_for('app_box', the_user=user, app_name='website')}}">
                     <iframe height='550' width='100%' frameBorder="0" src="" class='app-iframe'></iframe>
                 </div>
                 {% else %}
                 <div class="tab-pane" id="website" data-src="{{url_for('app_box', the_user=user, app_name='website')}}">
-                <div class="container">
-                            <br>
-                            <img class="featurette-image img-responsive center-block"
-                 src="/static/images/dhbox_shell.png">
-                            <p>This tab will display anything on port 4000.</p>
-                            <ul>
-                                <li>Host: 0.0.0.0</li>
-                                <li>Port: 4000</li>
-                            </ul>
-                            <br><br>
-                        </div>
+                <iframe height='550' width='100%' frameBorder="0" src="{{url_for('port_4000')}}" class='app-iframe'></iframe>
                 </div>
                 {% endif %}
             </div>

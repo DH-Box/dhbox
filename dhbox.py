@@ -148,7 +148,6 @@ def delete_user(user):
 URLS/VIEWS
 """
 
-
 @app.route("/")
 def index():
     return render_template('index.html', institution=app.config['INSTITUTION'], demo=app.config['DEMO_ENABLED'])
@@ -183,6 +182,11 @@ def news():
             content = f.read()
             news_list.append(content)
     return render_template('news.html', news_list=news_list)
+
+
+@app.route('/port_4000')
+def port_4000():
+    return render_template('port.html')
 
 
 @app.route('/get_started')
@@ -339,7 +343,7 @@ def kill_dhbox():
 
 def police():
     if os.path.isfile('dhbox-docker.db'):
-        # print "policing"
+        print "policing"
         users = User.query.all()
         for user in users:
             DockerBackend.check_and_kill(user)
