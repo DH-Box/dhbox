@@ -278,7 +278,7 @@ def app_box(the_user, app_name):
         app_port = '4000'
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     elif app_name == 'corpus': 
-        return render_template('corpus-downloader.html')
+        return corpus_downloader() 
     else:
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
@@ -289,6 +289,8 @@ def app_box(the_user, app_name):
     else:
         return redirect('http://' + location)
 
+def corpus_downloader(): 
+    return render_template('corpus-downloader.html')
 
 @app.route('/new_dhbox', methods=['POST'])
 def new_dhbox():
