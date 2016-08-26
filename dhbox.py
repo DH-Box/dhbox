@@ -37,7 +37,8 @@ all_apps = [
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
     {'name': 'apache', 'port': '80', 'hide': True},
     {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
-    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'}
+    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
+    {'name': 'corpus', 'port': '8080', 'wiki-page': 'Corpus Downloader', 'display-name': 'Corpus Downloader'}
     # {'name': 'website', 'port': '4000', 'wiki-page': 'webpage', 'display-name': 'Your Site'}
 ]
 
@@ -276,6 +277,8 @@ def app_box(the_user, app_name):
     elif app_name == 'website':
         app_port = '4000'
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
+    elif app_name == 'corpus': 
+        return render_template('get_started.html') # stub redirect
     else:
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
