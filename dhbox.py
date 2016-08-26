@@ -278,7 +278,7 @@ def app_box(the_user, app_name):
         app_port = '4000'
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     elif app_name == 'corpus': 
-        return render_template('get_started.html') # stub redirect
+        return render_template('corpus-downloader.html')
     else:
         app_port = get_app(app_name)['port']
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
