@@ -13,6 +13,7 @@ from werkzeug.contrib.fixers import ProxyFix
 import schedule
 from threading import Thread
 import DockerBackend
+import corpus.corpus as corpus
 
 # create application
 app = Flask('dhbox')
@@ -290,7 +291,8 @@ def app_box(the_user, app_name):
         return redirect('http://' + location)
 
 def corpus_downloader(): 
-    return render_template('corpus-downloader.html')
+    corpora = corpus.readCorpusList().to_html()
+    return render_template('corpus-downloader.html', corpora=corpora)
 
 @app.route('/new_dhbox', methods=['POST'])
 def new_dhbox():
