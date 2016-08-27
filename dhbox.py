@@ -291,7 +291,7 @@ def app_box(the_user, app_name):
         return redirect('http://' + location)
 
 def corpus_downloader(): 
-    corpora = corpus.readCorpusList().to_html()
+    corpora = corpus.readCorpusList().T.to_dict()
     return render_template('corpus-downloader.html', corpora=corpora)
 
 @app.route('/new_dhbox', methods=['POST'])

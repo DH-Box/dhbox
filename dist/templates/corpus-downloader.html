@@ -1,11 +1,26 @@
-<h1 class="dhbox h1-top">Corpus Downloader</h1>
+<h2 class="dhbox h1-top">Corpus Downloader</h2>
 
 <br>
 
-<p>There's nothing here yet. But there will be!</p>
+<p>This page will download a textual corpus to your DHbox's internal <code>~/corpora</code> directory.</p>
 
 <br>
 
-{{corpora|safe}}
+{% for shortname, data in corpora.items() %} 
+
+<div class="corpus">
+
+<a href="{{ data.homepage }}">{{ data.title }}</a> 
+
+<span class="categories">{{ data.categories }}</span> 
+
+ <ul>
+	 <li class="centuries">Centuries: {{ data.centuries }}</li>
+	 <li class="languages">Languages: {{ data.languages }}</li>
+ </ul>
+
+</div> <!-- End .corpus --> 
+
+{% endfor %}
 
 </div>
