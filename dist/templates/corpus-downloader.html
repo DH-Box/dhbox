@@ -6,6 +6,10 @@
 
 <br>
 
+<form method="post" action="/download_corpus">
+
+{{ form.radioButtons }} 
+
 {% for shortname, data in corpora.items() %} 
 
 <div class="corpus">
@@ -22,5 +26,9 @@
 </div> <!-- End .corpus --> 
 
 {% endfor %}
+
+<input type="submit">
+
+</form> 
 
 </div>

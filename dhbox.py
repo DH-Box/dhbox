@@ -7,7 +7,7 @@ from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
     UserMixin, RoleMixin, login_required, roles_required, current_user, LoginForm
 from flaskext.markdown import Markdown
 from wtforms.validators import DataRequired
-from wtforms import TextField, Form
+from wtforms import TextField, RadioField, Form
 from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.contrib.fixers import ProxyFix
 import schedule
@@ -109,6 +109,9 @@ class ExtendedLoginForm(LoginForm):
 
         self.user = user
         return True
+
+class CorpusDownloaderForm(Form): 
+    radioButtons = RadioField('Label', choices=[('value','description'),('value_two','whatever')])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -292,7 +295,9 @@ def app_box(the_user, app_name):
 
 def corpus_downloader(): 
     corpora = corpus.readCorpusList().T.to_dict()
-    return render_template('corpus-downloader.html', corpora=corpora)
+    form = CorpusDownloaderForm()
+    print form
+    return render_template('corpus-downloader.html', corpora=corpora, form=form)
 
 @app.route('/new_dhbox', methods=['POST'])
 def new_dhbox():
@@ -347,6 +352,15 @@ def kill_dhbox():
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
 
+@app.route('/download_corpus', methods=['POST'])
+@login_required
+def download_corpus(): 
+    form = CorpusDownloaderForm()
+    if form.validate_on_submit(): 
+        print(form.radiobuttons.data) 
+    else: 
+        print(form.errors)
+    return
 
 def police():
     if os.path.isfile('dhbox-docker.db'):
