@@ -6,8 +6,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
     UserMixin, RoleMixin, login_required, roles_required, current_user, LoginForm
 from flaskext.markdown import Markdown
+from flask_wtf import Form as FlaskForm
 from wtforms.validators import DataRequired
-from wtforms import TextField, RadioField, Form
+from wtforms import TextField, SelectField, Form
 from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.contrib.fixers import ProxyFix
 import schedule
@@ -110,13 +111,12 @@ class ExtendedLoginForm(LoginForm):
         self.user = user
         return True
 
-class CorpusDownloaderForm(Form): 
-    radioButtons = RadioField('Label', choices=[('value','description'),('value_two','whatever')])
+class DropdownMenu(FlaskForm): 
+    dropdown = SelectField('Label')
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, login_form=ExtendedLoginForm)
-
 
 # Create an admin user to test with
 def create_user_and_role():
@@ -295,7 +295,9 @@ def app_box(the_user, app_name):
 
 def corpus_downloader(): 
     corpora = corpus.readCorpusList().T.to_dict()
-    form = CorpusDownloaderForm()
+    choices = [(c, c.title()) for c in corpora]
+    form = DropdownMenu()
+    form.dropdown.choices = choices
     print form
     return render_template('corpus-downloader.html', corpora=corpora, form=form)
 
@@ -357,7 +359,7 @@ def kill_dhbox():
 def download_corpus(): 
     form = CorpusDownloaderForm()
     if form.validate_on_submit(): 
-        print(form.radiobuttons.data) 
+        print(form.buttons.data) 
     else: 
         print(form.errors)
     return
