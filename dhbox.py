@@ -295,10 +295,10 @@ def app_box(the_user, app_name):
 
 def corpus_downloader(): 
     corpora = corpus.readCorpusList().T.to_dict()
-    choices = [(c, c.title()) for c in corpora]
+    choices = [(c, corpora[c]['title']) for c in corpora]
+    print choices
     form = DropdownMenu()
     form.dropdown.choices = choices
-    print form
     return render_template('corpus-downloader.html', corpora=corpora, form=form)
 
 @app.route('/new_dhbox', methods=['POST'])

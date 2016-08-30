@@ -8,7 +8,6 @@
 
 <form method="post" action="/download_corpus">
 
-{{ form.dropdown }}
 
 {% for shortname, data in corpora.items() %} 
 
@@ -26,6 +25,8 @@
 </div> <!-- End .corpus --> 
 
 {% endfor %}
+
+{{ form.dropdown }}
 
 <input type="submit">
 
