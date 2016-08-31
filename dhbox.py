@@ -112,7 +112,7 @@ class ExtendedLoginForm(LoginForm):
         return True
 
 class DropdownMenu(FlaskForm): 
-    dropdown = SelectField('Label')
+    dropdown = SelectField('Dropdown', validators=[DataRequired()])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -294,9 +294,9 @@ def app_box(the_user, app_name):
         return redirect('http://' + location)
 
 def corpus_downloader(): 
+    # TODO: Factor these out
     corpora = corpus.readCorpusList().T.to_dict()
     choices = [(c, corpora[c]['title']) for c in corpora]
-    print choices
     form = DropdownMenu()
     form.dropdown.choices = choices
     return render_template('corpus-downloader.html', corpora=corpora, form=form)
@@ -354,15 +354,18 @@ def kill_dhbox():
     flash(message='DH Box and username deleted.', category='alert-success')
     return redirect(url_for(the_next) or url_for("index"))
 
-@app.route('/download_corpus', methods=['POST'])
+@app.route('/download_corpus', methods=('GET', 'POST'))
 @login_required
 def download_corpus(): 
-    form = CorpusDownloaderForm()
+    form = DropdownMenu()
+    # TODO: Factor this out of function scope so that it can be reused by other functions. 
+    corpora = corpus.readCorpusList().T.to_dict()
+    choices = [(c, corpora[c]['title']) for c in corpora]
+    form.dropdown.choices = choices
+    print(form.data)
     if form.validate_on_submit(): 
-        print(form.buttons.data) 
-    else: 
-        print(form.errors)
-    return
+        return render_template('about.html')
+    return render_template('index.html')
 
 def police():
     if os.path.isfile('dhbox-docker.db'):
