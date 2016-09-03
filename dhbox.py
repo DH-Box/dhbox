@@ -363,17 +363,17 @@ def download_corpus():
     choices = [(c, corpora[c]['title']) for c in corpora]
     form.dropdown.choices = choices
     print(form.data)
+    selected_corpus = form.data['dropdown']
     if form.validate_on_submit(): 
-        print('valid!') 
         dhbox_username = current_user.name
-        print('Username: ', dhbox_username) 
         app_port = get_app('bash')['port']
-        print('Port: ', app_port) 
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
         hostname = DockerBackend.get_hostname()
         location = hostname + ":" + port_info
-        print('Redirecting to: ', location) 
-        return redirect('http://' + location)
+        command = 'corpus download ' + selected_corpus
+        out = DockerBackend.execute(dhbox_username, [command])
+        print('Output: ', out) 
+        return out
     return render_template('index.html')
 
 def police():
