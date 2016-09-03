@@ -364,7 +364,16 @@ def download_corpus():
     form.dropdown.choices = choices
     print(form.data)
     if form.validate_on_submit(): 
-        return render_template('about.html')
+        print('valid!') 
+        dhbox_username = current_user.name
+        print('Username: ', dhbox_username) 
+        app_port = get_app('bash')['port']
+        print('Port: ', app_port) 
+        port_info = DockerBackend.get_container_port(dhbox_username, app_port)
+        hostname = DockerBackend.get_hostname()
+        location = hostname + ":" + port_info
+        print('Redirecting to: ', location) 
+        return redirect('http://' + location)
     return render_template('index.html')
 
 def police():
