@@ -14,7 +14,7 @@ if [ $ret -eq 0 ]; then
 else 
     echo "Python version is < 3"
 fi
-apt-get install -y wget python-pip python-dev nodejs nodejs-legacy git build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev npm
+apt-get install -y wget python-pip python-dev nodejs nodejs-legacy git build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev npm redis-server
 
 wget -qO- https://get.docker.com/ | sh
 git clone https://github.com/DH-Box/dhbox.git

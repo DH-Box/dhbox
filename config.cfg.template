@@ -6,6 +6,7 @@ TESTING = False
 DEMO_ENABLED = True
 SERVER_TESTING = True
 DEFAULT_HOSTNAME = 'localhost'
+REDIS_URL = 'redis://localhost'
 ADMIN_PASS = 'asecret'
 ADMIN_EMAIL = 'fake@fake.com'
 INSTITUTION = 'CUNY Graduate Center'

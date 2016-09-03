@@ -101,4 +101,14 @@ $( document ).ready(function() {
     $("#admin").rules("add", { regex: "^[a-z][-a-z0-9]*\$" })
     // $("#admin").rules("add", { regex: "^[a-z][-a-z0-9]*\$" })
 
+    // add listener for SSE (progress bars etc)
+    var source = new EventSource("{{ url_for('sse.stream') }}");
+    alert('heyo!'); 
+    console.log('heyo!'); 
+    source.addEventListener('greeting', function(event) {
+	console.log(event.data) 
+        var data = JSON.parse(event.data);
+	console.log(data) 
+    }, false);
+
 });

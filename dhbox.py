@@ -7,6 +7,7 @@ from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
     UserMixin, RoleMixin, login_required, roles_required, current_user, LoginForm
 from flaskext.markdown import Markdown
 from flask_wtf import Form as FlaskForm
+from flask_sse import sse
 from wtforms.validators import DataRequired
 from wtforms import TextField, SelectField, Form
 from werkzeug import generate_password_hash, check_password_hash
@@ -22,6 +23,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 Markdown(app)
 # install_secret_key(app)
 app.config.from_pyfile('config.cfg')
+app.register_blueprint(sse, url_prefix='/stream')
 # app.template_folder = 'src/templates' if app.config['TESTING'] else 'dist/templates'
 # app.static_folder = 'src/static' if app.config['TESTING'] else 'dist/static'
 app.template_folder = 'dist/templates'
@@ -357,6 +359,8 @@ def kill_dhbox():
 @app.route('/download_corpus', methods=('GET', 'POST'))
 @login_required
 def download_corpus(): 
+    """ Accepts POST requests from the client, and upon verification, 
+    downloads a corpus. """ 
     form = DropdownMenu()
     # TODO: Factor this out of function scope so that it can be reused by other functions. 
     corpora = corpus.readCorpusList().T.to_dict()
@@ -366,6 +370,14 @@ def download_corpus():
     if form.validate_on_submit(): 
         return render_template('about.html')
     return render_template('index.html')
+
+@app.route('/send')
+def send_message(): 
+    """ 
+    Sends a message to the client. 
+    """
+    sse.publish({"message": "Hello!"}, type='greeting')
+    return "Message sent!" 
 
 def police():
     if os.path.isfile('dhbox-docker.db'):

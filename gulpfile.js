@@ -15,7 +15,7 @@ gulp.task('useref', ['clean'], function () {
 
     return gulp.src(['src/**/*.html', '!src/static/bower_components/**'])
         .pipe(assets)
-        .pipe(gulpif('*.js', uglify()))
+        //.pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.css', less()))
         .pipe(assets.restore())
         .pipe(useref())
