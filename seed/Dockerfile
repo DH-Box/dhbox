@@ -12,8 +12,8 @@ RUN apt-get -y update
 
 # General needs
 RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-RUN apt-get -qy install emacs git python-apt apt-utils software-properties-common python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
-RUN pip install PyYAML jinja2 paramiko
+RUN apt-get -qy install emacs git python-apt apt-utils software-properties-common python-pip python3-pip python-dev python3-dev sudo curl wget unzip python-pip opensmtpd ipython-notebook nodejs python3-scipy python3-pandas python3-matplotlib python3-numpy libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential python-pandas
+RUN pip install PyYAML jinja2 paramiko corpus-downloader
 
 
 # For Wetty
