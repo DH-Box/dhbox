@@ -21,8 +21,8 @@ or:
 3. Clone git repo (`git clone https://github.com/DH-Box/dhbox.git`)
 4. Navigate to `dhbox/` 
 5. Run `pip install -r requirements.txt` (preferably in a virtualenv)
-6. Run `manage start` to download the DH Box seed, or navigate to `dhbox/seed` and run `sudo docker build -t thedhbox/seed:latest .` if you want to build it yourself (takes 15 minutes or more).
-7. Edit settings as desired in `config.cfg`
+6. Rename `config.cfg.template` to `config.cfg` and edit settings as desired
+7. Run `manage start` to download the DH Box seed, or navigate to `dhbox/seed` and run `sudo docker build -t thedhbox/seed:latest .` if you want to build it yourself (takes 15 minutes or more).
 8. Run `manage build_database`
 9. Run `python wsgi.py`
 10. Navigate to site on `http://localhost:80`
