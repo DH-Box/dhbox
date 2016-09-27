@@ -10,9 +10,10 @@ Currently DH Box requires Ubuntu >= 14.04
 wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/master/install_dhbox.sh | sudo sh
 ```
 1. Navigate to `dhbox/` 
-2. Run `sudo manage build_database`
-3. Run `sudo python wsgi.py`
-4. Navigate to site on `http://localhost:80`
+2. Rename `config.cfg.template` to `config.cfg` and edit settings as desired
+3. Run `sudo manage build_database`
+4. Run `sudo python wsgi.py`
+5. Navigate to site on `http://localhost:80`
 
 ####Or for a manual install:
 
