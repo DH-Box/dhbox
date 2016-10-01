@@ -30,7 +30,7 @@ def get_hostname():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
         hostname = 'dockerhost'
     else:
-        if dhbox.app.config['TESTING']:
+        if dhbox.app.config['LOCALHOST']:
             hostname = 'localhost'
         else:
             hostname = gotten_ip or dhbox.app.config['DEFAULT_HOSTNAME']
@@ -112,6 +112,7 @@ def setup_new_dhbox(username, password, email, demo=False):
                                        tty=True, stdin_open=True, 
                                        environment=environment)
     except docker.errors.APIError, e:
+        print e
         raise e
     else:
         print "Starting Containers"
