@@ -33,7 +33,6 @@ all_apps = [
     {'name': 'filemanager', 'port': '8081', 'wiki-page': 'manager', 'display-name': 'File Manager'},
     {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
-    {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
     {'name': 'apache', 'port': '80', 'hide': True},
     {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
@@ -226,7 +225,7 @@ def demonstration():
     db.session.commit()
     login_user(demo_user_object)
     DockerBackend.demo_dhbox(username)
-    return redirect('/dhbox/' + username, 301)
+    return redirect('/dhbox/' + username)
 
 
 @app.route('/dhbox/<the_user>')
@@ -234,12 +233,10 @@ def demonstration():
 def user_box(the_user):
     which_user = User.query.filter(User.name == str(the_user)).first()
     if current_user.__name__ is 'AnonymousUser':
-        logout_user()
         return redirect(url_for("index"))
     if which_user is None or current_user is None:
-        logout_user()
         return redirect(url_for("index"))
-    login_user(which_user, remember=True)
+    login_user(which_user)
     email_domain = which_user.email.split("@", 1)[1]
     if email_domain == 'demo.com':
         demo = True
@@ -283,10 +280,7 @@ def app_box(the_user, app_name):
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     hostname = DockerBackend.get_hostname()
     location = hostname + ":" + port_info
-    if app_name == 'omeka':
-        return redirect('http://' + location+'/admin')
-    else:
-        return redirect('http://' + location)
+    return redirect('http://' + location)
 
 
 @app.route('/new_dhbox', methods=['POST'])
