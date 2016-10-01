@@ -135,7 +135,7 @@ def execute(container, args):
 
 def configure_dhbox(user, the_pass, email, demo=False):
     """Use Docker exec to SSH into a new container, customizing it for the user.
-    Adds the user to the UNIX instance, and Omeka. """
+    Adds the user to Omeka. """
     container = user
     if demo:
         user = 'demonstration'
