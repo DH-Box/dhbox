@@ -8,6 +8,5 @@ else
   adduser --disabled-password --gecos "" $THEUSER
   usermod -a -G sudo $THEUSER
   echo "$THEUSER:$PASS" | chpasswd
-  usermod -a -G dhbox $THEUSER
   date > /etc/configured
 fi

@@ -5,7 +5,7 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-10-1
+ENV REFRESHED_AT 2016-10-6
 RUN groupadd dhbox
 
 # RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
