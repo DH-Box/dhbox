@@ -4,14 +4,14 @@ DH Box
 A toolbox for Digital Humanities.
 
 ###DH BOX Local Install Process
-Currently DH Box requires Ubuntu >= 14.04
+Currently DH Box requires Ubuntu >= 14.04 and Python 2.7x
 ### One line install:
 ```
 wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/master/install_dhbox.sh | sudo sh
 ```
 1. Navigate to `dhbox/` 
 2. Rename `config.cfg.template` to `config.cfg` and edit settings as desired
-3. Run `sudo manage build_database`
+3. Run `sudo python manage.py build_database`
 4. Run `sudo python wsgi.py`
 5. Navigate to site on `http://localhost:80`
 
