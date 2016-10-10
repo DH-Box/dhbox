@@ -11,7 +11,7 @@ wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/master/install_dhbox.sh
 ```
 1. Navigate to `dhbox/` 
 2. Rename `config.cfg.template` to `config.cfg` and edit settings as desired
-3. Run `sudo manage build_database`
+3. Run `sudo python manage.py build_database`
 4. Run `sudo python wsgi.py`
 5. Navigate to site on `http://localhost:80`
 
