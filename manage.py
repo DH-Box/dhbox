@@ -68,6 +68,7 @@ def renew_admin():
 def build_database():
     """Builds website database and adds admin."""
     if not os.path.exists('dhbox-docker.db'):
+        print "Creating DH Box database"
         dhbox.db.create_all()
         dhbox.create_user_and_role()
     else:

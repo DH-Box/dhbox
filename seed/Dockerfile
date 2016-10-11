@@ -1,11 +1,11 @@
-FROM phusion/baseimage:0.9.16
+FROM phusion/baseimage:0.9.18
 MAINTAINER Steve
 
 # Set correct environment variables.
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-10-6
+ENV REFRESHED_AT 2016-10-07
 RUN groupadd dhbox
 
 # RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
