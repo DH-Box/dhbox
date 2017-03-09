@@ -36,7 +36,7 @@ all_apps = [
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
     {'name': 'apache', 'port': '80', 'hide': True},
     {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
-    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'}
+    # {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'}
     # {'name': 'website', 'port': '4000', 'wiki-page': 'webpage', 'display-name': 'Your Site'}
 ]
 
