@@ -5,7 +5,7 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2016-10-07
+ENV REFRESHED_AT 2017-03-09
 RUN groupadd dhbox
 
 # RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
@@ -58,16 +58,18 @@ RUN yes | gdebi rstudio.deb
 RUN ln -s /etc/apparmor.d/rstudio-server /etc/apparmor.d/disable/
 
 # For brackets
-# RUN npm install brackets -g
-RUN npm install -g grunt-cli
-    # npm install -g node-inspector
-RUN git clone https://github.com/rabchev/brackets-server.git
-WORKDIR /brackets-server
-RUN git submodule update --init --recursive && \
-    npm install && \
-    grunt build
+RUN npm install brackets -g
+# RUN npm install -g grunt-cli
+#     # npm install -g node-inspector
+# RUN git clone https://github.com/rabchev/brackets-server.git
+# WORKDIR /brackets-server
+# RUN npm cache clean
+# RUN npm update -g
+# RUN git submodule update --init --recursive && \
+#     npm install && \
+#     grunt build
 WORKDIR /
-
+RUN apt-get -qy install apache2 mysql-server
 # For the file manager
 RUN npm install node-file-manager -g
 
@@ -80,13 +82,13 @@ RUN mkdir -p /etc/service/mysql
 ADD ./runit_scripts/mysql.sh /etc/service/mysql/run
 RUN chmod +x /etc/service/mysql/run
 
-RUN mkdir -p /etc/service/apache2
-ADD ./runit_scripts/apache2.sh /etc/service/apache2/run
-RUN chmod +x /etc/service/apache2/run
-
 RUN mkdir -p /etc/service/wetty
 ADD ./runit_scripts/wetty.sh /etc/service/wetty/run
 RUN chmod +x /etc/service/wetty/run
+
+RUN mkdir -p /etc/service/apache2
+ADD ./runit_scripts/apache2.sh /etc/service/apache2/run
+RUN chmod +x /etc/service/apache2/run
 
 RUN mkdir -p /etc/service/explorer
 ADD ./runit_scripts/explorer.sh /etc/service/explorer/run

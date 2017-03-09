@@ -116,7 +116,7 @@ def setup_new_dhbox(username, password, email, demo=False):
         raise e
     else:
         print "Starting Containers"
-        restart_policy = {"MaximumRetryCount": 10, "Name": "always"}
+        restart_policy = {"Name": "always"}
         c.start(wp_container,
                 publish_all_ports=True, restart_policy=restart_policy)
         c.start(container, publish_all_ports=True, volumes_from=username+'_wp', restart_policy=restart_policy)
