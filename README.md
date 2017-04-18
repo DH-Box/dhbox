@@ -3,7 +3,7 @@ DH Box
 
 A toolbox for Digital Humanities.
 
-###DH BOX Local Install Process
+### DH BOX Local Install Process
 Currently DH Box requires Ubuntu >= 14.04 and Python 2.7x
 ### One line install:
 ```
@@ -15,7 +15,7 @@ wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/master/install_dhbox.sh
 4. Run `sudo python wsgi.py`
 5. Navigate to site on `http://localhost:80`
 
-####Or for a manual install:
+#### Or for a manual install:
 
 1. [Install Docker](https://www.docker.com/)
 2. Install `pip`, Python package manager
@@ -28,7 +28,7 @@ wget -qO- https://raw.githubusercontent.com/DH-Box/dhbox/master/install_dhbox.sh
 9. Run `sudo python wsgi.py`
 10. Navigate to site on `http://localhost:80`
 
-###If you are developing for DH Box, there are a few more steps:
+### If you are developing for DH Box, there are a few more steps:
 
 11. Install Node and Node Package Manager: `apt-get install nodejs npm`
 12. Install Gulp and Bower: `npm install gulp bower`
