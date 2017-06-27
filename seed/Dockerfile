@@ -13,9 +13,7 @@ RUN apt-get -y update
 
 # General needs
 RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-RUN apt-get -qy install emacs git python-apt apt-utils software-properties-common sudo curl wget unzip opensmtpd nodejs libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential python3-pandas
-# RUN apt-get install ipython-notebook python-pip python3-pip python-dev python3-dev python3-scipy python3-pandas python3-matplotlib python3-numpy
-RUN pip install corpus-downloader
+RUN apt-get -qy install emacs git python-apt apt-utils software-properties-common sudo curl wget unzip opensmtpd nodejs libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
 
 RUN wget https://repo.continuum.io/archive/Anaconda3-4.1.1-Linux-x86_64.sh -O /anaconda.sh
 RUN bash /anaconda.sh -b -p /opt/anaconda 
@@ -73,6 +71,11 @@ WORKDIR /
 RUN apt-get -qy install apache2 mysql-server
 # For the file manager
 RUN npm install node-file-manager -g
+
+# For Corpus Downloader
+# If we install Pandas (corpus downloader dependency) from the Ubuntu repos, pip won't have to build it. 
+RUN apt-get -qy --force-yes install python3-pandas
+RUN pip install corpus-downloader
 
 # Adding Deamons to containers
 RUN mkdir -p /etc/service/rserver
