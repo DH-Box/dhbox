@@ -2,7 +2,7 @@
 *.db
 hosts
 *.cfg
-
+*.python-version
 *.py[cod]
 
 # Emacs

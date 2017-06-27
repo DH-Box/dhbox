@@ -21,7 +21,7 @@ git clone https://github.com/DH-Box/dhbox.git
 cd ~/dhbox/
 pip install -r requirements.txt
 sudo docker pull thedhbox/seed:latest
-sudo docker pull thedhbox/twordpress
+# sudo docker pull thedhbox/twordpress
 sudo manage build_database
 ln -s /usr/bin/nodejs /usr/bin/node
 npm install -g bower gulp

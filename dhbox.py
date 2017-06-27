@@ -2,8 +2,8 @@ import os, os.path, random, string, time, urllib2
 from flask import Flask, flash, request, redirect, url_for, render_template, \
     make_response, abort
 import ast
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.security import Security, SQLAlchemyUserDatastore, login_user, \
+from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore, login_user, logout_user, \
     UserMixin, RoleMixin, login_required, roles_required, current_user, LoginForm
 from flaskext.markdown import Markdown
 from flask_wtf import Form as FlaskForm
@@ -35,12 +35,11 @@ all_apps = [
     {'name': 'filemanager', 'port': '8081', 'wiki-page': 'manager', 'display-name': 'File Manager'},
     {'name': 'bash', 'port': '4200', 'wiki-page': 'Bash-shell', 'display-name': 'Command Line', 'height': 500},
     {'name': 'rstudio', 'port': '8787', 'wiki-page': 'R-Studio', 'display-name': 'R Studio'},
-    {'name': 'omeka', 'port': '8080', 'wiki-page': 'Omeka', 'display-name': 'Omeka'},
     {'name': 'brackets', 'port': '4444', 'wiki-page': 'Brackets', 'display-name': 'Brackets'},
     {'name': 'apache', 'port': '80', 'hide': True},
     {'name': 'jupyter', 'port': '8888', 'wiki-page': 'ipython', 'display-name': 'Jupyter Notebooks'},
-    {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'},
     {'name': 'corpus', 'port': '8080', 'wiki-page': 'Corpus Downloader', 'display-name': 'Corpus Downloader'}
+    # {'name': 'wordpress', 'port': '80', 'wiki-page': 'wordpress', 'display-name': 'WordPress'}
     # {'name': 'website', 'port': '4000', 'wiki-page': 'webpage', 'display-name': 'Your Site'}
 ]
 
@@ -199,16 +198,6 @@ def get_started():
     return render_template('get_started.html')
 
 
-@app.route('/demo', methods=["GET"])
-def demo():
-    username = 'demo' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    demo_user_object = user_datastore.create_user(email=username + '@demo.com', name=username, password='demo', dhbox_duration=3600)
-    db.session.commit()
-    login_user(demo_user_object)
-    DockerBackend.demo_dhbox(username)
-    return redirect('/dhbox/' + username, 301)
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # form = LoginForm()
@@ -230,19 +219,29 @@ def admin():
         uptime = DockerBackend.how_long_up(container.name)
         time_left = DockerBackend.check_if_over_time(container)
         time_left = DockerBackend.display_time(time_left)
-        info = DockerBackend.get_container_info(container.name)
-        containers_list.append({'name':container.name, 'uptime':uptime, 'time_left':time_left})
+        containers_list.append({'name': container.name, 'uptime': uptime, 'time_left': time_left})
     return render_template('admin.html', containers=containers_list)
 
 
-@app.route("/dhbox/<the_user>")
+@app.route('/demo', methods=["GET"])
+def demonstration():
+    username = 'demo' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+    demo_user_object = user_datastore.create_user(email=username + '@demo.com', name=username, password='demo', dhbox_duration=3600)
+    db.session.commit()
+    login_user(demo_user_object)
+    DockerBackend.demo_dhbox(username)
+    return redirect('/dhbox/' + username)
+
+
+@app.route('/dhbox/<the_user>')
 @login_required
 def user_box(the_user):
     which_user = User.query.filter(User.name == str(the_user)).first()
-    if which_user is None:
+    if current_user.__name__ is 'AnonymousUser':
         return redirect(url_for("index"))
-    if current_user.name is not which_user.name:
+    if which_user is None or current_user is None:
         return redirect(url_for("index"))
+    login_user(which_user)
     email_domain = which_user.email.split("@", 1)[1]
     if email_domain == 'demo.com':
         demo = True
@@ -288,10 +287,7 @@ def app_box(the_user, app_name):
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
     hostname = DockerBackend.get_hostname()
     location = hostname + ":" + port_info
-    if app_name == 'omeka':
-        return redirect('http://' + location+'/admin')
-    else:
-        return redirect('http://' + location)
+    return redirect('http://' + location)
 
 def corpus_downloader(): 
     # TODO: Factor these out
@@ -407,7 +403,7 @@ t.daemon = True
 t.start()
 
 if __name__ == '__main__':
-    app.debug = app.config['TESTING'] or app.config['SERVER_TESTING']
+    app.debug = app.config['TESTING']
     # Make database if it doesn't exist
     if not os.path.exists('dhbox-docker.db'):
         db.create_all()

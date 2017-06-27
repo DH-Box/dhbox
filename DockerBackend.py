@@ -30,7 +30,7 @@ def get_hostname():
     if os.getenv('DOCKER_HOST') == 'tcp://192.168.59.103:2376':
         hostname = 'dockerhost'
     else:
-        if dhbox.app.config['TESTING']:
+        if dhbox.app.config['LOCALHOST']:
             hostname = 'localhost'
         else:
             hostname = gotten_ip or dhbox.app.config['DEFAULT_HOSTNAME']
@@ -47,8 +47,8 @@ def download_dhbox(username='test'):
             c.tag(image=image_id, repository=dhbox_repo+'/seed', tag='older', force=True)
     for line in c.pull(dhbox_repo+'/seed:latest', stream=True):
         print(json.dumps(json.loads(line), indent=4))
-    for line in c.pull(dhbox_repo+'/twordpress:latest', stream=True):
-        print(json.dumps(json.loads(line), indent=4))
+    # for line in c.pull(dhbox_repo+'/twordpress:latest', stream=True):
+    #     print(json.dumps(json.loads(line), indent=4))
 
 
 def build_dhbox(username='test'):
@@ -104,21 +104,24 @@ def setup_new_dhbox(username, password, email, demo=False):
        # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
        # print ports
         print "Creating Containers"
-        wp_container = c.create_container(image=dhbox_repo+"/twordpress:latest",
-                                          name=username+'_wp',
-                                          ports=[80],)
+        # wp_container = c.create_container(image=dhbox_repo+"/twordpress:latest",
+        #                                   name=username+'_wp',
+        #                                   ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
                                        ports=[8080, 8081, 8787, 4444, 4200, 3000, 8888],
                                        tty=True, stdin_open=True, 
                                        environment=environment)
     except docker.errors.APIError, e:
+        print e
         raise e
     else:
         print "Starting Containers"
-        restart_policy = {"MaximumRetryCount": 10, "Name": "always"}
-        c.start(wp_container,
-                publish_all_ports=True, restart_policy=restart_policy)
-        c.start(container, publish_all_ports=True, volumes_from=username+'_wp', restart_policy=restart_policy)
+        restart_policy = {"Name": "always"}
+        # c.start(wp_container,
+        #         publish_all_ports=True, restart_policy=restart_policy)
+        # c.start(container, publish_all_ports=True, volumes_from=username+'_wp', restart_policy=restart_policy)
+        # configure_dhbox(username, password, email, demo=demo)
+        c.start(container, publish_all_ports=True, restart_policy=restart_policy)
         configure_dhbox(username, password, email, demo=demo)
         info = c.inspect_container(container)
         return info
@@ -134,7 +137,7 @@ def execute(container, args):
 
 def configure_dhbox(user, the_pass, email, demo=False):
     """Use Docker exec to SSH into a new container, customizing it for the user.
-    Adds the user to the UNIX instance, and Omeka. """
+    Adds the user to Omeka. """
     container = user
     if demo:
         user = 'demonstration'
@@ -162,9 +165,9 @@ def kill_and_remove_user(name, user=True):
     try:
         print "Killing container."
         c.kill(name)
-        c.kill(name+'_wp')
+        # c.kill(name+'_wp')
         c.remove_container(name)
-        c.remove_container(name+'_wp')
+        # c.remove_container(name+'_wp')
         if user:
             dhbox.delete_user(name)
     except (docker.errors.NotFound, docker.errors.APIError) as e:
