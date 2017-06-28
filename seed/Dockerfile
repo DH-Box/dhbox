@@ -4,6 +4,9 @@ MAINTAINER Steve
 # Set correct environment variables.
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
+# Setting correct locale is necessary for python3, click, utf-8, and thus the corpus downloader to work properly.
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF_8
 
 ENV REFRESHED_AT 2017-03-09
 RUN groupadd dhbox
@@ -74,7 +77,8 @@ RUN npm install node-file-manager -g
 
 # For Corpus Downloader
 # If we install Pandas (corpus downloader dependency) from the Ubuntu repos, pip won't have to build it. 
-RUN apt-get -qy --force-yes install python3-pandas
+# On second thought,, this may not be necessary if we have Anaconda.  
+#RUN apt-get -qy --force-yes install python3-pandas
 RUN pip install corpus-downloader
 
 # Adding Deamons to containers
