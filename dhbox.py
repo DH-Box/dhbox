@@ -367,6 +367,7 @@ def download_corpus():
         hostname = DockerBackend.get_hostname()
         location = hostname + ":" + port_info
         command = 'corpus download ' + selected_corpus
+        print('Command: ', command)
         out = DockerBackend.execute(dhbox_username, [command])
         print('Output: ', out) 
         return out
