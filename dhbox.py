@@ -8,7 +8,7 @@ from flask_security import Security, SQLAlchemyUserDatastore, login_user, logout
 from flaskext.markdown import Markdown
 from flask_wtf import Form as FlaskForm
 from wtforms.validators import DataRequired
-from wtforms import TextField, SelectField, Form
+from wtforms import TextField, SelectField, RadioField, Form
 from werkzeug import generate_password_hash, check_password_hash
 from werkzeug.contrib.fixers import ProxyFix
 import schedule
@@ -112,6 +112,9 @@ class ExtendedLoginForm(LoginForm):
 
 class DropdownMenu(FlaskForm): 
     dropdown = SelectField('Dropdown', validators=[DataRequired()])
+
+class Radio(FlaskForm): 
+    radio = RadioField('Radio', validators=[DataRequired()])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -293,8 +296,8 @@ def corpus_downloader():
     # TODO: Factor these out
     corpora = corpus.readCorpusList().T.to_dict()
     choices = [(c, corpora[c]['title']) for c in corpora]
-    form = DropdownMenu()
-    form.dropdown.choices = choices
+    form = Radio()
+    form.radio.choices = choices
     return render_template('corpus-downloader.html', corpora=corpora, form=form)
 
 @app.route('/new_dhbox', methods=['POST'])
@@ -353,24 +356,25 @@ def kill_dhbox():
 @app.route('/download_corpus', methods=('GET', 'POST'))
 @login_required
 def download_corpus(): 
-    form = DropdownMenu()
+    form = Radio()
     # TODO: Factor this out of function scope so that it can be reused by other functions. 
     corpora = corpus.readCorpusList().T.to_dict()
     choices = [(c, corpora[c]['title']) for c in corpora]
-    form.dropdown.choices = choices
+    form.radio.choices = choices
     print(form.data)
-    selected_corpus = form.data['dropdown']
+    selected_corpus = form.data['radio']
     if form.validate_on_submit(): 
         dhbox_username = current_user.name
         app_port = get_app('bash')['port']
         port_info = DockerBackend.get_container_port(dhbox_username, app_port)
         hostname = DockerBackend.get_hostname()
         location = hostname + ":" + port_info
-        command = 'corpus download ' + selected_corpus
+        destination = '/home/' + dhbox_username
+        command = 'corpus download ' + selected_corpus + ' ' + destination
         print('Command: ', command)
         out = DockerBackend.execute(dhbox_username, [command])
         print('Output: ', out) 
-        return out
+        return command
     return render_template('index.html')
 
 def police():

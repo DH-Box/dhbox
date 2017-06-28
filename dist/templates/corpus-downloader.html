@@ -8,30 +8,31 @@
 
 <form method="post" action="/download_corpus">
 
-
 	<div class="corpus">
-
 		<table class="corpusList">
-			<th>Select</th>
-			<th>Name</th>
-			<th>Categories</th>
-			<th>Centuries</th>
-			<th>Languages</th>
-
-			{% for shortname, data in corpora.items() %} 
-
-			<tr> 
-				<td> <input type="radio" name="corpusSelect" value="{{ shortname }}"/> </td>
-				<td> <a href="{{ data.homepage }}">{{ data.title }}</a> </td>
-				<td> <span class="categories">{{ data.categories }}</span> </td>
-				<td> {{ data.centuries }} </td>
-				<td> {{ data.languages }} </td>
+			<tr>
+				<th>Select</th>
+				<th>Name</th>
+				<th>Categories</th>
+				<th>Centuries</th>
+				<th>Languages</th>
 			</tr>
 
+			{% for subfield in form.radio %}
+			<tr>
+				<td> {{ subfield }} </td>
+				<td> {{ subfield.label }} </td>
+				{% for corpus in corpora.items()[loop.index0] %}
+				{% if corpus.categories %}
+				<td> {{ corpus.categories }} </td>
+				<td> {{ corpus.centuries }} </td>
+				<td> {{ corpus.languages }} </td>
+				{% endif %}
+				{% endfor %}
+			</tr>
 			{% endfor %}
 
 			{{ form.csrf_token }} 
-			{{ form.dropdown }}
 
 		</table> 
 
