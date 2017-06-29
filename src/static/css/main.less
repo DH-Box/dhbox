@@ -232,10 +232,24 @@ h1, h2, h3, h4 {
 }
 
 .dhbox-apps {
-    margin-top: 25px;
-    .heading {
-        font-size: 24px;
-    }
+	margin-top: 25px;
+	.heading {
+		font-size: 24px;
+	}
+} 
+
+.corpus { 
+	table.corpusList { 
+		tr:nth-child(even) { 
+			background-color: fade(@brand-primary, 10%);
+		} 
+		th, td { 
+			padding: 0.5em;
+		} 
+	} 
+	input#corpusDownloaderSubmit { 
+		margin-top: 1em;
+	} 
 }
 
 .fixed_scroll {
