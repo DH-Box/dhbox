@@ -110,9 +110,6 @@ class ExtendedLoginForm(LoginForm):
         self.user = user
         return True
 
-class DropdownMenu(FlaskForm): 
-    dropdown = SelectField('Dropdown', validators=[DataRequired()])
-
 class Radio(FlaskForm): 
     radio = RadioField('Radio', validators=[DataRequired()])
 
@@ -364,19 +361,23 @@ def download_corpus():
     selected_corpus = form.data['radio']
     if form.validate_on_submit(): 
         dhbox_username = current_user.name
-        app_port = get_app('bash')['port']
-        port_info = DockerBackend.get_container_port(dhbox_username, app_port)
-        hostname = DockerBackend.get_hostname()
-        location = hostname + ":" + port_info
         destination = '/home/' + dhbox_username
-        command = 'corpus download ' + selected_corpus + ' ' + destination
-        print('Command: ', command)
+        # This is a dirty hack for getting the exit status of the command, 
+        i#but I couldn't figure out any other way to get exit codes
+        # from `docker exec` commands through this API.  
+        shell_handler = 'sh -c'
+        error_handling = '&& echo done || echo failed' 
+        command = "%s 'corpus download %s %s %s'" % (shell_handler, selected_corpus, destination, error_handling)
+        print('Running command: ', command)
         out = DockerBackend.execute(dhbox_username, [command])
-        print('Output: ', out) 
-        out = '<pre>%s</pre>' % out
-        return out
+        # out = DockerBackend.execute(dhbox_username, [command], user=dhbox_username)
+        print('Command output: ', out) 
+        if 'failed' in out[-10:]: 
+            return render_template('corpus-downloaded.html', out=out, success=False)
+        else: 
+            return render_template('corpus-downloaded.html', out=out, success=True)
     else: 
-        return 'Error downloading corpus.'
+        return 'Error validating form.'
 
 def police():
     if os.path.isfile('dhbox-docker.db'):

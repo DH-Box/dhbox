@@ -1,0 +1,30 @@
+<html>
+	<head> 
+		<link rel="stylesheet" href="/static/css/dhbox.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="/static/js/dhbox.js"></script>
+	</head> 
+
+	<body> 
+
+		<div class="container corpus">
+			{% if success %}
+				<h2> Corpus download complete. </h2> 
+			{% else %}
+				<h2> Sorry! Corpus download failed.</h2> 
+				<p> This could be because your DHBox has run out of space (you can check with `df -h` on the command line), because your already have the corpus, or for other reasons. Check the command output below for details. </p>
+			{% endif %}
+
+		<button data-toggle="collapse" data-target="#messages" class="btn" id="corpusMessageToggle">Toggle command-line messages</button>
+
+		<div id="messages" class="collapse">
+			<pre> 
+			{{ out }}
+			</pre>
+		</div> 
+
+		</div>
+
+	</body> 
+</html>
