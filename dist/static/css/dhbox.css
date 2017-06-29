@@ -8817,7 +8817,8 @@ h1.h1-top:first-of-type {
 .corpus table.corpusList td {
   padding: 0.5em;
 }
-.corpus input#corpusDownloaderSubmit {
+.corpus input#corpusDownloaderSubmit,
+.corpus button#corpusMessageToggle {
   margin-top: 1em;
 }
 .fixed_scroll {

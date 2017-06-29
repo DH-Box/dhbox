@@ -104,13 +104,6 @@ $( document ).ready(function() {
         modal.modal('show');
     }
 
-    function showModalWithText(title, body) {
-        var modal = $('#progress-modal');
-        modal.find('.modal-title').text(title);
-	modal.find('.modal-body').text(body);
-        modal.modal('show');
-    }
-
     $.validator.addMethod(
         "regex",
         function(value, element, regexp) {
