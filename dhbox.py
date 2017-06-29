@@ -361,7 +361,6 @@ def download_corpus():
     corpora = corpus.readCorpusList().T.to_dict()
     choices = [(c, corpora[c]['title']) for c in corpora]
     form.radio.choices = choices
-    print(form.data)
     selected_corpus = form.data['radio']
     if form.validate_on_submit(): 
         dhbox_username = current_user.name
@@ -374,8 +373,10 @@ def download_corpus():
         print('Command: ', command)
         out = DockerBackend.execute(dhbox_username, [command])
         print('Output: ', out) 
-        return command
-    return render_template('index.html')
+        out = '<pre>%s</pre>' % out
+        return out
+    else: 
+        return 'Error downloading corpus.'
 
 def police():
     if os.path.isfile('dhbox-docker.db'):
