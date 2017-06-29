@@ -16,6 +16,10 @@ $( document ).ready(function() {
         showModal('Building your Demo DHbox');
      });
 
+    $( "#corpusDownloaderSubmit" ).click(function(e) {
+        showDefaultModal();
+     });
+
     $( window ).resize(function() {
         $('.app-iframe').each(function() {
             $(this).attr("height",$( window ).height() - 100);
@@ -87,6 +91,11 @@ $( document ).ready(function() {
 
         modal.find('.modal-title').text(title);
 
+        modal.modal('show');
+    }
+
+    function showDefaultModal() {
+        var modal = $('#progress-modal');
         modal.modal('show');
     }
 
