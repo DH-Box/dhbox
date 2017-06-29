@@ -1,43 +1,78 @@
-<h2 class="dhbox h1-top">Corpus Downloader</h2>
+<html>
+	<head> 
+		<link rel="stylesheet" href="/static/css/dhbox.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="/static/js/dhbox.js"></script>
+	</head> 
 
-<br>
+	<body> 
+		<div class="container">
 
-<p>This page will download a textual corpus to your DHbox's internal <code>~/corpora</code> directory.</p>
+			<h2 class="dhbox h1-top">Corpus Downloader</h2>
 
-<br>
+			<br>
 
-<form method="post" action="/download_corpus">
+			<p>This app will download a textual corpus to your DHbox's internal `/home` directory, which can then be accessed using any of the other apps. Warning: some of these corpora are very large (several gigabytes), and may take some time to download.</p>
 
-	<div class="corpus">
-		<table class="corpusList">
-			<tr>
-				<th>Select</th>
-				<th>Name</th>
-				<th>Categories</th>
-				<th>Centuries</th>
-				<th>Languages</th>
-			</tr>
+			<br>
 
-			{% for subfield in form.radio %}
-			<tr>
-				<td> {{ subfield }} </td>
-				<td> {{ subfield.label }} </td>
-				{% for corpus in corpora.items()[loop.index0] %}
-				{% if corpus.categories %}
-				<td> {{ corpus.categories }} </td>
-				<td> {{ corpus.centuries }} </td>
-				<td> {{ corpus.languages }} </td>
-				{% endif %}
-				{% endfor %}
-			</tr>
-			{% endfor %}
+			<form method="post" action="/download_corpus">
 
-			{{ form.csrf_token }} 
+				<div class="corpus">
+					<table class="corpusList">
+						<tr>
+							<th>Select</th>
+							<th>Name</th>
+							<th>Categories</th>
+							<th>Centuries</th>
+							<th>Languages</th>
+						</tr>
 
-		</table> 
+						{% for subfield in form.radio %}
+						<tr>
+							<td> {{ subfield }} </td>
+							<td> {{ subfield.label }} </td>
+							{% for corpus in corpora.items()[loop.index0] %}
+							{% if corpus.categories %}
+							<td> {{ corpus.categories }} </td>
+							<td> {{ corpus.centuries }} </td>
+							<td> {{ corpus.languages }} </td>
+							{% endif %}
+							{% endfor %}
+						</tr>
+						{% endfor %}
 
-		<input id="corpusDownloaderSubmit" type="submit" value="Download">
+						{{ form.csrf_token }} 
 
-	</div> <!-- End .corpus --> 
+					</table> 
 
-</form> 
+					<input id="corpusDownloaderSubmit" class="btn" type="submit" value="Download">
+
+				</div> <!-- End .corpus --> 
+
+			</form> 
+		</div> <!-- End .container -->
+
+		<div id="progress-modal" class="modal fade" tabindex="-1" role="dialog"
+							    aria-labelledby="modalTitle">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header modal-header-primary">
+						<h4 id="modalTitle" class="modal-title">Downloading Corpus</h4>
+					</div>
+					<div id='inside-modal' class="modal-body">
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="60"
+										aria-valuemin="0"
+	  aria-valuemax="100" style="width: 60%;">
+								<span class="sr-only">60% Complete</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body> 
+</html>

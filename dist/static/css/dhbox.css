@@ -8810,6 +8810,16 @@ h1.h1-top:first-of-type {
 .dhbox-apps .heading {
   font-size: 24px;
 }
+.corpus table.corpusList tr:nth-child(even) {
+  background-color: rgba(46, 26, 87, 0.1);
+}
+.corpus table.corpusList th,
+.corpus table.corpusList td {
+  padding: 0.5em;
+}
+.corpus input#corpusDownloaderSubmit {
+  margin-top: 1em;
+}
 .fixed_scroll {
   overflow-y: hidden;
 }
