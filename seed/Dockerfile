@@ -5,10 +5,10 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2017-03-09
+ENV REFRESHED_AT 2017-06-27
 RUN groupadd dhbox
 
-# RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
+RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
 RUN apt-get -y update
 
 # General needs
@@ -53,9 +53,11 @@ RUN ant -buildfile /mallet/build.xml
 
 # For R-Studio
 RUN apt-get -qy --force-yes install r-base r-base-dev gdebi-core libatlas3-base libapparmor1 apparmor-profiles libssl0.9.8
-RUN wget http://download2.rstudio.org/rstudio-server-0.98.501-amd64.deb -O rstudio.deb
+RUN wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb -O rstudio.deb
 RUN yes | gdebi rstudio.deb
 RUN ln -s /etc/apparmor.d/rstudio-server /etc/apparmor.d/disable/
+RUN echo "server-app-armor-enabled=0" >> /etc/rstudio/rserver.conf
+RUN echo "www-frame-origin=all" >> /etc/rstudio/rserver.conf
 
 # For brackets
 RUN npm install brackets -g
