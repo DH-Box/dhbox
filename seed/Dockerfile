@@ -57,7 +57,7 @@ RUN wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb -O rstud
 RUN yes | gdebi rstudio.deb
 RUN ln -s /etc/apparmor.d/rstudio-server /etc/apparmor.d/disable/
 RUN echo "server-app-armor-enabled=0" >> /etc/rstudio/rserver.conf
-RUN echo "www-frame-origin=all" >> /etc/rstudio/rserver.conf
+RUN echo "www-frame-origin=any" >> /etc/rstudio/rserver.conf
 
 # For brackets
 RUN npm install brackets -g
