@@ -363,7 +363,7 @@ def download_corpus():
         dhbox_username = current_user.name
         destination = '/home/' + dhbox_username
         # This is a dirty hack for getting the exit status of the command, 
-        i#but I couldn't figure out any other way to get exit codes
+        # but I couldn't figure out any other way to get exit codes
         # from `docker exec` commands through this API.  
         shell_handler = 'sh -c'
         error_handling = '&& echo done || echo failed' 

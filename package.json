@@ -13,7 +13,6 @@
     "gulp-less": "~3.0.3",
     "del": "~1.2.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,5 +23,8 @@
   "author": "",
   "bugs": {
     "url": "https://github.com/DH-Box/dhbox/issues"
+  },
+  "devDependencies": {
+    "main-bower-files": "^2.13.1"
   }
 }
