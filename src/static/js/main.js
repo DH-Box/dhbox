@@ -20,7 +20,15 @@ $( document ).ready(function() {
         showDefaultModal();
      });
 
-    $('table.corpusList').DataTable();
+    $('table.corpusList').DataTable({ 
+	    // Sort by name descending
+	    order: [[1, 'asc']], 
+	    // Display 25 corpora per page
+	    "pageLength": 25,
+	    // Don't sort by select buttons
+	    "columnDefs": [ { "orderable": false, "targets": 0 } ] 
+    });
+
 
     $( window ).resize(function() {
         $('.app-iframe').each(function() {
