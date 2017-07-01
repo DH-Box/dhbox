@@ -20,6 +20,8 @@ $( document ).ready(function() {
         showDefaultModal();
      });
 
+    $('table.corpusList').DataTable();
+
     $( window ).resize(function() {
         $('.app-iframe').each(function() {
             $(this).attr("height",$( window ).height() - 100);

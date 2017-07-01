@@ -1,8 +1,11 @@
 <html>
 	<head> 
 		<link rel="stylesheet" href="/static/css/dhbox.css">
+		<link rel="stylesheet" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 		<script src="/static/js/dhbox.js"></script>
 	</head> 
 
@@ -20,7 +23,8 @@
 			<form method="post" action="/download_corpus">
 
 				<div class="corpus">
-					<table class="corpusList">
+					<table class="corpusList" data-toggle="table">
+						<thead>
 						<tr>
 							<th>Select</th>
 							<th>Name</th>
@@ -28,23 +32,25 @@
 							<th>Centuries</th>
 							<th>Languages</th>
 						</tr>
-
-						{% for subfield in form.radio %}
-						<tr>
-							<td> {{ subfield }} </td>
-							<td> {{ subfield.label }} </td>
-							{% for corpus in corpora.items()[loop.index0] %}
-							{% if corpus.categories %}
-							<td> {{ corpus.categories }} </td>
-							<td> {{ corpus.centuries }} </td>
-							<td> {{ corpus.languages }} </td>
-							{% endif %}
+						</thead>
+						<tbody> 
+							{% for subfield in form.radio %}
+							<tr>
+								<td> {{ subfield }} </td>
+								<td> {{ subfield.label }} </td>
+								{% for corpus in corpora.items()[loop.index0] %}
+								{% if corpus.categories %}
+								<td> {{ corpus.categories }} </td>
+								<td> {{ corpus.centuries }} </td>
+								<td> {{ corpus.languages }} </td>
+								{% endif %}
+								{% endfor %}
+							</tr>
 							{% endfor %}
-						</tr>
-						{% endfor %}
 
-						{{ form.csrf_token }} 
+							{{ form.csrf_token }} 
 
+						</tbody> 
 					</table> 
 
 					<input id="corpusDownloaderSubmit" class="btn" type="submit" value="Download">
