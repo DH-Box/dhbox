@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "less": "~2.5.1",
     "jquery-validate": "~1.13.1",
     "bootstrap-dialog": "~1.34.9",
     "fontawesome": "~4.3.0",
