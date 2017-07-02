@@ -47,7 +47,7 @@ class runDHBox(Application):
 
 if __name__ == "__main__":
     options = {
-        'bind' : '0.0.0.0:80',
+            'bind' : '127.0.0.1:80',
 		'max_requests' : 1000,
 		'worker_class' : 'gevent',
 		'workers' : max_workers(),
