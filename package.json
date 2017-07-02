@@ -25,6 +25,9 @@
     "url": "https://github.com/DH-Box/dhbox/issues"
   },
   "devDependencies": {
+    "gulp-concat": "^2.6.1",
+    "gulp-filter": "^5.0.0",
+    "gulp-load-plugins": "^1.5.0",
     "main-bower-files": "^2.13.1"
   }
 }
