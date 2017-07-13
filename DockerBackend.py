@@ -100,8 +100,7 @@ def setup_new_dhbox(username, password, email, demo=False):
     environment = {"PASS": password, "EMAIL": email, "THEUSER": username, "DEMO": demo}
     mountpoint = '/home/%s/db' % username
     volumes = [mountpoint]
-    host_config = docker.utils.create_host_config(
-            binds=['/mnt/vol/:'+mountpoint])
+    host_config = c.create_host_config(binds=['/mnt/vol/:'+mountpoint])
     if demo:
         environment = {"PASS": 'demonstration', "EMAIL": email, "THEUSER": 'demonstration', "DEMO": demo}        
     try:
