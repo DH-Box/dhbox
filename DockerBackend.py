@@ -98,19 +98,27 @@ def get_all_exposed_ports(container_name):
 def setup_new_dhbox(username, password, email, demo=False):
     """Create a new DH Box container, customize it."""
     environment = {"PASS": password, "EMAIL": email, "THEUSER": username, "DEMO": demo}
+    mountpoint = '/home/%s/db' % username
+    volumes = [mountpoint]
+    host_config = docker.utils.create_host_config(
+            binds=['/mnt/vol/:'+mountpoint])
     if demo:
         environment = {"PASS": 'demonstration', "EMAIL": email, "THEUSER": 'demonstration', "DEMO": demo}        
     try:
        # ports = [(lambda x: app['port'] for app in dhbox.all_apps if app['port'] != None)]
        # print ports
         print "Creating Containers"
+        print("Using volumes: %s" % volumes) 
         # wp_container = c.create_container(image=dhbox_repo+"/twordpress:latest",
         #                                   name=username+'_wp',
         #                                   ports=[80],)
         container = c.create_container(image=dhbox_repo+'/seed:latest', name=username,
                                        ports=[8080, 8081, 8787, 4444, 4200, 3000, 8888],
                                        tty=True, stdin_open=True, 
-                                       environment=environment)
+                                       environment=environment, 
+                                       volumes=volumes,
+                                       host_config=host_config
+                                       )
     except docker.errors.APIError, e:
         print e
         raise e
