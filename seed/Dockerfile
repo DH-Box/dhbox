@@ -5,7 +5,7 @@ MAINTAINER Steve
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV REFRESHED_AT 2017-06-27
+ENV REFRESHED_AT 2018-04-30
 RUN groupadd dhbox
 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
@@ -13,6 +13,7 @@ RUN apt-get -y update
 
 # General needs
 RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+RUN apt-get update
 RUN apt-get -qy install emacs git python-apt apt-utils software-properties-common sudo curl wget unzip opensmtpd nodejs libssl-dev libpam0g-dev zlib1g-dev dh-autoreconf automake autoconf build-essential
 # RUN apt-get install ipython-notebook python-pip python3-pip python-dev python3-dev python3-scipy python3-pandas python3-matplotlib python3-numpy
 
@@ -107,6 +108,10 @@ RUN chmod +x /etc/service/notebook/run
 RUN mkdir -p /etc/service/brackets
 ADD ./runit_scripts/brackets.sh /etc/service/brackets/run
 RUN chmod +x /etc/service/brackets/run
+
+# Fix smtpd purge error that creates millions of folders
+RUN mkdir -p /var/spool/smtpd/purge
+RUN chmod 775 /var/spool/smtpd/purge
 
 ##startup scripts
 RUN mkdir -p /etc/my_init.d
