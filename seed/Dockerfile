@@ -24,7 +24,6 @@ ADD ./conda.sh /etc/profile.d/conda.sh
 RUN /opt/anaconda/bin/conda install pip
 RUN /opt/anaconda/bin/pip install paramiko
 RUN chmod 777 -R /opt/anaconda/
-
 # For Wetty
 RUN npm install -g wetty
 
@@ -32,7 +31,7 @@ WORKDIR /
 
 
 # For MALLET
-RUN apt-get -qy install default-jdk ant
+RUN apt-get -qy install default-jdk ant python3-pip
 RUN mkdir /mallet
 RUN wget -O /tmp/mallet.tar.gz http://mallet.cs.umass.edu/dist/mallet-2.0.7.tar.gz
 RUN tar xfz /tmp/mallet.tar.gz --strip-components=1 -C /mallet
@@ -77,13 +76,13 @@ RUN apt-get -qy install apache2 mysql-server
 RUN npm install node-file-manager -g
 
 # Adding Deamons to containers
-RUN mkdir -p /etc/service/rserver
-ADD ./runit_scripts/rserver.sh /etc/service/rserver/run
-RUN chmod +x /etc/service/rserver/run
-
 RUN mkdir -p /etc/service/mysql
 ADD ./runit_scripts/mysql.sh /etc/service/mysql/run
 RUN chmod +x /etc/service/mysql/run
+
+RUN mkdir -p /etc/service/rserver
+ADD ./runit_scripts/rserver.sh /etc/service/rserver/run
+RUN chmod +x /etc/service/rserver/run
 
 RUN mkdir -p /etc/service/wetty
 ADD ./runit_scripts/wetty.sh /etc/service/wetty/run
